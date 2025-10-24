@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 3
+    },
+    "auditLog": "D:\\Apps\\React_SMP Notice Board\\logs\\.8536d6af5df1052926ea982419ac796d956d8b31-audit.json",
+    "files": [
+        {
+            "date": 1761314486444,
+            "name": "D:\\Apps\\React_SMP Notice Board\\logs\\debug-2025-10-24.log",
+            "hash": "375d7c4114ae2ebe21ddb333eea207e2001edd4cccb3b832f889d9101ac9c1de"
+        }
+    ],
+    "hashType": "sha256"
+}

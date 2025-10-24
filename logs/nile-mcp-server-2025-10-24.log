@@ -1,0 +1,171 @@
+{"level":"info","message":"Starting Nile MCP Server...","timestamp":"2025-10-24T14:01:26.846Z","type":"startup"}
+{"level":"info","message":"Loading environment variables...","timestamp":"2025-10-24T14:01:26.848Z","type":"startup"}
+{"apiKeyPresent":true,"level":"info","message":"Environment variables loaded successfully","serverMode":"stdio","serverPort":3000,"timestamp":"2025-10-24T14:01:26.848Z","type":"startup","workspaceSlug":"thejaraj"}
+{"level":"info","message":"Starting server in stdio mode...","timestamp":"2025-10-24T14:01:26.849Z","type":"startup"}
+{"baseUrl":"https://global.thenile.dev","level":"info","message":"Initializing Nile MCP Server","timestamp":"2025-10-24T14:01:26.850Z","workspaceSlug":"thejaraj"}
+{"level":"info","message":"Setting up tools...","timestamp":"2025-10-24T14:01:26.850Z"}
+{"level":"info","message":"All tools registered successfully","timestamp":"2025-10-24T14:01:26.851Z"}
+{"level":"info","message":"Tools initialized successfully","timestamp":"2025-10-24T14:01:26.851Z"}
+{"level":"info","message":"Starting STDIO server...","timestamp":"2025-10-24T14:01:26.851Z"}
+{"level":"info","message":"Connecting to transport...","timestamp":"2025-10-24T14:01:26.851Z"}
+{"level":"info","message":"Connected successfully","timestamp":"2025-10-24T14:01:26.852Z"}
+{"level":"info","message":"STDIO server started successfully","timestamp":"2025-10-24T14:01:26.852Z"}
+{"level":"info","message":"Creating database","name":"smp_notice_board","region":"AWS_US_WEST_2","timestamp":"2025-10-24T14:18:50.857Z"}
+{"data":{"apiHost":"https://us-west-2.api.thenile.dev/v2/databases/019a1696-c9e9-7081-b1f3-18fa8c5fa5d2","created":"2025-10-24T14:19:32.197528Z","dbHost":"postgres://us-west-2.db.thenile.dev/smp_notice_board","deleted":null,"expandable":true,"id":"019a1696-c9e9-7081-b1f3-18fa8c5fa5d2","name":"smp_notice_board","region":"AWS_US_WEST_2","sharded":true,"status":"READY","workspace":{"created":"2025-10-16T17:39:14.10651Z","id":"0199ee1a-be3a-7cbf-ac06-38848e5ab9f8","name":"Thejaraj","slug":"thejaraj","stripe_customer_id":"cus_TFPyI9fnO2FPHM"}},"level":"info","message":"POST https://global.thenile.dev/workspaces/thejaraj/databases - Status: 201","timestamp":"2025-10-24T14:18:52.718Z","type":"api"}
+{"apiHost":"https://us-west-2.api.thenile.dev/v2/databases/019a1696-c9e9-7081-b1f3-18fa8c5fa5d2","created":"2025-10-24T14:19:32.197528Z","dbHost":"postgres://us-west-2.db.thenile.dev/smp_notice_board","deleted":null,"expandable":true,"id":"019a1696-c9e9-7081-b1f3-18fa8c5fa5d2","level":"info","message":"Database created successfully","name":"smp_notice_board","region":"AWS_US_WEST_2","sharded":true,"status":"READY","timestamp":"2025-10-24T14:18:52.719Z","workspace":{"created":"2025-10-16T17:39:14.10651Z","id":"0199ee1a-be3a-7cbf-ac06-38848e5ab9f8","name":"Thejaraj","slug":"thejaraj","stripe_customer_id":"cus_TFPyI9fnO2FPHM"}}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"\nCREATE TABLE circulars (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  title TEXT NOT NULL,\n  date DATE NOT NULL,\n  subject TEXT NOT NULL,\n  department TEXT NOT NULL CHECK (department IN ('CE', 'ME', 'CS', 'EC', 'EE', 'All')),\n  body TEXT NOT NULL,\n  attachments JSONB DEFAULT '[]'::jsonb,\n  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE INDEX idx_circulars_department ON circulars(department);\nCREATE INDEX idx_circulars_date ON circulars(date DESC);\n","timestamp":"2025-10-24T14:19:31.349Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:19:32.483Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:19:32.483Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:19:32.483Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:19:32.483Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:19:32.483Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:19:33.863Z"}
+{"level":"error","message":"SQL execution error Cannot read properties of undefined (reading 'map')","stack":"TypeError: Cannot read properties of undefined (reading 'map')\n    at executeSQL (file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/dist/tools.js:385:39)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js:90:30","timestamp":"2025-10-24T14:19:34.235Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:19:34.499Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"\nCREATE TABLE admin_users (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  username TEXT NOT NULL UNIQUE,\n  password_hash TEXT NOT NULL,\n  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Insert a default admin user (username: admin, password: admin123)\n-- Password hash for 'admin123' - in production use proper bcrypt hashing\nINSERT INTO admin_users (username, password_hash) \nVALUES ('admin', '$2a$10$8K1p/a0dL3LKqkNOy0tNgO5XPsxQ2nxKq5Q5wX7QzwZxQpJqZYZNK');\n","timestamp":"2025-10-24T14:19:34.709Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:19:35.315Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:19:35.315Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:19:35.315Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:19:35.315Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:19:35.315Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:19:36.649Z"}
+{"level":"error","message":"SQL execution error Cannot read properties of undefined (reading 'map')","stack":"TypeError: Cannot read properties of undefined (reading 'map')\n    at executeSQL (file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/dist/tools.js:385:39)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js:90:30","timestamp":"2025-10-24T14:19:36.980Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:19:37.237Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"CREATE TABLE circulars (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), title TEXT NOT NULL, date DATE NOT NULL, subject TEXT NOT NULL, department TEXT NOT NULL CHECK (department IN ('CE', 'ME', 'CS', 'EC', 'EE', 'All')), body TEXT NOT NULL, attachments JSONB DEFAULT '[]'::jsonb, created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)","timestamp":"2025-10-24T14:19:48.130Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:19:49.269Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:19:49.269Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:19:49.269Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:19:49.269Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:19:49.269Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:19:50.672Z"}
+{"code":"42P07","file":"heap.c","length":103,"level":"error","line":"1150","message":"SQL execution error relation \"circulars\" already exists","name":"error","routine":"heap_create_with_catalog","severity":"ERROR","stack":"error: relation \"circulars\" already exists\n    at C:\\Users\\Lekhana\\AppData\\Roaming\\npm\\node_modules\\@niledatabase\\nile-mcp-server\\node_modules\\pg\\lib\\client.js:545:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async executeSQL (file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/dist/tools.js:379:28)\n    at async file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js:90:30","timestamp":"2025-10-24T14:19:50.956Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:19:51.221Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"CREATE INDEX idx_circulars_department ON circulars(department)","timestamp":"2025-10-24T14:19:51.381Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:19:51.987Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:19:51.987Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:19:51.987Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:19:51.987Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:19:51.987Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:19:53.323Z"}
+{"code":"42P07","file":"index.c","length":106,"level":"error","line":"873","message":"SQL execution error relation \"idx_circulars_department\" already exists","name":"error","routine":"index_create","severity":"ERROR","stack":"error: relation \"idx_circulars_department\" already exists\n    at C:\\Users\\Lekhana\\AppData\\Roaming\\npm\\node_modules\\@niledatabase\\nile-mcp-server\\node_modules\\pg\\lib\\client.js:545:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async executeSQL (file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/dist/tools.js:379:28)\n    at async file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js:90:30","timestamp":"2025-10-24T14:19:53.669Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:19:53.928Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"CREATE INDEX idx_circulars_date ON circulars(date DESC)","timestamp":"2025-10-24T14:19:54.084Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:19:54.696Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:19:54.696Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:19:54.697Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:19:54.697Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:19:54.697Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:19:56.046Z"}
+{"code":"42P07","file":"index.c","length":100,"level":"error","line":"873","message":"SQL execution error relation \"idx_circulars_date\" already exists","name":"error","routine":"index_create","severity":"ERROR","stack":"error: relation \"idx_circulars_date\" already exists\n    at C:\\Users\\Lekhana\\AppData\\Roaming\\npm\\node_modules\\@niledatabase\\nile-mcp-server\\node_modules\\pg\\lib\\client.js:545:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async executeSQL (file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/dist/tools.js:379:28)\n    at async file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js:90:30","timestamp":"2025-10-24T14:19:56.332Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:19:56.593Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"CREATE TABLE admin_users (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), username TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)","timestamp":"2025-10-24T14:19:56.768Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:19:57.378Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:19:57.378Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:19:57.378Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:19:57.378Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:19:57.378Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:19:58.708Z"}
+{"code":"42P07","file":"heap.c","length":105,"level":"error","line":"1150","message":"SQL execution error relation \"admin_users\" already exists","name":"error","routine":"heap_create_with_catalog","severity":"ERROR","stack":"error: relation \"admin_users\" already exists\n    at C:\\Users\\Lekhana\\AppData\\Roaming\\npm\\node_modules\\@niledatabase\\nile-mcp-server\\node_modules\\pg\\lib\\client.js:545:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async executeSQL (file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/dist/tools.js:379:28)\n    at async file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js:90:30","timestamp":"2025-10-24T14:19:58.988Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:19:59.245Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"INSERT INTO admin_users (username, password_hash) VALUES ('admin', 'admin123')","timestamp":"2025-10-24T14:19:59.424Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:20:00.023Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:20:00.023Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:20:00.023Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:20:00.024Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:20:00.024Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:20:01.339Z"}
+{"code":"23505","constraint":"admin_users_username_key","detail":"Key (username)=(admin) already exists.","file":"nbtinsert.c","length":261,"level":"error","line":"664","message":"SQL execution error duplicate key value violates unique constraint \"admin_users_username_key\"","name":"error","routine":"_bt_check_unique","schema":"019a1696-c9e9-7081-b1f3-18fa8c5fa5d2_public","severity":"ERROR","stack":"error: duplicate key value violates unique constraint \"admin_users_username_key\"\n    at C:\\Users\\Lekhana\\AppData\\Roaming\\npm\\node_modules\\@niledatabase\\nile-mcp-server\\node_modules\\pg\\lib\\client.js:545:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async executeSQL (file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/dist/tools.js:379:28)\n    at async file:///C:/Users/Lekhana/AppData/Roaming/npm/node_modules/@niledatabase/nile-mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js:90:30","table":"admin_users","timestamp":"2025-10-24T14:20:01.596Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:20:01.857Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ('Workshop on Advanced Manufacturing Techniques', '2025-01-20', 'Industrial Training Workshop', 'ME', 'All Mechanical Engineering students are invited to attend a two-day workshop on Advanced Manufacturing Techniques. This workshop will cover CNC machining, 3D printing, and modern fabrication methods. Industry experts will conduct hands-on sessions. Registration is mandatory. Contact the ME department office for registration details. Workshop dates: February 5-6, 2025. Venue: Workshop Building, Ground Floor.', '[]'::jsonb)","timestamp":"2025-10-24T14:28:10.238Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:28:11.419Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:28:11.419Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:28:11.419Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:28:11.419Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:28:11.420Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:28:12.821Z"}
+{"level":"info","message":"Query executed in 267ms: INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ('Workshop on Advanced Manufacturing Techniques', '2025-01-20', 'Industrial Training Workshop', 'ME', 'All Mechanical Engineering students are invited to attend a two-day workshop on Advanced Manufacturing Techniques. This workshop will cover CNC machining, 3D printing, and modern fabrication methods. Industry experts will conduct hands-on sessions. Registration is mandatory. Contact the ME department office for registration details. Workshop dates: February 5-6, 2025. Venue: Workshop Building, Ground Floor.', '[]'::jsonb)","result":{"fieldCount":0,"rowCount":1},"timestamp":"2025-10-24T14:28:13.089Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:28:13.367Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ('Mid-Semester Examination Schedule', '2025-01-22', 'Exam Schedule - Mid Sem 2024-25', 'All', 'This is to inform all students that the Mid-Semester Examinations for the academic year 2024-25 will be conducted from February 10 to February 15, 2025. Students are advised to check the detailed timetable on the notice board. Hall tickets will be distributed by respective class coordinators. Students must carry their ID cards and hall tickets to the examination hall. Any queries should be directed to the Examination Cell.', '[]'::jsonb)","timestamp":"2025-10-24T14:28:13.610Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:28:14.209Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:28:14.209Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:28:14.209Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:28:14.209Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:28:14.209Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:28:15.648Z"}
+{"level":"info","message":"Query executed in 259ms: INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ('Mid-Semester Examination Schedule', '2025-01-22', 'Exam Schedule - Mid Sem 2024-25', 'All', 'This is to inform all students that the Mid-Semester Examinations for the academic year 2024-25 will be conducted from February 10 to February 15, 2025. Students are advised to check the detailed timetable on the notice board. Hall tickets will be distributed by respective class coordinators. Students must carry their ID cards and hall tickets to the examination hall. Any queries should be directed to the Examination Cell.', '[]'::jsonb)","result":{"fieldCount":0,"rowCount":1},"timestamp":"2025-10-24T14:28:15.908Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:28:16.170Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ('Programming Competition - CodeFest 2025', '2025-01-23', 'Inter-College Coding Competition', 'CS', 'The Computer Science Department is organizing CodeFest 2025, an inter-college programming competition. Students proficient in C, C++, Java, or Python are encouraged to participate. The competition will have three rounds: online qualifiers, coding sprint, and final hackathon. Exciting prizes and certificates await winners. Registration deadline: January 30, 2025. Register at the CS department lab. Competition date: February 8, 2025.', '[]'::jsonb)","timestamp":"2025-10-24T14:28:16.394Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:28:16.989Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:28:16.989Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:28:16.989Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:28:16.989Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:28:16.989Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:28:18.359Z"}
+{"level":"info","message":"Query executed in 263ms: INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ('Programming Competition - CodeFest 2025', '2025-01-23', 'Inter-College Coding Competition', 'CS', 'The Computer Science Department is organizing CodeFest 2025, an inter-college programming competition. Students proficient in C, C++, Java, or Python are encouraged to participate. The competition will have three rounds: online qualifiers, coding sprint, and final hackathon. Exciting prizes and certificates await winners. Registration deadline: January 30, 2025. Register at the CS department lab. Competition date: February 8, 2025.', '[]'::jsonb)","result":{"fieldCount":0,"rowCount":1},"timestamp":"2025-10-24T14:28:18.622Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:28:18.884Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"SELECT * FROM admin_users","timestamp":"2025-10-24T14:39:40.835Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:39:42.203Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:39:42.203Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:39:42.204Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:39:42.204Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:39:42.204Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:39:43.849Z"}
+{"level":"info","message":"Query executed in 499ms: SELECT * FROM admin_users","result":{"fieldCount":4,"rowCount":1},"timestamp":"2025-10-24T14:39:44.350Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:39:44.658Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"UPDATE admin_users SET password_hash = 'admin123' WHERE username = 'admin'","timestamp":"2025-10-24T14:39:54.366Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T14:39:55.719Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T14:39:55.719Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T14:39:55.719Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T14:39:55.719Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T14:39:55.719Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T14:39:57.553Z"}
+{"level":"info","message":"Query executed in 270ms: UPDATE admin_users SET password_hash = 'admin123' WHERE username = 'admin'","result":{"fieldCount":0,"rowCount":1},"timestamp":"2025-10-24T14:39:57.823Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T14:39:58.088Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"ALTER TABLE circulars ADD COLUMN is_featured BOOLEAN DEFAULT FALSE","timestamp":"2025-10-24T15:21:28.988Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T15:21:30.388Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T15:21:30.388Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T15:21:30.388Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T15:21:30.388Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T15:21:30.389Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T15:21:32.130Z"}
+{"level":"info","message":"Query executed in 403ms: ALTER TABLE circulars ADD COLUMN is_featured BOOLEAN DEFAULT FALSE","result":{"fieldCount":0,"rowCount":null},"timestamp":"2025-10-24T15:21:32.534Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T15:21:32.841Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"UPDATE circulars SET is_featured = TRUE WHERE id = (SELECT id FROM circulars ORDER BY date DESC LIMIT 1)","timestamp":"2025-10-24T15:21:32.979Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T15:21:33.617Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T15:21:33.617Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T15:21:33.617Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T15:21:33.617Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T15:21:33.617Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T15:21:35.298Z"}
+{"level":"info","message":"Query executed in 306ms: UPDATE circulars SET is_featured = TRUE WHERE id = (SELECT id FROM circulars ORDER BY date DESC LIMIT 1)","result":{"fieldCount":0,"rowCount":1},"timestamp":"2025-10-24T15:21:35.604Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T15:21:35.912Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"ALTER TABLE circulars DROP CONSTRAINT IF EXISTS circulars_department_check","timestamp":"2025-10-24T15:39:13.407Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T15:39:14.729Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T15:39:14.729Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T15:39:14.729Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T15:39:14.729Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T15:39:14.729Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T15:39:16.364Z"}
+{"level":"info","message":"Query executed in 417ms: ALTER TABLE circulars DROP CONSTRAINT IF EXISTS circulars_department_check","result":{"fieldCount":0,"rowCount":null},"timestamp":"2025-10-24T15:39:16.781Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T15:39:17.041Z"}
+{"database":"smp_notice_board","level":"info","message":"Executing SQL query","query":"ALTER TABLE circulars ADD CONSTRAINT circulars_department_check CHECK (department IN ('CE', 'ME', 'CS', 'EC', 'EE', 'All', 'Office', 'Results', 'Fee Dues', 'Exams', 'Scholarships', 'Internship', 'Annual Day', 'Functions', 'Admission Ticket', 'Admissions'))","timestamp":"2025-10-24T15:39:17.189Z"}
+{"level":"info","message":"User","timestamp":"2025-10-24T15:39:17.904Z"}
+{"level":"info","message":"Password","timestamp":"2025-10-24T15:39:17.904Z"}
+{"level":"info","message":"Host","timestamp":"2025-10-24T15:39:17.904Z"}
+{"level":"info","message":"Port","timestamp":"2025-10-24T15:39:17.904Z"}
+{"level":"info","message":"Database","timestamp":"2025-10-24T15:39:17.904Z"}
+{"level":"info","message":"Database connection established","timestamp":"2025-10-24T15:39:19.438Z"}
+{"level":"info","message":"Query executed in 440ms: ALTER TABLE circulars ADD CONSTRAINT circulars_department_check CHECK (department IN ('CE', 'ME', 'CS', 'EC', 'EE', 'All', 'Office', 'Results', 'Fee Dues', 'Exams', 'Scholarships', 'Internship', 'Annual Day', 'Functions', 'Admission Ticket', 'Admissions'))","result":{"fieldCount":0,"rowCount":null},"timestamp":"2025-10-24T15:39:19.878Z","type":"sql"}
+{"level":"info","message":"Database connection closed","timestamp":"2025-10-24T15:39:20.127Z"}
+{"level":"info","message":"Starting Nile MCP Server...","timestamp":"2025-10-24T16:47:44.104Z","type":"startup"}
+{"level":"info","message":"Loading environment variables...","timestamp":"2025-10-24T16:47:44.105Z","type":"startup"}
+{"apiKeyPresent":true,"level":"info","message":"Environment variables loaded successfully","serverMode":"stdio","serverPort":3000,"timestamp":"2025-10-24T16:47:44.108Z","type":"startup","workspaceSlug":"thejaraj"}
+{"level":"info","message":"Starting server in stdio mode...","timestamp":"2025-10-24T16:47:44.109Z","type":"startup"}
+{"baseUrl":"https://global.thenile.dev","level":"info","message":"Initializing Nile MCP Server","timestamp":"2025-10-24T16:47:44.109Z","workspaceSlug":"thejaraj"}
+{"level":"info","message":"Setting up tools...","timestamp":"2025-10-24T16:47:44.110Z"}
+{"level":"info","message":"All tools registered successfully","timestamp":"2025-10-24T16:47:44.111Z"}
+{"level":"info","message":"Tools initialized successfully","timestamp":"2025-10-24T16:47:44.111Z"}
+{"level":"info","message":"Starting STDIO server...","timestamp":"2025-10-24T16:47:44.111Z"}
+{"level":"info","message":"Connecting to transport...","timestamp":"2025-10-24T16:47:44.114Z"}
+{"level":"info","message":"Connected successfully","timestamp":"2025-10-24T16:47:44.114Z"}
+{"level":"info","message":"STDIO server started successfully","timestamp":"2025-10-24T16:47:44.114Z"}

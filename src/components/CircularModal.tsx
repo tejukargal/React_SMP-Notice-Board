@@ -1,0 +1,125 @@
+import { X, Calendar, FileText, Download } from 'lucide-react'
+import { Circular } from '../types'
+import { departmentInfo } from '../utils/departments'
+
+interface CircularModalProps {
+  circular: Circular
+  onClose: () => void
+}
+
+const CircularModal = ({ circular, onClose }: CircularModalProps) => {
+  const info = departmentInfo[circular.department]
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  }
+
+  return (
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-6 py-5 sticky top-0 bg-white/95 backdrop-blur`}>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <span
+                  className={`px-4 py-1.5 ${info.textClass} rounded-full text-sm font-bold border-2 ${info.borderClass}`}
+                >
+                  {circular.department}
+                </span>
+                <div className="flex items-center gap-2 text-gray-600 text-sm">
+                  <Calendar className="w-4 h-4" />
+                  <span>{formatDate(circular.date)}</span>
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900">{circular.title}</h2>
+            </div>
+            <button
+              onClick={onClose}
+              className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-lg transition"
+            >
+              <X className="w-6 h-6 text-gray-600" />
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="px-6 py-6">
+          {/* Subject */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">
+              Subject
+            </h3>
+            <p className={`text-xl font-semibold ${info.textClass}`}>
+              {circular.subject}
+            </p>
+          </div>
+
+          {/* Body */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
+              Details
+            </h3>
+            <div className="prose prose-sm max-w-none">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                {circular.body}
+              </p>
+            </div>
+          </div>
+
+          {/* Attachments */}
+          {circular.attachments && circular.attachments.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
+                Attachments ({circular.attachments.length})
+              </h3>
+              <div className="space-y-3">
+                {circular.attachments.map((file, index) => (
+                  <a
+                    key={index}
+                    href={file.base64}
+                    download={file.name}
+                    className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
+                  >
+                    <FileText className="w-10 h-10 text-blue-600 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 truncate group-hover:text-blue-600">
+                        {file.name}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {file.type} • {(file.size / 1024).toFixed(2)} KB
+                      </p>
+                    </div>
+                    <Download className="w-5 h-5 text-gray-400 group-hover:text-blue-600 flex-shrink-0" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+          <button
+            onClick={onClose}
+            className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default CircularModal

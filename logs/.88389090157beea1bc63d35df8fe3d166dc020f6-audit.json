@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Apps\\React_SMP Notice Board\\logs\\.88389090157beea1bc63d35df8fe3d166dc020f6-audit.json",
+    "files": [
+        {
+            "date": 1761314486442,
+            "name": "D:\\Apps\\React_SMP Notice Board\\logs\\nile-mcp-server-2025-10-24.log",
+            "hash": "e63d31f878de00d0d72f740aedda2c52370c39267c27b2e80d66dd8da745e702"
+        }
+    ],
+    "hashType": "sha256"
+}
