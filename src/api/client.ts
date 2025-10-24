@@ -1,8 +1,13 @@
 import { Circular } from '../types'
 
 // Use relative path for production (Netlify), absolute URL for development
+// Check if running on Netlify or localhost
+const isProduction = typeof window !== 'undefined' &&
+  (window.location.hostname.includes('netlify.app') ||
+   window.location.hostname === 'smp-notice-board.netlify.app')
+
 const API_URL = import.meta.env.VITE_API_URL ||
-  (import.meta.env.MODE === 'production' ? '' : 'http://localhost:3001')
+  (isProduction ? '' : 'http://localhost:3001')
 
 // Helper function to get auth token
 const getAuthHeader = (): Record<string, string> => {
