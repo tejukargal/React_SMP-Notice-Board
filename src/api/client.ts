@@ -1,13 +1,19 @@
 import { Circular } from '../types'
 
 // Use relative path for production (Netlify), absolute URL for development
-// Check if running on Netlify or localhost
-const isProduction = typeof window !== 'undefined' &&
-  (window.location.hostname.includes('netlify.app') ||
-   window.location.hostname === 'smp-notice-board.netlify.app')
+// This function evaluates at runtime, not build time
+const getAPIURL = (): string => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL
+  }
 
-const API_URL = import.meta.env.VITE_API_URL ||
-  (isProduction ? '' : 'http://localhost:3001')
+  // Check if running on Netlify
+  if (typeof window !== 'undefined' && window.location.hostname.includes('netlify.app')) {
+    return '' // Use relative URLs on Netlify
+  }
+
+  return 'http://localhost:3001' // Development
+}
 
 // Helper function to get auth token
 const getAuthHeader = (): Record<string, string> => {
@@ -18,7 +24,7 @@ const getAuthHeader = (): Record<string, string> => {
 // Auth API
 export const authAPI = {
   login: async (username: string, password: string) => {
-    const response = await fetch(`${API_URL}/api/auth/login`, {
+    const response = await fetch(`${getAPIURL()}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
@@ -37,8 +43,8 @@ export const authAPI = {
 export const circularsAPI = {
   getAll: async (department?: string): Promise<Circular[]> => {
     const url = department
-      ? `${API_URL}/api/circulars?department=${department}`
-      : `${API_URL}/api/circulars`
+      ? `${getAPIURL()}/api/circulars?department=${department}`
+      : `${getAPIURL()}/api/circulars`
 
     const response = await fetch(url)
 
@@ -50,7 +56,7 @@ export const circularsAPI = {
   },
 
   getById: async (id: string): Promise<Circular> => {
-    const response = await fetch(`${API_URL}/api/circulars/${id}`)
+    const response = await fetch(`${getAPIURL()}/api/circulars/${id}`)
 
     if (!response.ok) {
       throw new Error('Failed to fetch circular')
@@ -60,7 +66,7 @@ export const circularsAPI = {
   },
 
   create: async (circular: Omit<Circular, 'id' | 'created_at'>): Promise<Circular> => {
-    const response = await fetch(`${API_URL}/api/circulars`, {
+    const response = await fetch(`${getAPIURL()}/api/circulars`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +84,7 @@ export const circularsAPI = {
   },
 
   update: async (id: string, circular: Omit<Circular, 'id' | 'created_at'>): Promise<Circular> => {
-    const response = await fetch(`${API_URL}/api/circulars/${id}`, {
+    const response = await fetch(`${getAPIURL()}/api/circulars/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +102,7 @@ export const circularsAPI = {
   },
 
   delete: async (id: string): Promise<void> => {
-    const response = await fetch(`${API_URL}/api/circulars/${id}`, {
+    const response = await fetch(`${getAPIURL()}/api/circulars/${id}`, {
       method: 'DELETE',
       headers: getAuthHeader(),
     })
@@ -108,7 +114,7 @@ export const circularsAPI = {
   },
 
   toggleFeatured: async (id: string): Promise<Circular> => {
-    const response = await fetch(`${API_URL}/api/circulars/${id}/featured`, {
+    const response = await fetch(`${getAPIURL()}/api/circulars/${id}/featured`, {
       method: 'PATCH',
       headers: getAuthHeader(),
     })
