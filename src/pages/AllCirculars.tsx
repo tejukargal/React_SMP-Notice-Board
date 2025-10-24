@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Filter } from 'lucide-react'
 import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
 import { departments } from '../utils/departments'

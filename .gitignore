@@ -1,2 +1,19 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Logs
+logs
+*.log
+
 # Local Netlify folder
 .netlify
+
+# Environment variables
+.env
+server/.env
+
+# Vite cache
+.vite

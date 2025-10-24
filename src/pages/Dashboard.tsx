@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
-import { departmentInfo, departments } from '../utils/departments'
+import { departmentInfo } from '../utils/departments'
 import CircularTicker from '../components/CircularTicker'
 
 const Dashboard = () => {

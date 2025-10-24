@@ -2,10 +2,10 @@ import { Circular } from '../types'
 
 // Use relative path for production (Netlify), absolute URL for development
 const API_URL = import.meta.env.VITE_API_URL ||
-  (import.meta.env.PROD ? '' : 'http://localhost:3001')
+  (import.meta.env.MODE === 'production' ? '' : 'http://localhost:3001')
 
 // Helper function to get auth token
-const getAuthHeader = () => {
+const getAuthHeader = (): Record<string, string> => {
   const token = localStorage.getItem('smp_auth_token')
   return token ? { Authorization: `Bearer ${token}` } : {}
 }

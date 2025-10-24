@@ -1,5 +1,4 @@
 import { Circular } from '../types'
-import { departmentInfo } from '../utils/departments'
 
 interface CircularTickerProps {
   circulars: Circular[]
