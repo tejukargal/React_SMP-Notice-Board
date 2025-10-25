@@ -48,15 +48,31 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="text-center max-w-5xl">
-          <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-1 sm:gap-3">
-            <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-white/20 rounded-full text-xs font-semibold">
+        <div className="text-center max-w-5xl w-full">
+          {/* Mobile layout: 2 lines */}
+          <div className="sm:hidden flex flex-col items-center justify-center gap-0.5">
+            {/* Line 1: Department + Title */}
+            <div className="flex items-center justify-center gap-2">
+              <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold flex-shrink-0">
+                {currentCircular.department}
+              </span>
+              <span className="font-bold text-xs line-clamp-1">{currentCircular.title}</span>
+            </div>
+            {/* Line 2: Subject */}
+            <div className="text-blue-100 text-xs line-clamp-1 px-4">
+              {currentCircular.subject}
+            </div>
+          </div>
+
+          {/* Desktop layout: Single line */}
+          <div className="hidden sm:flex sm:flex-wrap items-center justify-center gap-3">
+            <span className="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold">
               {currentCircular.department}
             </span>
-            <span className="hidden sm:inline text-sm">•</span>
-            <span className="font-bold text-xs sm:text-lg line-clamp-1">{currentCircular.title}</span>
-            <span className="hidden sm:inline text-sm">•</span>
-            <span className="text-blue-100 text-xs sm:text-base line-clamp-1">{currentCircular.subject}</span>
+            <span className="text-sm">•</span>
+            <span className="font-bold text-lg line-clamp-1">{currentCircular.title}</span>
+            <span className="text-sm">•</span>
+            <span className="text-blue-100 text-base line-clamp-1">{currentCircular.subject}</span>
           </div>
         </div>
       </div>
