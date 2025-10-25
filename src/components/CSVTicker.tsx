@@ -115,10 +115,6 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
           }
         `}</style>
       </div>
-
-      <div className="text-xs text-gray-400 mt-1 text-center">
-        📊 {fileName} • {dataRows.length} rows • Hover to pause
-      </div>
     </div>
   )
 }
