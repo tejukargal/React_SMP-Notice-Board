@@ -53,9 +53,9 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   const headers = csvData[0]
   const dataRows = csvData.slice(1)
 
-  // Calculate dynamic speed based on row count (faster for more rows)
-  const baseSpeed = Math.max(30, dataRows.length * 0.3) // 0.3s per row, minimum 30s
-  const mobileSpeed = Math.max(20, dataRows.length * 0.2) // 0.2s per row, minimum 20s
+  // Calculate dynamic speed based on row count (MUCH faster)
+  const baseSpeed = Math.max(12, dataRows.length * 0.08) // 0.08s per row, minimum 12s
+  const mobileSpeed = Math.max(8, dataRows.length * 0.06) // 0.06s per row, minimum 8s
 
   return (
     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg overflow-hidden my-4">
