@@ -54,7 +54,12 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   const headers = csvData[0]
   const dataRows = csvData.slice(1)
 
-  console.log(`Rendering CSV ticker: ${dataRows.length} data rows (excluding header)`)
+  // Dynamic speed based on row count - ensures ALL rows are visible
+  // Formula: 0.2s per row for desktop, 0.12s per row for mobile
+  const desktopSpeed = Math.max(15, dataRows.length * 0.2)
+  const mobileSpeed = Math.max(10, dataRows.length * 0.12)
+
+  console.log(`CSV Ticker: ${dataRows.length} data rows | Desktop: ${desktopSpeed}s | Mobile: ${mobileSpeed}s`)
 
   return (
     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg overflow-hidden my-4">
@@ -67,9 +72,14 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
         <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-green-50 to-transparent z-10"></div>
         <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-emerald-50 to-transparent z-10"></div>
 
-        <div className="flex gap-3 animate-csv-scroll whitespace-nowrap">
-          {/* Triple content for seamless loop and better visibility */}
-          {[...dataRows, ...dataRows, ...dataRows].map((row, rowIndex) => (
+        <div
+          className="flex gap-3 animate-csv-scroll whitespace-nowrap"
+          style={{
+            animation: `csv-scroll ${desktopSpeed}s linear infinite`
+          }}
+        >
+          {/* Duplicate content for seamless infinite loop */}
+          {[...dataRows, ...dataRows].map((row, rowIndex) => (
             <div
               key={rowIndex}
               className="inline-flex flex-col bg-white border-2 border-green-400 rounded-lg px-3 py-2 shadow-md min-w-[280px]"
@@ -104,18 +114,18 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(-33.333%);
+              transform: translateX(-50%);
             }
           }
 
           .animate-csv-scroll {
-            animation: csv-scroll 7s linear infinite;
+            animation-duration: ${desktopSpeed}s;
           }
 
           /* Faster on mobile */
           @media (max-width: 768px) {
             .animate-csv-scroll {
-              animation: csv-scroll 4s linear infinite;
+              animation-duration: ${mobileSpeed}s !important;
             }
           }
 
@@ -127,7 +137,7 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
 
       <div className="bg-green-100 px-4 py-2 text-xs text-green-700 flex items-center justify-between">
         <span>💡 Hover/tap to pause scrolling</span>
-        <span className="font-semibold">All {dataRows.length} rows • 7s desktop / 4s mobile</span>
+        <span className="font-semibold">All {dataRows.length} rows • {desktopSpeed}s desktop / {mobileSpeed}s mobile</span>
       </div>
     </div>
   )
