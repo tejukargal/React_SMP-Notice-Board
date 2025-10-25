@@ -53,42 +53,36 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   const headers = csvData[0]
   const dataRows = csvData.slice(1)
 
-  // Calculate dynamic speed based on row count (MUCH faster)
-  const baseSpeed = Math.max(12, dataRows.length * 0.08) // 0.08s per row, minimum 12s
-  const mobileSpeed = Math.max(8, dataRows.length * 0.06) // 0.06s per row, minimum 8s
-
   return (
     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg overflow-hidden my-4">
       <div className="bg-green-600 text-white px-4 py-2 flex items-center justify-between">
-        <span className="font-semibold text-sm">📊 CSV Data Preview: {fileName}</span>
+        <span className="font-semibold text-sm">📊 CSV Data: {fileName}</span>
         <span className="text-xs bg-green-700 px-2 py-1 rounded">{dataRows.length} rows</span>
       </div>
 
-      <div className="relative overflow-hidden py-2">
-        <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-green-50 to-transparent z-10"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-emerald-50 to-transparent z-10"></div>
+      <div className="relative overflow-hidden py-3">
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-green-50 to-transparent z-10"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-emerald-50 to-transparent z-10"></div>
 
-        <div className="flex animate-csv-scroll whitespace-nowrap" style={{
-          animation: `csv-scroll ${baseSpeed}s linear infinite`
-        }}>
+        <div className="flex gap-4 animate-csv-scroll whitespace-nowrap">
           {/* Duplicate content for seamless loop */}
           {[...dataRows, ...dataRows].map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className="inline-flex items-center gap-1.5 mx-3 bg-white border border-green-300 rounded px-3 py-1.5 shadow-sm text-xs"
+              className="inline-flex items-center gap-2 bg-white border-2 border-green-400 rounded-md px-3 py-1 shadow-sm"
             >
               {row.map((cell, cellIndex) => (
-                <div key={cellIndex} className="inline-flex items-center">
-                  <span className="font-bold text-green-700 mr-1">
-                    {headers[cellIndex] || `Col${cellIndex + 1}`}:
+                <span key={cellIndex} className="inline-flex items-center text-xs">
+                  <span className="font-bold text-green-700">
+                    {headers[cellIndex]}:
                   </span>
-                  <span className="text-gray-800 font-medium">
+                  <span className="text-gray-900 font-semibold ml-1">
                     {cell || '-'}
                   </span>
                   {cellIndex < row.length - 1 && (
-                    <span className="mx-2 text-green-400">•</span>
+                    <span className="mx-1.5 text-green-300">|</span>
                   )}
-                </div>
+                </span>
               ))}
             </div>
           ))}
@@ -105,14 +99,7 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
           }
 
           .animate-csv-scroll {
-            animation-duration: ${baseSpeed}s;
-          }
-
-          /* Even faster on mobile */
-          @media (max-width: 768px) {
-            .animate-csv-scroll {
-              animation-duration: ${mobileSpeed}s !important;
-            }
+            animation: csv-scroll 8s linear infinite;
           }
 
           .animate-csv-scroll:hover {
@@ -121,8 +108,9 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
         `}</style>
       </div>
 
-      <div className="bg-green-100 px-4 py-2 text-xs text-green-700">
-        💡 Hover/tap to pause • Showing all {dataRows.length} rows • Speed: {baseSpeed}s desktop / {mobileSpeed}s mobile
+      <div className="bg-green-100 px-4 py-2 text-xs text-green-700 flex items-center justify-between">
+        <span>💡 Hover/tap to pause scrolling</span>
+        <span className="font-semibold">All {dataRows.length} rows • 8s loop</span>
       </div>
     </div>
   )
