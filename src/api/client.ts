@@ -3,16 +3,17 @@ import { Circular } from '../types'
 // Use relative path for production (Netlify), absolute URL for development
 // This function evaluates at runtime, not build time
 const getAPIURL = (): string => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL
-  }
-
-  // Check if running on Netlify
+  // Check if running on Netlify first (before checking env var)
   if (typeof window !== 'undefined' && window.location.hostname.includes('netlify.app')) {
     return '' // Use relative URLs on Netlify
   }
 
-  return 'http://localhost:3001' // Development
+  // Use env var for development override
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL
+  }
+
+  return 'http://localhost:3001' // Development default
 }
 
 // Helper function to get auth token
