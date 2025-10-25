@@ -30,20 +30,25 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Title */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">S</span>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm sm:text-base">SMP</span>
               </div>
             </div>
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-gray-900">
-                Sanjay Memorial Polytechnic
+                Sanjay Memorial Polytechnic, Sagar
               </h1>
-              <p className="text-xs text-gray-600">Sagar - Notice Board</p>
+              <p className="text-xs text-gray-600">Notice Board</p>
             </div>
             <div className="sm:hidden">
-              <h1 className="text-lg font-bold text-gray-900">SMP Sagar</h1>
+              <div>
+                <h1 className="text-sm font-bold text-gray-900 leading-tight">
+                  Sanjay Memorial Polytechnic, Sagar
+                </h1>
+                <p className="text-xs text-gray-600">Notice Board</p>
+              </div>
             </div>
           </Link>
 
