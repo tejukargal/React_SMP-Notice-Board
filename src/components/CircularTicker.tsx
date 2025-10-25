@@ -25,7 +25,7 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
     const developerCredit: Circular = {
       id: 'developer-credit',
       title: 'Developed by Tejaraj R, SMP',
-      subject: 'Full Stack Developer',
+      subject: '',
       department: 'Office',
       date: new Date().toISOString(),
       body: '',
