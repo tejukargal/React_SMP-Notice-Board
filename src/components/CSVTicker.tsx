@@ -66,105 +66,70 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   console.log(`CSV Ticker: ${dataRows.length} data rows | ${columnCount} columns | Mobile col width: ${mobileColumnWidth}px | Desktop: ${desktopSpeed}s | Mobile: ${mobileSpeed}s`)
 
   return (
-    <div className="my-4 overflow-hidden">
-      <div className="text-sm font-semibold text-gray-700 mb-2 px-1">
-        📊 {fileName} ({dataRows.length} rows)
-      </div>
+    <div className="w-full">
+      {/* Scrolling CSV Content - Full Width */}
+      <div className="relative overflow-hidden h-32">
+        {/* Top fade gradient */}
+        <div className="absolute left-0 right-0 top-0 h-6 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
+        {/* Bottom fade gradient */}
+        <div className="absolute left-0 right-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
 
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
-        {/* Static Header Row */}
-        <div className="bg-gray-50 border-b-2 border-gray-300">
-          <div className="flex">
-            {headers.map((header, index) => (
+        <div className="h-full">
+          <div
+            className="flex flex-col animate-csv-scroll-vertical"
+            style={{
+              animation: `csv-scroll-vertical ${desktopSpeed}s linear infinite`
+            }}
+          >
+            {/* Duplicate content for seamless infinite loop */}
+            {[...dataRows, ...dataRows].map((row, rowIndex) => (
               <div
-                key={index}
-                className="px-1 py-2 font-semibold text-gray-700 flex-1 overflow-hidden"
-                style={{
-                  minWidth: `${mobileColumnWidth}px`,
-                  fontSize: '0.7rem'
-                }}
+                key={rowIndex}
+                className="flex w-full py-1 border-b border-gray-100"
               >
-                <div className="truncate">{header}</div>
+                {row.map((cell, cellIndex) => (
+                  <div
+                    key={cellIndex}
+                    className="px-2 text-gray-700 flex-1 overflow-hidden text-xs"
+                  >
+                    <span className="font-medium text-gray-500">{headers[cellIndex]}:</span>{' '}
+                    <span className="text-gray-900">{cell || '-'}</span>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Scrolling Content */}
-        <div className="relative overflow-hidden h-48 md:h-64">
-          {/* Top fade gradient */}
-          <div className="absolute left-0 right-0 top-0 h-8 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
-          {/* Bottom fade gradient */}
-          <div className="absolute left-0 right-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
-
-          <div className="h-full">
-            <div
-              className="flex flex-col animate-csv-scroll-vertical"
-              style={{
-                animation: `csv-scroll-vertical ${desktopSpeed}s linear infinite`
-              }}
-            >
-              {/* Duplicate content for seamless infinite loop */}
-              {[...dataRows, ...dataRows].map((row, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  className="flex border-b border-gray-100 hover:bg-gray-50"
-                >
-                  {row.map((cell, cellIndex) => (
-                    <div
-                      key={cellIndex}
-                      className="px-1 py-2 text-gray-900 flex-1 overflow-hidden"
-                      style={{
-                        minWidth: `${mobileColumnWidth}px`,
-                        fontSize: '0.7rem'
-                      }}
-                    >
-                      <div className="truncate">{cell || '-'}</div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <style>{`
-            @keyframes csv-scroll-vertical {
-              0% {
-                transform: translateY(0);
-              }
-              100% {
-                transform: translateY(-50%);
-              }
+        <style>{`
+          @keyframes csv-scroll-vertical {
+            0% {
+              transform: translateY(0);
             }
+            100% {
+              transform: translateY(-50%);
+            }
+          }
 
+          .animate-csv-scroll-vertical {
+            animation-duration: ${desktopSpeed}s;
+          }
+
+          /* Slower on mobile */
+          @media (max-width: 768px) {
             .animate-csv-scroll-vertical {
-              animation-duration: ${desktopSpeed}s;
+              animation-duration: ${mobileSpeed}s !important;
             }
+          }
 
-            /* Slower on mobile */
-            @media (max-width: 768px) {
-              .animate-csv-scroll-vertical {
-                animation-duration: ${mobileSpeed}s !important;
-              }
-            }
-
-            /* Larger columns on desktop */
-            @media (min-width: 768px) {
-              .flex > div[style*="minWidth"] {
-                min-width: ${desktopColumnWidth}px !important;
-                font-size: 0.875rem !important;
-              }
-            }
-
-            .animate-csv-scroll-vertical:hover {
-              animation-play-state: paused;
-            }
-          `}</style>
-        </div>
+          .animate-csv-scroll-vertical:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
       </div>
 
-      <div className="text-xs text-gray-500 mt-2 px-1">
-        💡 Hover to pause • All columns visible • {dataRows.length} rows
+      <div className="text-xs text-gray-400 mt-1 text-center">
+        📊 {fileName} • {dataRows.length} rows • Hover to pause
       </div>
     </div>
   )

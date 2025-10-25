@@ -1,7 +1,7 @@
 import { X, Calendar, FileText, Download } from 'lucide-react'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
-import { LinkifiedText } from '../utils/linkify'
+import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from './CSVTicker'
 
 interface CircularModalProps {
@@ -74,7 +74,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
             </h3>
             <div
               className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: circular.body }}
+              dangerouslySetInnerHTML={renderHtmlContent(circular.body)}
             />
           </div>
 

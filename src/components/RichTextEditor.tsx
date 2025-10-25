@@ -9,17 +9,32 @@ interface RichTextEditorProps {
 
 const RichTextEditor = ({ value, onChange, placeholder = 'Enter text...' }: RichTextEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null)
+  const isInitializedRef = useRef(false)
 
   // Initialize content
   useEffect(() => {
-    if (editorRef.current && editorRef.current.innerHTML !== value) {
-      editorRef.current.innerHTML = value
+    if (editorRef.current && !isInitializedRef.current) {
+      // Clean up value - convert plain text to HTML if needed
+      const cleanValue = value || ''
+      editorRef.current.innerHTML = cleanValue
+      isInitializedRef.current = true
     }
   }, [value])
 
   const handleInput = () => {
     if (editorRef.current) {
-      onChange(editorRef.current.innerHTML)
+      const content = editorRef.current.innerHTML
+      // Remove any style attributes that might cause issues
+      const cleanContent = content.replace(/style="[^"]*"/gi, (match) => {
+        // Keep only valid styles
+        const validStyles = ['text-align', 'font-weight', 'font-style', 'text-decoration']
+        const styles = match.match(/style="([^"]*)"/)?.[1] || ''
+        const cleanedStyles = styles.split(';')
+          .filter(s => validStyles.some(valid => s.trim().startsWith(valid)))
+          .join(';')
+        return cleanedStyles ? `style="${cleanedStyles}"` : ''
+      })
+      onChange(cleanContent)
     }
   }
 

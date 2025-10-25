@@ -5,7 +5,7 @@ import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
 import { departmentInfo } from '../utils/departments'
 import CircularTicker from '../components/CircularTicker'
-import { LinkifiedText } from '../utils/linkify'
+import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from '../components/CSVTicker'
 
 const Dashboard = () => {
@@ -135,7 +135,7 @@ const Dashboard = () => {
 
                 <div
                   className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: featuredCircular.body }}
+                  dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body)}
                 />
 
                 {/* CSV Ticker Preview */}

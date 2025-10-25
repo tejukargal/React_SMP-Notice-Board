@@ -29,6 +29,14 @@ const CircularForm = ({ circular, onClose }: CircularFormProps) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
+
+    // Validate body has actual content (not just HTML tags)
+    const bodyText = formData.body.replace(/<[^>]*>/g, '').trim()
+    if (!bodyText) {
+      setError('Body content is required')
+      return
+    }
+
     setLoading(true)
 
     try {

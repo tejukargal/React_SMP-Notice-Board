@@ -1,7 +1,7 @@
 import { Calendar, FileText } from 'lucide-react'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
-import { LinkifiedText } from '../utils/linkify'
+import { renderHtmlContent } from '../utils/htmlContent'
 
 interface CircularCardProps {
   circular: Circular
@@ -51,7 +51,7 @@ const CircularCard = ({ circular, onClick }: CircularCardProps) => {
         {/* Body Preview */}
         <div
           className="text-sm text-gray-600 line-clamp-3 mb-4"
-          dangerouslySetInnerHTML={{ __html: circular.body }}
+          dangerouslySetInnerHTML={renderHtmlContent(circular.body)}
         />
 
         {/* Footer */}
