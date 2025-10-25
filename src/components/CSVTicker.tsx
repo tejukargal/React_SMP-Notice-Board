@@ -54,90 +54,89 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   const headers = csvData[0]
   const dataRows = csvData.slice(1)
 
-  // Dynamic speed based on row count - ensures ALL rows are visible
-  // Formula: 0.2s per row for desktop, 0.12s per row for mobile
-  const desktopSpeed = Math.max(15, dataRows.length * 0.2)
-  const mobileSpeed = Math.max(10, dataRows.length * 0.12)
+  // Slower vertical scrolling - 0.5s per row for desktop, 0.35s per row for mobile
+  const desktopSpeed = Math.max(20, dataRows.length * 0.5)
+  const mobileSpeed = Math.max(15, dataRows.length * 0.35)
 
   console.log(`CSV Ticker: ${dataRows.length} data rows | Desktop: ${desktopSpeed}s | Mobile: ${mobileSpeed}s`)
 
   return (
-    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg overflow-hidden my-4">
-      <div className="bg-green-600 text-white px-4 py-2 flex items-center justify-between">
-        <span className="font-semibold text-sm">📊 CSV Data: {fileName}</span>
-        <span className="text-xs bg-green-700 px-2 py-1 rounded">{dataRows.length} rows</span>
+    <div className="my-4 overflow-hidden">
+      <div className="text-sm font-semibold text-gray-700 mb-2 px-1">
+        📊 {fileName} ({dataRows.length} rows)
       </div>
 
-      <div className="relative overflow-hidden py-3">
-        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-green-50 to-transparent z-10"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-emerald-50 to-transparent z-10"></div>
+      <div className="relative overflow-hidden h-64">
+        {/* Top fade gradient */}
+        <div className="absolute left-0 right-0 top-0 h-12 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
+        {/* Bottom fade gradient */}
+        <div className="absolute left-0 right-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
 
         <div
-          className="flex gap-3 animate-csv-scroll whitespace-nowrap"
+          className="flex flex-col animate-csv-scroll-vertical"
           style={{
-            animation: `csv-scroll ${desktopSpeed}s linear infinite`
+            animation: `csv-scroll-vertical ${desktopSpeed}s linear infinite`
           }}
         >
+          {/* Header row - sticky */}
+          <div className="flex border-b-2 border-gray-300 bg-gray-50 sticky top-0 z-5">
+            {headers.map((header, index) => (
+              <div
+                key={index}
+                className="px-3 py-2 font-semibold text-xs text-gray-700 min-w-[120px] flex-1"
+              >
+                {header}
+              </div>
+            ))}
+          </div>
+
           {/* Duplicate content for seamless infinite loop */}
           {[...dataRows, ...dataRows].map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className="inline-flex flex-col bg-white border-2 border-green-400 rounded-lg px-3 py-2 shadow-md min-w-[280px]"
+              className="flex border-b border-gray-100 hover:bg-gray-50"
             >
-              <div className="flex items-center justify-between mb-1.5 border-b border-green-200 pb-1">
-                <span className="text-xs font-bold text-green-700">
-                  Row {(rowIndex % dataRows.length) + 1}
-                </span>
-                <span className="text-xs text-gray-500">
-                  of {dataRows.length}
-                </span>
-              </div>
-              <div className="space-y-1">
-                {row.map((cell, cellIndex) => (
-                  <div key={cellIndex} className="flex items-start text-xs">
-                    <span className="font-bold text-green-700 min-w-[80px]">
-                      {headers[cellIndex]}:
-                    </span>
-                    <span className="text-gray-900 font-semibold flex-1">
-                      {cell || '-'}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              {row.map((cell, cellIndex) => (
+                <div
+                  key={cellIndex}
+                  className="px-3 py-2 text-sm text-gray-900 min-w-[120px] flex-1"
+                >
+                  {cell || '-'}
+                </div>
+              ))}
             </div>
           ))}
         </div>
 
         <style>{`
-          @keyframes csv-scroll {
+          @keyframes csv-scroll-vertical {
             0% {
-              transform: translateX(0);
+              transform: translateY(0);
             }
             100% {
-              transform: translateX(-50%);
+              transform: translateY(-50%);
             }
           }
 
-          .animate-csv-scroll {
+          .animate-csv-scroll-vertical {
             animation-duration: ${desktopSpeed}s;
           }
 
-          /* Faster on mobile */
+          /* Slower on mobile */
           @media (max-width: 768px) {
-            .animate-csv-scroll {
+            .animate-csv-scroll-vertical {
               animation-duration: ${mobileSpeed}s !important;
             }
           }
 
-          .animate-csv-scroll:hover {
+          .animate-csv-scroll-vertical:hover {
             animation-play-state: paused;
           }
         `}</style>
       </div>
 
-      <div className="bg-green-100 px-4 py-2 text-xs text-green-700 flex items-center justify-between">
-        <span>💡 Hover/tap to pause scrolling</span>
-        <span className="font-semibold">All {dataRows.length} rows • {desktopSpeed}s desktop / {mobileSpeed}s mobile</span>
+      <div className="text-xs text-gray-500 mt-2 px-1">
+        💡 Hover to pause • Scrolling all {dataRows.length} rows
       </div>
     </div>
   )
