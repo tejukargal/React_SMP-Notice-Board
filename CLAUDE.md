@@ -51,6 +51,7 @@ cd server && npm run start    # Run compiled backend
 - `getAuthHeader()` helper automatically injects Bearer token from localStorage
 - API_URL defaults to `http://localhost:3001` but can be overridden via VITE_API_URL env var
 - All authenticated requests (POST/PUT/DELETE/PATCH) include Authorization header
+- Runtime detection for Netlify deployment: when hostname includes `netlify.app`, API uses relative URLs
 
 ### Backend API Structure
 - RESTful API with Express (server/index.ts)
@@ -113,9 +114,11 @@ cd server && npm run start    # Run compiled backend
   - `Login.tsx` - Authentication page
 - **Key Components:**
   - `CircularTicker` - Auto-scrolling marquee of circular titles
+  - `CSVTicker` - Alternative ticker component for CSV-based data
   - `CircularCard` - Display card for circulars
   - `CircularModal` - Full circular detail modal
   - `CircularForm` - Create/edit form with file upload
+  - `RichTextEditor` - Text editor component for circular body content
   - `DepartmentBadge` - Color-coded department labels
 
 ### Routing
@@ -131,6 +134,11 @@ cd server && npm run start    # Run compiled backend
 - Authentication state managed via React Context (`AuthContext`)
 - Component-level state with useState for UI and data fetching
 - API calls made directly from components using `circularsAPI` methods
+
+### Utilities
+- `src/utils/auth.ts` - Authentication token/user management
+- `src/utils/departments.ts` - Department definitions and styling
+- `src/utils/linkify.tsx` - URL detection and automatic link creation in text
 
 ## Important Notes
 

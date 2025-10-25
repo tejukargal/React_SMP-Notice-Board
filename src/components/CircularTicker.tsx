@@ -19,12 +19,13 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
     'bg-cyan-400',
   ]
 
-  // Add developer credit randomly in the circulars
+  // Add principal and developer credits in the circulars
   const enhancedCirculars = [...circulars]
   if (circulars.length > 0) {
-    const developerCredit: Circular = {
-      id: 'developer-credit',
-      title: 'Developed by Tejaraj R, SMP',
+    // Principal credit - shown first
+    const principalCredit: Circular = {
+      id: 'principal-credit',
+      title: 'Principal: Sri Vidyadhara C A',
       subject: '',
       department: 'Office',
       date: new Date().toISOString(),
@@ -33,8 +34,25 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
       is_featured: false,
       created_at: new Date().toISOString(),
     }
-    // Insert at random position (every 3-5 circulars)
-    const insertPosition = Math.floor(circulars.length / 2) || circulars.length
+
+    // Developer credit
+    const developerCredit: Circular = {
+      id: 'developer-credit',
+      title: 'Developed by Thejaraj R, SMP',
+      subject: '',
+      department: 'Office',
+      date: new Date().toISOString(),
+      body: '',
+      attachments: [],
+      is_featured: false,
+      created_at: new Date().toISOString(),
+    }
+
+    // Insert principal credit at the beginning
+    enhancedCirculars.unshift(principalCredit)
+
+    // Insert developer credit at middle position
+    const insertPosition = Math.floor(enhancedCirculars.length / 2) || enhancedCirculars.length
     enhancedCirculars.splice(insertPosition, 0, developerCredit)
   }
 
