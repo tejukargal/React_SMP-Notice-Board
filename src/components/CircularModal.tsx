@@ -1,6 +1,8 @@
 import { X, Calendar, FileText, Download } from 'lucide-react'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
+import { LinkifiedText } from '../utils/linkify'
+import CSVTicker from './CSVTicker'
 
 interface CircularModalProps {
   circular: Circular
@@ -71,11 +73,23 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
               Details
             </h3>
             <div className="prose prose-sm max-w-none">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                {circular.body}
-              </p>
+              <LinkifiedText
+                text={circular.body}
+                className="text-gray-700 leading-relaxed"
+              />
             </div>
           </div>
+
+          {/* CSV Ticker Preview */}
+          {circular.attachments && circular.attachments.some(file => file.name.toLowerCase().endsWith('.csv')) && (
+            <div className="mb-6">
+              {circular.attachments
+                .filter(file => file.name.toLowerCase().endsWith('.csv'))
+                .map((file, index) => (
+                  <CSVTicker key={index} csvBase64={file.base64} fileName={file.name} />
+                ))}
+            </div>
+          )}
 
           {/* Attachments */}
           {circular.attachments && circular.attachments.length > 0 && (

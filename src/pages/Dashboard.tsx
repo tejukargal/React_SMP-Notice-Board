@@ -5,6 +5,8 @@ import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
 import { departmentInfo } from '../utils/departments'
 import CircularTicker from '../components/CircularTicker'
+import { LinkifiedText } from '../utils/linkify'
+import CSVTicker from '../components/CSVTicker'
 
 const Dashboard = () => {
   const [circulars, setCirculars] = useState<Circular[]>([])
@@ -132,10 +134,22 @@ const Dashboard = () => {
                 </p>
 
                 <div className="prose prose-sm sm:prose max-w-none">
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                    {featuredCircular.body}
-                  </p>
+                  <LinkifiedText
+                    text={featuredCircular.body}
+                    className="text-gray-700 leading-relaxed"
+                  />
                 </div>
+
+                {/* CSV Ticker Preview */}
+                {featuredCircular.attachments && featuredCircular.attachments.some(file => file.name.toLowerCase().endsWith('.csv')) && (
+                  <div className="mt-6">
+                    {featuredCircular.attachments
+                      .filter(file => file.name.toLowerCase().endsWith('.csv'))
+                      .map((file, index) => (
+                        <CSVTicker key={index} csvBase64={file.base64} fileName={file.name} />
+                      ))}
+                  </div>
+                )}
 
                 {featuredCircular.attachments && featuredCircular.attachments.length > 0 && (
                   <div className="mt-6 pt-6 border-t border-gray-200">

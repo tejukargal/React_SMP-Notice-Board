@@ -43,7 +43,7 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
         }
 
         .animate-scroll {
-          animation: scroll 60s linear infinite;
+          animation: scroll 40s linear infinite;
         }
 
         .animate-scroll:hover {

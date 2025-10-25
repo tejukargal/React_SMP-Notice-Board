@@ -53,14 +53,18 @@ const CircularForm = ({ circular, onClose }: CircularFormProps) => {
   const handleFileSelect = async (files: FileList | null) => {
     if (!files) return
 
-    const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png']
+    const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'text/csv', 'application/vnd.ms-excel']
     const maxSize = 10 * 1024 * 1024 // 10MB
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
 
-      if (!validTypes.includes(file.type)) {
-        setError(`Invalid file type: ${file.name}. Only PDF, JPG, and PNG are allowed.`)
+      // Also check file extension for CSV (some browsers report different MIME types)
+      const isCSV = file.name.toLowerCase().endsWith('.csv')
+      const isValidType = validTypes.includes(file.type) || isCSV
+
+      if (!isValidType) {
+        setError(`Invalid file type: ${file.name}. Only PDF, JPG, PNG, and CSV are allowed.`)
         continue
       }
 

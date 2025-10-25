@@ -1,6 +1,7 @@
 import { Calendar, FileText } from 'lucide-react'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
+import { LinkifiedText } from '../utils/linkify'
 
 interface CircularCardProps {
   circular: Circular
@@ -48,9 +49,9 @@ const CircularCard = ({ circular, onClick }: CircularCardProps) => {
         </p>
 
         {/* Body Preview */}
-        <p className="text-sm text-gray-600 line-clamp-3 mb-4">
-          {circular.body}
-        </p>
+        <div className="text-sm text-gray-600 line-clamp-3 mb-4">
+          <LinkifiedText text={circular.body} />
+        </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-200">
