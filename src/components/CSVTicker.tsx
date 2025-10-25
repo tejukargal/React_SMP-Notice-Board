@@ -54,45 +54,40 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   const headers = csvData[0]
   const dataRows = csvData.slice(1)
 
-  // Slower vertical scrolling - 0.5s per row for desktop, 0.35s per row for mobile
-  const desktopSpeed = Math.max(20, dataRows.length * 0.5)
-  const mobileSpeed = Math.max(15, dataRows.length * 0.35)
+  // Dynamic scrolling speed for easy readability - 10 seconds per row
+  // Minimum 40 seconds, maximum 180 seconds
+  const scrollSpeed = Math.min(Math.max(dataRows.length * 10, 40), 180)
 
-  // Calculate column width based on number of columns for mobile optimization
-  const columnCount = headers.length
-  const mobileColumnWidth = Math.max(60, Math.floor(320 / columnCount)) // Fit within ~320px mobile width
-  const desktopColumnWidth = 120
-
-  console.log(`CSV Ticker: ${dataRows.length} data rows | ${columnCount} columns | Mobile col width: ${mobileColumnWidth}px | Desktop: ${desktopSpeed}s | Mobile: ${mobileSpeed}s`)
+  console.log(`CSV Ticker: ${dataRows.length} data rows | ${headers.length} columns | Speed: ${scrollSpeed}s`)
 
   return (
     <div className="w-full">
       {/* Scrolling CSV Content - Full Width */}
-      <div className="relative overflow-hidden h-32">
+      <div className="relative overflow-hidden h-64">
         {/* Top fade gradient */}
-        <div className="absolute left-0 right-0 top-0 h-6 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute left-0 right-0 top-0 h-16 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
         {/* Bottom fade gradient */}
-        <div className="absolute left-0 right-0 bottom-0 h-6 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute left-0 right-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
 
-        <div className="h-full">
+        <div className="h-full py-4">
           <div
             className="flex flex-col animate-csv-scroll-vertical"
             style={{
-              animation: `csv-scroll-vertical ${desktopSpeed}s linear infinite`
+              animation: `csv-scroll-vertical ${scrollSpeed}s linear infinite`
             }}
           >
             {/* Duplicate content for seamless infinite loop */}
             {[...dataRows, ...dataRows].map((row, rowIndex) => (
               <div
                 key={rowIndex}
-                className="flex w-full py-1 border-b border-gray-100"
+                className="flex flex-col bg-gray-50 border border-gray-200 rounded-lg p-3 my-3"
               >
                 {row.map((cell, cellIndex) => (
                   <div
                     key={cellIndex}
-                    className="px-2 text-gray-700 flex-1 overflow-hidden text-xs"
+                    className="py-1 text-sm"
                   >
-                    <span className="font-medium text-gray-500">{headers[cellIndex]}:</span>{' '}
+                    <span className="font-semibold text-gray-600">{headers[cellIndex]}:</span>{' '}
                     <span className="text-gray-900">{cell || '-'}</span>
                   </div>
                 ))}
@@ -112,14 +107,7 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
           }
 
           .animate-csv-scroll-vertical {
-            animation-duration: ${desktopSpeed}s;
-          }
-
-          /* Slower on mobile */
-          @media (max-width: 768px) {
-            .animate-csv-scroll-vertical {
-              animation-duration: ${mobileSpeed}s !important;
-            }
+            animation-duration: ${scrollSpeed}s;
           }
 
           .animate-csv-scroll-vertical:hover {

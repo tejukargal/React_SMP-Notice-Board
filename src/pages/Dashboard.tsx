@@ -115,10 +115,10 @@ const Dashboard = () => {
                     <Calendar className="w-4 h-4" />
                     <span>{formatDate(featuredCircular.date)}</span>
                   </div>
-                  {featuredCircular.attachments && featuredCircular.attachments.length > 0 && (
+                  {featuredCircular.attachments && featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length > 0 && (
                     <div className="flex items-center gap-1 text-gray-600 text-sm">
                       <FileText className="w-4 h-4" />
-                      <span>{featuredCircular.attachments.length} attachment(s)</span>
+                      <span>{featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length} attachment(s)</span>
                     </div>
                   )}
                 </div>
@@ -149,28 +149,31 @@ const Dashboard = () => {
                   </div>
                 )}
 
-                {featuredCircular.attachments && featuredCircular.attachments.length > 0 && (
+                {/* Attachments - Exclude CSV files as they are shown in ticker */}
+                {featuredCircular.attachments && featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length > 0 && (
                   <div className="mt-6 pt-6 border-t border-gray-200">
                     <h4 className="font-semibold text-gray-900 mb-3">Attachments:</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {featuredCircular.attachments.map((file, index) => (
-                        <a
-                          key={index}
-                          href={file.base64}
-                          download={file.name}
-                          className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
-                        >
-                          <FileText className="w-8 h-8 text-blue-600 flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-gray-900 truncate group-hover:text-blue-600">
-                              {file.name}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {(file.size / 1024).toFixed(2)} KB
-                            </p>
-                          </div>
-                        </a>
-                      ))}
+                      {featuredCircular.attachments
+                        .filter(file => !file.name.toLowerCase().trim().endsWith('.csv'))
+                        .map((file, index) => (
+                          <a
+                            key={index}
+                            href={file.base64}
+                            download={file.name}
+                            className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
+                          >
+                            <FileText className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-gray-900 truncate group-hover:text-blue-600">
+                                {file.name}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {(file.size / 1024).toFixed(2)} KB
+                              </p>
+                            </div>
+                          </a>
+                        ))}
                     </div>
                   </div>
                 )}

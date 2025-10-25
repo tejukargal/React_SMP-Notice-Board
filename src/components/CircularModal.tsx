@@ -20,6 +20,16 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
     })
   }
 
+  // Helper function to check if a file is CSV
+  const isCSVFile = (file: { name: string; type: string }) => {
+    const fileName = file.name.toLowerCase().trim()
+    const fileType = file.type.toLowerCase()
+    return fileName.endsWith('.csv') || fileType.includes('csv')
+  }
+
+  // Debug logging
+  console.log('Circular attachments:', circular.attachments)
+
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
@@ -79,42 +89,44 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
           </div>
 
           {/* CSV Ticker Preview */}
-          {circular.attachments && circular.attachments.some(file => file.name.toLowerCase().endsWith('.csv')) && (
+          {circular.attachments && circular.attachments.some(file => isCSVFile(file)) && (
             <div className="mb-6">
               {circular.attachments
-                .filter(file => file.name.toLowerCase().endsWith('.csv'))
+                .filter(file => isCSVFile(file))
                 .map((file, index) => (
                   <CSVTicker key={index} csvBase64={file.base64} fileName={file.name} />
                 ))}
             </div>
           )}
 
-          {/* Attachments */}
-          {circular.attachments && circular.attachments.length > 0 && (
+          {/* Attachments - Exclude CSV files as they are shown in ticker */}
+          {circular.attachments && circular.attachments.filter(file => !isCSVFile(file)).length > 0 && (
             <div>
               <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
-                Attachments ({circular.attachments.length})
+                Attachments ({circular.attachments.filter(file => !isCSVFile(file)).length})
               </h3>
               <div className="space-y-3">
-                {circular.attachments.map((file, index) => (
-                  <a
-                    key={index}
-                    href={file.base64}
-                    download={file.name}
-                    className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
-                  >
-                    <FileText className="w-10 h-10 text-blue-600 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 truncate group-hover:text-blue-600">
-                        {file.name}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {file.type} • {(file.size / 1024).toFixed(2)} KB
-                      </p>
-                    </div>
-                    <Download className="w-5 h-5 text-gray-400 group-hover:text-blue-600 flex-shrink-0" />
-                  </a>
-                ))}
+                {circular.attachments
+                  .filter(file => !isCSVFile(file))
+                  .map((file, index) => (
+                    <a
+                      key={index}
+                      href={file.base64}
+                      download={file.name}
+                      className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
+                    >
+                      <FileText className="w-10 h-10 text-blue-600 flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 truncate group-hover:text-blue-600">
+                          {file.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {file.type} • {(file.size / 1024).toFixed(2)} KB
+                        </p>
+                      </div>
+                      <Download className="w-5 h-5 text-gray-400 group-hover:text-blue-600 flex-shrink-0" />
+                    </a>
+                  ))}
               </div>
             </div>
           )}
