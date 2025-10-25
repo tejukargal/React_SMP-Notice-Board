@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Circular } from '../types'
 
 interface CircularTickerProps {
@@ -5,58 +6,60 @@ interface CircularTickerProps {
 }
 
 const CircularTicker = ({ circulars }: CircularTickerProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isVisible, setIsVisible] = useState(true)
+
+  useEffect(() => {
+    if (circulars.length === 0) return
+
+    const interval = setInterval(() => {
+      // Fade out
+      setIsVisible(false)
+
+      // After fade out, change content and fade in
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % circulars.length)
+        setIsVisible(true)
+      }, 500) // Wait for fade out to complete
+    }, 4000) // Show each circular for 4 seconds
+
+    return () => clearInterval(interval)
+  }, [circulars.length])
+
   if (circulars.length === 0) return null
 
-  return (
-    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 overflow-hidden relative">
-      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-blue-600 to-transparent z-10"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-indigo-600 to-transparent z-10"></div>
+  const currentCircular = circulars[currentIndex]
 
-      <div className="flex animate-scroll whitespace-nowrap">
-        {/* Duplicate the content for seamless loop */}
-        {[...circulars, ...circulars].map((circular, index) => (
-          <div
-            key={`${circular.id}-${index}`}
-            className="inline-flex items-center mx-8"
-          >
-            <span className="font-semibold">{circular.title}</span>
-            <span className="mx-2">•</span>
-            <span className="text-blue-100">{circular.subject}</span>
-            <span className="mx-2">•</span>
-            <span
-              className="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold"
-            >
-              {circular.department}
+  return (
+    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 overflow-hidden relative">
+      <div
+        className={`flex items-center justify-center px-4 transition-opacity duration-500 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="text-center max-w-5xl">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+            <span className="font-bold text-base sm:text-lg">{currentCircular.title}</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="text-blue-100 text-sm sm:text-base">{currentCircular.subject}</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold">
+              {currentCircular.department}
             </span>
           </div>
-        ))}
+        </div>
       </div>
 
-      <style>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        .animate-scroll {
-          animation: scroll 12s linear infinite;
-        }
-
-        /* Faster on mobile */
-        @media (max-width: 768px) {
-          .animate-scroll {
-            animation: scroll 8s linear infinite;
-          }
-        }
-
-        .animate-scroll:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+      {/* Progress indicator */}
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20">
+        <div
+          className="h-full bg-white transition-all"
+          style={{
+            width: isVisible ? '100%' : '0%',
+            transition: isVisible ? 'width 4s linear' : 'width 0.5s linear',
+          }}
+        />
+      </div>
     </div>
   )
 }
