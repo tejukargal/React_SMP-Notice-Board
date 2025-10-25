@@ -99,7 +99,14 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
           }
 
           .animate-csv-scroll {
-            animation: csv-scroll 30s linear infinite;
+            animation: csv-scroll 20s linear infinite;
+          }
+
+          /* Even faster on mobile */
+          @media (max-width: 768px) {
+            .animate-csv-scroll {
+              animation: csv-scroll 12s linear infinite;
+            }
           }
 
           .animate-csv-scroll:hover {
