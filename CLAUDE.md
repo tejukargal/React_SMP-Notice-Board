@@ -43,7 +43,7 @@ cd server && npm run start    # Run compiled backend
 - Auth utilities in `src/utils/auth.ts` handle token/user persistence
 - `ProtectedRoute` component (src/components/ProtectedRoute.tsx) wraps admin routes
 - Backend middleware `authenticateToken` (server/index.ts:24) validates JWT tokens
-- Default credentials: username=`admin`, password=`admin123`
+- Default credentials: username=`admin`, password=`teju2015`
 
 ### API Client Architecture
 - Centralized API client in `src/api/client.ts`

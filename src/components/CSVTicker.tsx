@@ -54,9 +54,9 @@ const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
   const headers = csvData[0]
   const dataRows = csvData.slice(1)
 
-  // Dynamic scrolling speed for easy readability - 10 seconds per row
-  // Minimum 40 seconds, maximum 180 seconds
-  const scrollSpeed = Math.min(Math.max(dataRows.length * 10, 40), 180)
+  // Dynamic scrolling speed for easy readability - 12 seconds per row (reduced speed)
+  // Minimum 48 seconds, maximum 216 seconds
+  const scrollSpeed = Math.min(Math.max(dataRows.length * 12, 48), 216)
 
   console.log(`CSV Ticker: ${dataRows.length} data rows | ${headers.length} columns | Speed: ${scrollSpeed}s`)
 
@@ -80,15 +80,15 @@ const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
             {[...dataRows, ...dataRows].map((row, rowIndex) => (
               <div
                 key={rowIndex}
-                className="flex flex-col bg-gray-50 border border-gray-200 rounded-lg p-3 my-3"
+                className="flex flex-col bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-4 my-3 shadow-sm"
               >
                 {row.map((cell, cellIndex) => (
                   <div
                     key={cellIndex}
-                    className="py-1 text-sm"
+                    className="py-1.5 text-base"
                   >
-                    <span className="font-semibold text-gray-600">{headers[cellIndex]}:</span>{' '}
-                    <span className="text-gray-900">{cell || '-'}</span>
+                    <span className="font-bold text-blue-700">{headers[cellIndex]}:</span>{' '}
+                    <span className="font-semibold text-gray-900">{cell || '-'}</span>
                   </div>
                 ))}
               </div>

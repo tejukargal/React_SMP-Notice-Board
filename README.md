@@ -80,7 +80,7 @@ This will start:
 ## Default Admin Credentials
 
 - **Username**: admin
-- **Password**: admin123
+- **Password**: teju2015
 
 ## Usage
 
