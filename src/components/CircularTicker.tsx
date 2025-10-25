@@ -50,13 +50,13 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
       >
         <div className="text-center max-w-5xl">
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-1 sm:gap-3">
-            <span className="font-bold text-xs sm:text-lg line-clamp-1">{currentCircular.title}</span>
-            <span className="hidden sm:inline text-sm">•</span>
-            <span className="text-blue-100 text-xs sm:text-base line-clamp-1">{currentCircular.subject}</span>
-            <span className="hidden sm:inline text-sm">•</span>
             <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-white/20 rounded-full text-xs font-semibold">
               {currentCircular.department}
             </span>
+            <span className="hidden sm:inline text-sm">•</span>
+            <span className="font-bold text-xs sm:text-lg line-clamp-1">{currentCircular.title}</span>
+            <span className="hidden sm:inline text-sm">•</span>
+            <span className="text-blue-100 text-xs sm:text-base line-clamp-1">{currentCircular.subject}</span>
           </div>
         </div>
       </div>
