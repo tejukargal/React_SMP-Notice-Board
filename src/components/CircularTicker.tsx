@@ -43,13 +43,13 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
         }
 
         .animate-scroll {
-          animation: scroll 15s linear infinite;
+          animation: scroll 12s linear infinite;
         }
 
-        /* Even faster on mobile */
+        /* Faster on mobile */
         @media (max-width: 768px) {
           .animate-scroll {
-            animation: scroll 10s linear infinite;
+            animation: scroll 8s linear infinite;
           }
         }
 
