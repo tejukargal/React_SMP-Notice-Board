@@ -32,6 +32,7 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
 
       // Get all rows (no limit for student data)
       setCsvData(parsedData)
+      console.log(`CSV parsed: ${parsedData.length} total rows (including header)`, parsedData)
     } catch (err) {
       console.error('CSV parsing error:', err)
       setError('Failed to parse CSV file')
@@ -53,6 +54,8 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   const headers = csvData[0]
   const dataRows = csvData.slice(1)
 
+  console.log(`Rendering CSV ticker: ${dataRows.length} data rows (excluding header)`)
+
   return (
     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg overflow-hidden my-4">
       <div className="bg-green-600 text-white px-4 py-2 flex items-center justify-between">
@@ -64,26 +67,33 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
         <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-green-50 to-transparent z-10"></div>
         <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-emerald-50 to-transparent z-10"></div>
 
-        <div className="flex gap-4 animate-csv-scroll whitespace-nowrap">
-          {/* Duplicate content for seamless loop */}
-          {[...dataRows, ...dataRows].map((row, rowIndex) => (
+        <div className="flex gap-3 animate-csv-scroll whitespace-nowrap">
+          {/* Triple content for seamless loop and better visibility */}
+          {[...dataRows, ...dataRows, ...dataRows].map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className="inline-flex items-center gap-2 bg-white border-2 border-green-400 rounded-md px-3 py-1 shadow-sm"
+              className="inline-flex flex-col bg-white border-2 border-green-400 rounded-lg px-3 py-2 shadow-md min-w-[280px]"
             >
-              {row.map((cell, cellIndex) => (
-                <span key={cellIndex} className="inline-flex items-center text-xs">
-                  <span className="font-bold text-green-700">
-                    {headers[cellIndex]}:
-                  </span>
-                  <span className="text-gray-900 font-semibold ml-1">
-                    {cell || '-'}
-                  </span>
-                  {cellIndex < row.length - 1 && (
-                    <span className="mx-1.5 text-green-300">|</span>
-                  )}
+              <div className="flex items-center justify-between mb-1.5 border-b border-green-200 pb-1">
+                <span className="text-xs font-bold text-green-700">
+                  Row {(rowIndex % dataRows.length) + 1}
                 </span>
-              ))}
+                <span className="text-xs text-gray-500">
+                  of {dataRows.length}
+                </span>
+              </div>
+              <div className="space-y-1">
+                {row.map((cell, cellIndex) => (
+                  <div key={cellIndex} className="flex items-start text-xs">
+                    <span className="font-bold text-green-700 min-w-[80px]">
+                      {headers[cellIndex]}:
+                    </span>
+                    <span className="text-gray-900 font-semibold flex-1">
+                      {cell || '-'}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -94,12 +104,19 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(-50%);
+              transform: translateX(-33.333%);
             }
           }
 
           .animate-csv-scroll {
-            animation: csv-scroll 8s linear infinite;
+            animation: csv-scroll 7s linear infinite;
+          }
+
+          /* Faster on mobile */
+          @media (max-width: 768px) {
+            .animate-csv-scroll {
+              animation: csv-scroll 4s linear infinite;
+            }
           }
 
           .animate-csv-scroll:hover {
@@ -110,7 +127,7 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
 
       <div className="bg-green-100 px-4 py-2 text-xs text-green-700 flex items-center justify-between">
         <span>💡 Hover/tap to pause scrolling</span>
-        <span className="font-semibold">All {dataRows.length} rows • 8s loop</span>
+        <span className="font-semibold">All {dataRows.length} rows • 7s desktop / 4s mobile</span>
       </div>
     </div>
   )
