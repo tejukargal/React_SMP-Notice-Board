@@ -19,8 +19,27 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
     'bg-cyan-400',
   ]
 
+  // Add developer credit randomly in the circulars
+  const enhancedCirculars = [...circulars]
+  if (circulars.length > 0) {
+    const developerCredit: Circular = {
+      id: 'developer-credit',
+      title: 'Developed by Tejaraj R, SMP',
+      subject: 'Full Stack Developer',
+      department: 'Office',
+      date: new Date().toISOString(),
+      body: '',
+      attachments: [],
+      is_featured: false,
+      created_at: new Date().toISOString(),
+    }
+    // Insert at random position (every 3-5 circulars)
+    const insertPosition = Math.floor(circulars.length / 2) || circulars.length
+    enhancedCirculars.splice(insertPosition, 0, developerCredit)
+  }
+
   useEffect(() => {
-    if (circulars.length === 0) return
+    if (enhancedCirculars.length === 0) return
 
     const interval = setInterval(() => {
       // Fade out
@@ -28,17 +47,17 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
 
       // After fade out, change content and fade in
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % circulars.length)
+        setCurrentIndex((prev) => (prev + 1) % enhancedCirculars.length)
         setIsVisible(true)
       }, 500) // Wait for fade out to complete
     }, 4000) // Show each circular for 4 seconds
 
     return () => clearInterval(interval)
-  }, [circulars.length])
+  }, [enhancedCirculars.length])
 
-  if (circulars.length === 0) return null
+  if (enhancedCirculars.length === 0) return null
 
-  const currentCircular = circulars[currentIndex]
+  const currentCircular = enhancedCirculars[currentIndex]
   const currentColor = progressColors[currentIndex % progressColors.length]
 
   return (
