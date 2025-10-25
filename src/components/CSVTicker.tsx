@@ -5,7 +5,7 @@ interface CSVTickerProps {
   fileName: string
 }
 
-const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
+const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
   const [csvData, setCsvData] = useState<string[][]>([])
   const [error, setError] = useState<string>('')
 
