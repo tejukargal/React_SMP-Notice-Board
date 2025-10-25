@@ -49,9 +49,10 @@ const CircularCard = ({ circular, onClick }: CircularCardProps) => {
         </p>
 
         {/* Body Preview */}
-        <div className="text-sm text-gray-600 line-clamp-3 mb-4">
-          <LinkifiedText text={circular.body} />
-        </div>
+        <div
+          className="text-sm text-gray-600 line-clamp-3 mb-4"
+          dangerouslySetInnerHTML={{ __html: circular.body }}
+        />
 
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-200">

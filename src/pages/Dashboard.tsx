@@ -133,12 +133,10 @@ const Dashboard = () => {
                   {featuredCircular.subject}
                 </p>
 
-                <div className="prose prose-sm sm:prose max-w-none">
-                  <LinkifiedText
-                    text={featuredCircular.body}
-                    className="text-gray-700 leading-relaxed"
-                  />
-                </div>
+                <div
+                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: featuredCircular.body }}
+                />
 
                 {/* CSV Ticker Preview */}
                 {featuredCircular.attachments && featuredCircular.attachments.some(file => file.name.toLowerCase().endsWith('.csv')) && (

@@ -58,7 +58,12 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
   const desktopSpeed = Math.max(20, dataRows.length * 0.5)
   const mobileSpeed = Math.max(15, dataRows.length * 0.35)
 
-  console.log(`CSV Ticker: ${dataRows.length} data rows | Desktop: ${desktopSpeed}s | Mobile: ${mobileSpeed}s`)
+  // Calculate column width based on number of columns for mobile optimization
+  const columnCount = headers.length
+  const mobileColumnWidth = Math.max(60, Math.floor(320 / columnCount)) // Fit within ~320px mobile width
+  const desktopColumnWidth = 120
+
+  console.log(`CSV Ticker: ${dataRows.length} data rows | ${columnCount} columns | Mobile col width: ${mobileColumnWidth}px | Desktop: ${desktopSpeed}s | Mobile: ${mobileSpeed}s`)
 
   return (
     <div className="my-4 overflow-hidden">
@@ -68,14 +73,18 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
 
       <div className="border border-gray-200 rounded-lg overflow-hidden">
         {/* Static Header Row */}
-        <div className="overflow-x-auto bg-gray-50 border-b-2 border-gray-300">
-          <div className="flex min-w-max">
+        <div className="bg-gray-50 border-b-2 border-gray-300">
+          <div className="flex">
             {headers.map((header, index) => (
               <div
                 key={index}
-                className="px-2 py-2 font-semibold text-xs text-gray-700 min-w-[100px] md:min-w-[120px] flex-1 whitespace-nowrap"
+                className="px-1 py-2 font-semibold text-gray-700 flex-1 overflow-hidden"
+                style={{
+                  minWidth: `${mobileColumnWidth}px`,
+                  fontSize: '0.7rem'
+                }}
               >
-                {header}
+                <div className="truncate">{header}</div>
               </div>
             ))}
           </div>
@@ -88,9 +97,9 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
           {/* Bottom fade gradient */}
           <div className="absolute left-0 right-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
 
-          <div className="overflow-x-auto h-full">
+          <div className="h-full">
             <div
-              className="flex flex-col animate-csv-scroll-vertical min-w-max"
+              className="flex flex-col animate-csv-scroll-vertical"
               style={{
                 animation: `csv-scroll-vertical ${desktopSpeed}s linear infinite`
               }}
@@ -104,9 +113,13 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
                   {row.map((cell, cellIndex) => (
                     <div
                       key={cellIndex}
-                      className="px-2 py-2 text-xs md:text-sm text-gray-900 min-w-[100px] md:min-w-[120px] flex-1 whitespace-nowrap"
+                      className="px-1 py-2 text-gray-900 flex-1 overflow-hidden"
+                      style={{
+                        minWidth: `${mobileColumnWidth}px`,
+                        fontSize: '0.7rem'
+                      }}
                     >
-                      {cell || '-'}
+                      <div className="truncate">{cell || '-'}</div>
                     </div>
                   ))}
                 </div>
@@ -135,6 +148,14 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
               }
             }
 
+            /* Larger columns on desktop */
+            @media (min-width: 768px) {
+              .flex > div[style*="minWidth"] {
+                min-width: ${desktopColumnWidth}px !important;
+                font-size: 0.875rem !important;
+              }
+            }
+
             .animate-csv-scroll-vertical:hover {
               animation-play-state: paused;
             }
@@ -143,7 +164,7 @@ const CSVTicker = ({ csvBase64, fileName }: CSVTickerProps) => {
       </div>
 
       <div className="text-xs text-gray-500 mt-2 px-1">
-        💡 Hover to pause • Swipe to view all columns • {dataRows.length} rows
+        💡 Hover to pause • All columns visible • {dataRows.length} rows
       </div>
     </div>
   )

@@ -72,12 +72,10 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
             <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
               Details
             </h3>
-            <div className="prose prose-sm max-w-none">
-              <LinkifiedText
-                text={circular.body}
-                className="text-gray-700 leading-relaxed"
-              />
-            </div>
+            <div
+              className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: circular.body }}
+            />
           </div>
 
           {/* CSV Ticker Preview */}

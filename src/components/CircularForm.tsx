@@ -3,6 +3,7 @@ import { X, Upload, FileText, Trash2 } from 'lucide-react'
 import { circularsAPI } from '../api/client'
 import { Circular, Department, FileAttachment } from '../types'
 import { departments } from '../utils/departments'
+import RichTextEditor from './RichTextEditor'
 
 interface CircularFormProps {
   circular?: Circular | null
@@ -214,13 +215,10 @@ const CircularForm = ({ circular, onClose }: CircularFormProps) => {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Body *
                   </label>
-                  <textarea
+                  <RichTextEditor
                     value={formData.body}
-                    onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none"
+                    onChange={(value) => setFormData({ ...formData, body: value })}
                     placeholder="Enter circular details"
-                    required
                   />
                 </div>
 
