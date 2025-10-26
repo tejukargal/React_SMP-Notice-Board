@@ -53,9 +53,9 @@ const AllCirculars = () => {
   const handleDepartmentChange = (dept: Department | 'All') => {
     setSelectedDepartment(dept)
     if (dept !== 'All') {
-      setSearchParams({ department: dept })
+      setSearchParams({ department: dept }, { replace: true })
     } else {
-      setSearchParams({})
+      setSearchParams({}, { replace: true })
     }
   }
 
