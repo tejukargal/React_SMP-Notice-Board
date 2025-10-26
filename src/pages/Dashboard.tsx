@@ -14,10 +14,117 @@ const Dashboard = () => {
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [currentInfoIndex, setCurrentInfoIndex] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [currentDateTime, setCurrentDateTime] = useState(new Date())
   const navigate = useNavigate()
 
   useEffect(() => {
     loadCirculars()
+  }, [])
+
+  // Generate dynamic information array
+  const generateInfo = (): string[] => {
+    const info: string[] = []
+
+    // Current date and time
+    const dateTimeStr = currentDateTime.toLocaleString('en-IN', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    })
+    info.push(dateTimeStr)
+
+    // Total circulars count
+    info.push(`Total ${circulars.length} circular${circulars.length !== 1 ? 's' : ''} available`)
+
+    // Department counts
+    const deptCounts = circulars.reduce((acc, c) => {
+      acc[c.department] = (acc[c.department] || 0) + 1
+      return acc
+    }, {} as Record<Department, number>)
+
+    // Add department-specific counts (only if > 0)
+    Object.entries(deptCounts)
+      .filter(([dept]) => dept !== 'All')
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .forEach(([dept, count]) => {
+        info.push(`${count} ${dept} circular${count !== 1 ? 's' : ''} posted`)
+      })
+
+    // Recent circular info
+    if (circulars.length > 0) {
+      const latest = circulars[0]
+      const daysAgo = Math.floor((Date.now() - new Date(latest.date).getTime()) / (1000 * 60 * 60 * 24))
+      if (daysAgo === 0) {
+        info.push(`Latest circular posted today`)
+      } else if (daysAgo === 1) {
+        info.push(`Latest circular posted yesterday`)
+      } else if (daysAgo < 7) {
+        info.push(`Latest circular posted ${daysAgo} days ago`)
+      }
+    }
+
+    // Featured circular
+    const featuredCount = circulars.filter(c => c.is_featured).length
+    if (featuredCount > 0) {
+      info.push(`Featured circular available`)
+    }
+
+    // Attachments count
+    const totalAttachments = circulars.reduce((sum, c) => sum + (c.attachments?.length || 0), 0)
+    if (totalAttachments > 0) {
+      info.push(`${totalAttachments} attachment${totalAttachments !== 1 ? 's' : ''} shared`)
+    }
+
+    // Features
+    info.push('Real-time updates with instant notifications')
+    info.push('Department-wise categorization for easy access')
+    info.push('Download attachments directly from circulars')
+    info.push('Mobile-friendly responsive design')
+    info.push('Search and filter circulars by category')
+
+    // This week's count
+    const weekAgo = new Date()
+    weekAgo.setDate(weekAgo.getDate() - 7)
+    const thisWeekCount = circulars.filter(c => new Date(c.date) >= weekAgo).length
+    if (thisWeekCount > 0) {
+      info.push(`${thisWeekCount} circular${thisWeekCount !== 1 ? 's' : ''} posted this week`)
+    }
+
+    return info
+  }
+
+  const infoItems = generateInfo()
+
+  // Rotate info every 5 seconds
+  useEffect(() => {
+    if (infoItems.length <= 1) return
+
+    const interval = setInterval(() => {
+      setIsTransitioning(true)
+
+      setTimeout(() => {
+        setCurrentInfoIndex((prev) => (prev + 1) % infoItems.length)
+        setIsTransitioning(false)
+      }, 300)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [infoItems.length])
+
+  // Update date/time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date())
+    }, 1000)
+
+    return () => clearInterval(timer)
   }, [])
 
   const loadCirculars = async () => {
@@ -111,11 +218,51 @@ const Dashboard = () => {
             animation: popup 0.6s ease-out forwards;
             opacity: 0;
           }
+
+          @keyframes slideIn {
+            0% {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes slideOut {
+            0% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            100% {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+          }
+
+          .info-text-enter {
+            animation: slideIn 0.6s ease-out forwards;
+          }
+
+          .info-text-exit {
+            animation: slideOut 0.6s ease-out forwards;
+          }
         `}</style>
+
         {/* Compact Department Filters - Only show categories with circulars */}
         {availableCategories.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Browse by Category</h2>
+            <div className="mb-4 overflow-hidden">
+              <h2
+                className={`text-xl sm:text-2xl font-bold text-gray-900 transition-all duration-600 ${
+                  isTransitioning ? 'info-text-exit' : 'info-text-enter'
+                }`}
+                key={currentInfoIndex}
+              >
+                {infoItems[currentInfoIndex] || 'Browse by Category'}
+              </h2>
+            </div>
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
               <div className="flex items-center overflow-x-auto scrollbar-hide">
                 {availableCategories.map((dept) => (
