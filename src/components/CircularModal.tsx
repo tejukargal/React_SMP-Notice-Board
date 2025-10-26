@@ -57,11 +57,11 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         }
 
         .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
+          animation: fadeIn 0.3s ease-out forwards;
         }
 
         .animate-popup {
-          animation: popup 0.6s ease-out;
+          animation: popup 0.6s ease-out forwards;
         }
       `}</style>
       <div
