@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Calendar, FileText, ArrowRight } from 'lucide-react'
+import { Calendar, FileText, ArrowRight, Loader2 } from 'lucide-react'
 import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
 import { departmentInfo } from '../utils/departments'
@@ -53,7 +53,7 @@ const Dashboard = () => {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <Loader2 className="w-10 h-10 text-blue-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -67,6 +67,23 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <style>{`
+          @keyframes popup {
+            0% {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .animate-popup {
+            animation: popup 0.6s ease-out forwards;
+            opacity: 0;
+          }
+        `}</style>
         {/* Compact Department Filters - Only show categories with circulars */}
         {availableCategories.length > 0 && (
           <div className="mb-8">
@@ -89,7 +106,7 @@ const Dashboard = () => {
 
         {/* Featured Circular */}
         {featuredCircular && (
-          <div className="mb-8">
+          <div className="mb-8 animate-popup" style={{ animationDelay: '0.1s' }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold text-gray-900">Featured Circular</h2>
               <Link
@@ -187,11 +204,12 @@ const Dashboard = () => {
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Circulars</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {circulars.filter(c => c.id !== featuredCircular?.id).slice(0, 2).map((circular) => (
+              {circulars.filter(c => c.id !== featuredCircular?.id).slice(0, 2).map((circular, index) => (
                 <Link
                   key={circular.id}
                   to={`/circulars`}
-                  className={`${departmentInfo[circular.department].bgClass} border-l-4 ${departmentInfo[circular.department].borderClass} rounded-lg p-4 hover:shadow-lg transition-shadow`}
+                  className={`${departmentInfo[circular.department].bgClass} border-l-4 ${departmentInfo[circular.department].borderClass} rounded-lg p-4 hover:shadow-lg transition-shadow animate-popup`}
+                  style={{ animationDelay: `${0.2 + index * 0.1}s` }}
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <span
