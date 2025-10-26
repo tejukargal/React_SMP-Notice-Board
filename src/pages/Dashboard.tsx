@@ -255,7 +255,7 @@ const Dashboard = () => {
           <div className="mb-8">
             <div className="mb-4 overflow-hidden">
               <h2
-                className={`text-xl sm:text-2xl font-bold text-gray-900 transition-all duration-600 ${
+                className={`text-base sm:text-xl md:text-2xl font-bold text-gray-900 transition-all duration-600 whitespace-nowrap overflow-x-auto scrollbar-hide ${
                   isTransitioning ? 'info-text-exit' : 'info-text-enter'
                 }`}
                 key={currentInfoIndex}
