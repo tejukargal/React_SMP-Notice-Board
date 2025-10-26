@@ -23,6 +23,41 @@ const Dashboard = () => {
     loadCirculars()
   }, [])
 
+  // Handle back button press to exit app
+  useEffect(() => {
+    const handleBackButton = (e: PopStateEvent) => {
+      e.preventDefault()
+
+      // Check if we're on Dashboard (root path)
+      if (window.location.pathname === '/') {
+        const confirmExit = window.confirm('Do you want to exit the app?')
+        if (confirmExit) {
+          // Try to close the window/tab
+          window.close()
+
+          // If window.close() doesn't work (most modern browsers block it),
+          // navigate to about:blank or show a message
+          if (!window.closed) {
+            window.location.href = 'about:blank'
+          }
+        } else {
+          // Push a new state to prevent going back
+          window.history.pushState(null, '', window.location.pathname)
+        }
+      }
+    }
+
+    // Push initial state
+    window.history.pushState(null, '', window.location.pathname)
+
+    // Listen for back button
+    window.addEventListener('popstate', handleBackButton)
+
+    return () => {
+      window.removeEventListener('popstate', handleBackButton)
+    }
+  }, [])
+
   // Generate dynamic information array
   const generateInfo = (): string[] => {
     const info: string[] = []
