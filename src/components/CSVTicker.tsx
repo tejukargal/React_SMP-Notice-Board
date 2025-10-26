@@ -64,33 +64,27 @@ const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
 
   return (
     <div className="w-full">
-      {/* Play/Pause Button */}
-      <div className="flex justify-end mb-2">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md transition-colors"
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-        >
-          {isPlaying ? (
-            <>
-              <Pause className="w-4 h-4" />
-              <span className="text-sm font-medium">Pause</span>
-            </>
-          ) : (
-            <>
-              <Play className="w-4 h-4" />
-              <span className="text-sm font-medium">Play</span>
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Scrolling CSV Content - Full Width with Manual Scroll Support */}
-      <div className="relative overflow-y-auto h-64 scroll-smooth">
+      {/* Scrolling CSV Content - Click to Play/Pause */}
+      <div
+        className="relative overflow-y-auto h-64 scroll-smooth cursor-pointer select-none"
+        onClick={() => setIsPlaying(!isPlaying)}
+        title={isPlaying ? 'Click to pause' : 'Click to play'}
+      >
         {/* Top fade gradient */}
         <div className="absolute left-0 right-0 top-0 h-16 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
         {/* Bottom fade gradient */}
         <div className="absolute left-0 right-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
+
+        {/* Play/Pause indicator overlay */}
+        <div className="absolute top-2 right-2 z-20 pointer-events-none">
+          <div className="bg-black/50 text-white rounded-full p-2">
+            {isPlaying ? (
+              <Pause className="w-5 h-5" />
+            ) : (
+              <Play className="w-5 h-5" />
+            )}
+          </div>
+        </div>
 
         <div className="py-4">
           <div
