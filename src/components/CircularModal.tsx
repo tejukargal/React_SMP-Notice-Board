@@ -32,15 +32,44 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fadeIn"
       onClick={onClose}
     >
+      <style>{`
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        @keyframes popup {
+          0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        .animate-popup {
+          animation: popup 0.6s ease-out;
+        }
+      `}</style>
       <div
-        className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-2xl max-w-3xl w-full h-[85vh] flex flex-col animate-popup"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-6 py-5 sticky top-0 bg-white/95 backdrop-blur`}>
+        {/* Header - Fixed */}
+        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-6 py-5 flex-shrink-0`}>
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
@@ -65,8 +94,8 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="px-6 py-6">
+        {/* Content - Scrollable */}
+        <div className="px-6 py-6 overflow-y-auto flex-1">
           {/* Subject */}
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">
@@ -132,8 +161,8 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
           )}
         </div>
 
-        {/* Footer */}
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+        {/* Footer - Fixed */}
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 flex-shrink-0">
           <button
             onClick={onClose}
             className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
