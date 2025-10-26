@@ -66,7 +66,7 @@ const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
     <div className="w-full">
       {/* Scrolling CSV Content - Click to Play/Pause */}
       <div
-        className="relative overflow-y-auto h-64 scroll-smooth cursor-pointer select-none"
+        className="relative overflow-hidden h-64 cursor-pointer select-none"
         onClick={() => setIsPlaying(!isPlaying)}
         title={isPlaying ? 'Click to pause' : 'Click to play'}
       >
