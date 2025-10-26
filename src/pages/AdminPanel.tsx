@@ -70,8 +70,36 @@ const AdminPanel = () => {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <div className="loader mb-4 mx-auto"></div>
           <p className="text-gray-600">Loading...</p>
+          <style>{`
+            .loader {
+              width: 50px;
+              aspect-ratio: 1;
+              display: grid;
+              color: #2563eb;
+              background: radial-gradient(farthest-side, currentColor calc(100% - 6px),#0000 calc(100% - 5px) 0);
+              -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 13px),#000 calc(100% - 12px));
+              border-radius: 50%;
+              animation: l19 2s infinite linear;
+            }
+            .loader::before,
+            .loader::after {
+              content: "";
+              grid-area: 1/1;
+              background:
+                linear-gradient(currentColor 0 0) center,
+                linear-gradient(currentColor 0 0) center;
+              background-size: 100% 10px,10px 100%;
+              background-repeat: no-repeat;
+            }
+            .loader::after {
+              transform: rotate(45deg);
+            }
+            @keyframes l19 {
+              100%{transform: rotate(1turn)}
+            }
+          `}</style>
         </div>
       </div>
     )
@@ -80,6 +108,23 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <style>{`
+          @keyframes popup {
+            0% {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .animate-popup {
+            animation: popup 0.6s ease-out forwards;
+            opacity: 0;
+          }
+        `}</style>
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -104,7 +149,7 @@ const AdminPanel = () => {
 
         {/* Circulars List */}
         {circulars.length > 0 ? (
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden animate-popup" style={{ animationDelay: '0.1s' }}>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
@@ -130,8 +175,12 @@ const AdminPanel = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {circulars.map((circular) => (
-                    <tr key={circular.id} className="hover:bg-gray-50 transition">
+                  {circulars.map((circular, index) => (
+                    <tr
+                      key={circular.id}
+                      className="hover:bg-gray-50 transition animate-popup"
+                      style={{ animationDelay: `${0.2 + index * 0.05}s` }}
+                    >
                       <td className="px-6 py-4 whitespace-nowrap text-center">
                         <button
                           onClick={() => handleToggleFeatured(circular.id)}

@@ -63,8 +63,36 @@ const AllCirculars = () => {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <div className="loader mb-4 mx-auto"></div>
           <p className="text-gray-600">Loading circulars...</p>
+          <style>{`
+            .loader {
+              width: 50px;
+              aspect-ratio: 1;
+              display: grid;
+              color: #2563eb;
+              background: radial-gradient(farthest-side, currentColor calc(100% - 6px),#0000 calc(100% - 5px) 0);
+              -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 13px),#000 calc(100% - 12px));
+              border-radius: 50%;
+              animation: l19 2s infinite linear;
+            }
+            .loader::before,
+            .loader::after {
+              content: "";
+              grid-area: 1/1;
+              background:
+                linear-gradient(currentColor 0 0) center,
+                linear-gradient(currentColor 0 0) center;
+              background-size: 100% 10px,10px 100%;
+              background-repeat: no-repeat;
+            }
+            .loader::after {
+              transform: rotate(45deg);
+            }
+            @keyframes l19 {
+              100%{transform: rotate(1turn)}
+            }
+          `}</style>
         </div>
       </div>
     )
@@ -73,6 +101,23 @@ const AllCirculars = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <style>{`
+          @keyframes popup {
+            0% {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .animate-popup {
+            animation: popup 0.6s ease-out forwards;
+            opacity: 0;
+          }
+        `}</style>
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">All Circulars</h1>
@@ -118,12 +163,17 @@ const AllCirculars = () => {
         {/* Circulars Grid */}
         {filteredCirculars.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCirculars.map((circular) => (
-              <CircularCard
+            {filteredCirculars.map((circular, index) => (
+              <div
                 key={circular.id}
-                circular={circular}
-                onClick={() => setSelectedCircular(circular)}
-              />
+                className="animate-popup"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <CircularCard
+                  circular={circular}
+                  onClick={() => setSelectedCircular(circular)}
+                />
+              </div>
             ))}
           </div>
         ) : (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Calendar, FileText, ArrowRight, Loader2 } from 'lucide-react'
+import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
 import { departmentInfo } from '../utils/departments'
@@ -53,8 +53,36 @@ const Dashboard = () => {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 text-blue-600 animate-spin mx-auto mb-4" />
+          <div className="loader mb-4 mx-auto"></div>
           <p className="text-gray-600">Loading...</p>
+          <style>{`
+            .loader {
+              width: 50px;
+              aspect-ratio: 1;
+              display: grid;
+              color: #2563eb;
+              background: radial-gradient(farthest-side, currentColor calc(100% - 6px),#0000 calc(100% - 5px) 0);
+              -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 13px),#000 calc(100% - 12px));
+              border-radius: 50%;
+              animation: l19 2s infinite linear;
+            }
+            .loader::before,
+            .loader::after {
+              content: "";
+              grid-area: 1/1;
+              background:
+                linear-gradient(currentColor 0 0) center,
+                linear-gradient(currentColor 0 0) center;
+              background-size: 100% 10px,10px 100%;
+              background-repeat: no-repeat;
+            }
+            .loader::after {
+              transform: rotate(45deg);
+            }
+            @keyframes l19 {
+              100%{transform: rotate(1turn)}
+            }
+          `}</style>
         </div>
       </div>
     )
