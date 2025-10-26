@@ -19,9 +19,35 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
     'bg-cyan-400',
   ]
 
-  // Add principal and developer credits in the circulars
+  // Add welcome messages, principal and developer credits in the circulars
   const enhancedCirculars = [...circulars]
   if (circulars.length > 0) {
+    // Welcome message 1
+    const welcomeMessage1: Circular = {
+      id: 'welcome-message-1',
+      title: 'Welcome To SMP Notice Board',
+      subject: '',
+      department: 'Office',
+      date: new Date().toISOString(),
+      body: '',
+      attachments: [],
+      is_featured: false,
+      created_at: new Date().toISOString(),
+    }
+
+    // Welcome message 2
+    const welcomeMessage2: Circular = {
+      id: 'welcome-message-2',
+      title: 'Visit Daily For Latest Circulars, Memos & Announcements',
+      subject: '',
+      department: 'Office',
+      date: new Date().toISOString(),
+      body: '',
+      attachments: [],
+      is_featured: false,
+      created_at: new Date().toISOString(),
+    }
+
     // Principal credit - shown first
     const principalCredit: Circular = {
       id: 'principal-credit',
@@ -48,8 +74,12 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
       created_at: new Date().toISOString(),
     }
 
-    // Insert principal credit at the beginning
-    enhancedCirculars.unshift(principalCredit)
+    // Insert welcome messages at the beginning
+    enhancedCirculars.unshift(welcomeMessage2)
+    enhancedCirculars.unshift(welcomeMessage1)
+
+    // Insert principal credit after welcome messages
+    enhancedCirculars.splice(2, 0, principalCredit)
 
     // Insert developer credit at middle position
     const insertPosition = Math.floor(enhancedCirculars.length / 2) || enhancedCirculars.length
