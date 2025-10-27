@@ -291,12 +291,14 @@ const Dashboard = () => {
           <div className="mb-8">
             <div className="mb-4 overflow-hidden">
               <h2
-                className={`text-base sm:text-xl md:text-2xl font-bold text-gray-900 transition-all duration-600 whitespace-nowrap overflow-x-auto scrollbar-hide ${
+                className={`text-lg sm:text-xl md:text-2xl font-bold text-gray-900 transition-all duration-600 whitespace-nowrap overflow-x-hidden ${
                   isTransitioning ? 'info-text-exit' : 'info-text-enter'
                 }`}
                 key={currentInfoIndex}
               >
-                {infoItems[currentInfoIndex] || 'Browse by Category'}
+                <span className="inline-block truncate max-w-full">
+                  {infoItems[currentInfoIndex] || 'Browse by Category'}
+                </span>
               </h2>
             </div>
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
