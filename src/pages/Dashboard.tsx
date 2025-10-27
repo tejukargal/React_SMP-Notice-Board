@@ -164,13 +164,13 @@ const Dashboard = () => {
     return () => clearInterval(timer)
   }, [])
 
-  // Re-trigger featured circular animations every 5 seconds
+  // Re-trigger featured circular animations every 8 seconds
   useEffect(() => {
     if (!featuredCircular) return
 
     const interval = setInterval(() => {
       setFeaturedAnimationKey(prev => prev + 1)
-    }, 5000)
+    }, 8000)
 
     return () => clearInterval(interval)
   }, [featuredCircular])
