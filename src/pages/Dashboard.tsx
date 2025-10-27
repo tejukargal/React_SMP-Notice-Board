@@ -372,7 +372,12 @@ const Dashboard = () => {
                     {featuredCircular.attachments
                       .filter(file => file.name.toLowerCase().endsWith('.csv'))
                       .map((file, index) => (
-                        <CSVTicker key={index} csvBase64={file.base64} fileName={file.name} />
+                        <CSVTicker
+                          key={index}
+                          csvBase64={file.base64}
+                          fileName={file.name}
+                          department={featuredCircular.department}
+                        />
                       ))}
                   </div>
                 )}

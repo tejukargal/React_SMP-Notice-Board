@@ -123,7 +123,12 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
               {circular.attachments
                 .filter(file => isCSVFile(file))
                 .map((file, index) => (
-                  <CSVTicker key={index} csvBase64={file.base64} fileName={file.name} />
+                  <CSVTicker
+                    key={index}
+                    csvBase64={file.base64}
+                    fileName={file.name}
+                    department={circular.department}
+                  />
                 ))}
             </div>
           )}

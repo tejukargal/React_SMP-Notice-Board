@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Pause, Play } from 'lucide-react'
+import { Department } from '../types'
+import { departmentInfo } from '../utils/departments'
 
 interface CSVTickerProps {
   csvBase64: string
   fileName: string
+  department?: Department
 }
 
-const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
+const CSVTicker = ({ csvBase64, fileName: _fileName, department = 'All' }: CSVTickerProps) => {
   const [csvData, setCsvData] = useState<string[][]>([])
   const [error, setError] = useState<string>('')
   const [isPlaying, setIsPlaying] = useState(false)
+
+  const deptInfo = departmentInfo[department]
 
   useEffect(() => {
     parseCSV()
@@ -71,9 +76,9 @@ const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
         title={isPlaying ? 'Click to pause' : 'Click to play'}
       >
         {/* Top fade gradient */}
-        <div className="absolute left-0 right-0 top-0 h-16 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
+        <div className={`absolute left-0 right-0 top-0 h-16 bg-gradient-to-b ${deptInfo.bgClass.replace('bg-', 'from-')} to-transparent z-10 pointer-events-none`}></div>
         {/* Bottom fade gradient */}
-        <div className="absolute left-0 right-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
+        <div className={`absolute left-0 right-0 bottom-0 h-16 bg-gradient-to-t ${deptInfo.bgClass.replace('bg-', 'from-')} to-transparent z-10 pointer-events-none`}></div>
 
         {/* Play/Pause indicator overlay */}
         <div className="absolute top-2 right-2 z-20 pointer-events-none">
@@ -98,14 +103,14 @@ const CSVTicker = ({ csvBase64, fileName: _fileName }: CSVTickerProps) => {
             {[...dataRows, ...dataRows].map((row, rowIndex) => (
               <div
                 key={rowIndex}
-                className="flex flex-col bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-4 my-3 shadow-sm"
+                className={`flex flex-col ${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} rounded-xl p-4 my-2 shadow-md`}
               >
                 {row.map((cell, cellIndex) => (
                   <div
                     key={cellIndex}
-                    className="py-1.5 text-base"
+                    className="py-0.5 text-sm"
                   >
-                    <span className="font-bold text-blue-700">{headers[cellIndex]}:</span>{' '}
+                    <span className={`font-bold ${deptInfo.textClass}`}>{headers[cellIndex]}:</span>{' '}
                     <span className="font-semibold text-gray-900">{cell || '-'}</span>
                   </div>
                 ))}
