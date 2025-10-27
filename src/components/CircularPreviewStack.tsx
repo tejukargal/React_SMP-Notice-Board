@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Circular } from '../types'
+import { departmentInfo } from '../utils/departments'
 
 interface CircularPreviewStackProps {
   circulars: Circular[]
@@ -30,6 +31,9 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
 
   const currentCircular = previewCirculars[currentIndex]
   const nextCircular = previewCirculars[(currentIndex + 1) % previewCirculars.length]
+
+  const currentDeptInfo = departmentInfo[currentCircular.department]
+  const nextDeptInfo = departmentInfo[nextCircular.department]
 
   // Strip HTML tags from body for plain text preview
   const stripHtml = (html: string) => {
@@ -108,7 +112,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
           {previewCirculars.length > 1 && (
             <div className="absolute inset-0 p-4 sm:p-5">
               <div
-                className={`text-base text-gray-400 leading-relaxed line-clamp-5 sm:line-clamp-4 ${
+                className={`text-sm leading-relaxed line-clamp-5 sm:line-clamp-4 ${nextDeptInfo.textClass} opacity-40 ${
                   isTransitioning ? 'stack-text-exit' : 'stack-text-enter'
                 }`}
                 style={{
@@ -125,7 +129,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
           {/* Main text layer */}
           <div className="absolute inset-0 p-4 sm:p-5 bg-gradient-to-br from-white/95 to-white/90">
             <div
-              className={`text-base text-gray-700 leading-relaxed line-clamp-5 sm:line-clamp-4 ${
+              className={`text-sm ${currentDeptInfo.textClass} leading-relaxed line-clamp-5 sm:line-clamp-4 ${
                 isTransitioning ? 'text-exit' : 'text-enter'
               }`}
               key={`main-${currentCircular.id}`}
@@ -138,7 +142,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         {/* Department and Date info at bottom */}
         <div className="px-4 sm:px-5 pb-3 pt-2 bg-white/80 backdrop-blur-sm border-t border-gray-200">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-blue-600 font-semibold">
+            <span className={`${currentDeptInfo.textClass} font-semibold`}>
               {currentCircular.department}
             </span>
             <span className="text-gray-500">

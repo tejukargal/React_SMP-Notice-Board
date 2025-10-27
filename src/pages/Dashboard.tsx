@@ -335,15 +335,17 @@ const Dashboard = () => {
               className={`${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
             >
               <div className="p-6 sm:p-8">
-                <div className="flex flex-wrap items-center gap-3 mb-4">
-                  <span
-                    className={`px-4 py-1.5 ${departmentInfo[featuredCircular.department].bgClass} ${departmentInfo[featuredCircular.department].textClass} rounded-full text-sm font-semibold border-2 ${departmentInfo[featuredCircular.department].borderClass}`}
-                  >
-                    {featuredCircular.department}
-                  </span>
-                  <div className="flex items-center gap-2 text-gray-600 text-base">
-                    <Calendar className="w-4 h-4" />
-                    <span>{formatDate(featuredCircular.date)}</span>
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span
+                      className={`px-4 py-1.5 ${departmentInfo[featuredCircular.department].bgClass} ${departmentInfo[featuredCircular.department].textClass} rounded-full text-sm font-semibold border-2 ${departmentInfo[featuredCircular.department].borderClass}`}
+                    >
+                      {featuredCircular.department}
+                    </span>
+                    <div className="flex items-center gap-2 text-gray-600 text-base">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDate(featuredCircular.date)}</span>
+                    </div>
                   </div>
                   {featuredCircular.attachments && featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length > 0 && (
                     <div className="flex items-center gap-1 text-gray-600 text-sm">
@@ -437,7 +439,7 @@ const Dashboard = () => {
                   className={`${departmentInfo[circular.department].bgClass} border-l-4 ${departmentInfo[circular.department].borderClass} rounded-lg p-4 hover:shadow-lg transition-shadow animate-popup`}
                   style={{ animationDelay: `${0.2 + index * 0.1}s` }}
                 >
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center justify-between mb-2">
                     <span
                       className={`px-3 py-1 ${departmentInfo[circular.department].textClass} rounded-full text-xs font-semibold border ${departmentInfo[circular.department].borderClass}`}
                     >
