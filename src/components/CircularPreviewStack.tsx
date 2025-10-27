@@ -112,7 +112,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
           {previewCirculars.length > 1 && (
             <div className="absolute inset-0 p-4 sm:p-5">
               <div
-                className={`text-sm leading-relaxed line-clamp-5 sm:line-clamp-4 ${nextDeptInfo.textClass} opacity-40 ${
+                className={`text-sm text-justify leading-relaxed line-clamp-5 sm:line-clamp-4 ${nextDeptInfo.textClass} opacity-40 ${
                   isTransitioning ? 'stack-text-exit' : 'stack-text-enter'
                 }`}
                 style={{
@@ -129,7 +129,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
           {/* Main text layer */}
           <div className="absolute inset-0 p-4 sm:p-5 bg-gradient-to-br from-white/95 to-white/90">
             <div
-              className={`text-sm ${currentDeptInfo.textClass} leading-relaxed line-clamp-5 sm:line-clamp-4 ${
+              className={`text-sm text-justify ${currentDeptInfo.textClass} leading-relaxed line-clamp-5 sm:line-clamp-4 ${
                 isTransitioning ? 'text-exit' : 'text-enter'
               }`}
               key={`main-${currentCircular.id}`}

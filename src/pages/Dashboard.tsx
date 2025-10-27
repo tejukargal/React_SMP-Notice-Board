@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [currentInfoIndex, setCurrentInfoIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [currentDateTime, setCurrentDateTime] = useState(new Date())
+  const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -163,6 +164,17 @@ const Dashboard = () => {
     return () => clearInterval(timer)
   }, [])
 
+  // Re-trigger featured circular animations every 5 seconds
+  useEffect(() => {
+    if (!featuredCircular) return
+
+    const interval = setInterval(() => {
+      setFeaturedAnimationKey(prev => prev + 1)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [featuredCircular])
+
   const loadCirculars = async () => {
     try {
       const data = await circularsAPI.getAll()
@@ -284,6 +296,32 @@ const Dashboard = () => {
           .info-text-exit {
             animation: slideOut 0.6s ease-out forwards;
           }
+
+          @keyframes featuredFadeSlideIn {
+            0% {
+              opacity: 0;
+              transform: translateY(20px) scale(0.98);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+
+          .featured-title {
+            animation: featuredFadeSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+          }
+
+          .featured-subject {
+            animation: featuredFadeSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
+            opacity: 0;
+          }
+
+          .featured-body {
+            animation: featuredFadeSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+            opacity: 0;
+          }
         `}</style>
 
         {/* Compact Department Filters - Only show categories with circulars */}
@@ -355,18 +393,23 @@ const Dashboard = () => {
                   )}
                 </div>
 
-                <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3">
+                <h3
+                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 featured-title"
+                  key={`title-${featuredAnimationKey}`}
+                >
                   {featuredCircular.title}
                 </h3>
 
                 <p
-                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4`}
+                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4 featured-subject`}
+                  key={`subject-${featuredAnimationKey}`}
                 >
                   {featuredCircular.subject}
                 </p>
 
                 <div
-                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[16px]"
+                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[16px] featured-body"
+                  key={`body-${featuredAnimationKey}`}
                   dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body)}
                 />
 
