@@ -26,16 +26,18 @@ const CircularCard = ({ circular, onClick }: CircularCardProps) => {
     >
       <div className="p-5">
         {/* Header */}
-        <div className="flex items-start justify-between mb-3">
+        <div className="mb-3">
           <span
             className={`px-3 py-1.5 ${info.textClass} rounded-full text-xs font-bold border-2 ${info.borderClass}`}
           >
             {circular.department}
           </span>
-          <div className="flex items-center gap-1.5 text-gray-600 text-xs">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>{formatDate(circular.date)}</span>
-          </div>
+        </div>
+
+        {/* Date - Right aligned */}
+        <div className="flex items-center gap-1.5 text-gray-600 text-xs mb-3 justify-end">
+          <Calendar className="w-3.5 h-3.5" />
+          <span>{formatDate(circular.date)}</span>
         </div>
 
         {/* Title */}

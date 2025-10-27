@@ -7,6 +7,7 @@ import { departmentInfo } from '../utils/departments'
 import CircularTicker from '../components/CircularTicker'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from '../components/CSVTicker'
+import CircularPreviewStack from '../components/CircularPreviewStack'
 
 const Dashboard = () => {
   const [circulars, setCirculars] = useState<Circular[]>([])
@@ -338,7 +339,7 @@ const Dashboard = () => {
                   >
                     {featuredCircular.department}
                   </span>
-                  <div className="flex items-center gap-2 text-gray-600 text-sm">
+                  <div className="flex items-center gap-2 text-gray-600 text-base">
                     <Calendar className="w-4 h-4" />
                     <span>{formatDate(featuredCircular.date)}</span>
                   </div>
@@ -350,18 +351,18 @@ const Dashboard = () => {
                   )}
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3">
                   {featuredCircular.title}
                 </h3>
 
                 <p
-                  className={`text-lg ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4`}
+                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4`}
                 >
                   {featuredCircular.subject}
                 </p>
 
                 <div
-                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed"
+                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[16px]"
                   dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body)}
                 />
 
@@ -406,6 +407,14 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Compact Preview Stack */}
+        {circulars.length > 1 && (
+          <div className="mb-8 animate-popup" style={{ animationDelay: '0.2s' }}>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Preview</h2>
+            <CircularPreviewStack circulars={circulars} />
           </div>
         )}
 
