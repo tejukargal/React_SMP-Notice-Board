@@ -11,7 +11,7 @@ const infoTexts = [
 ]
 
 const RotatingInfoCard = () => {
-  const [currentIndex, setCurrentIndex] = useState(-1) // Start with -1 to show header first
+  const [currentIndex, setCurrentIndex] = useState(-2) // Start with -2 to show SMP NOTICE BOARD first
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
 
@@ -33,8 +33,10 @@ const RotatingInfoCard = () => {
       setIsTransitioning(true)
       setTimeout(() => {
         setCurrentIndex((prev) => {
-          if (prev === -1) return 0 // After header, go to first info text
-          return (prev + 1) % (infoTexts.length + 1) === 0 ? -1 : (prev + 1) % (infoTexts.length + 1) // Loop back to header
+          if (prev === -2) return -1 // After SMP NOTICE BOARD, show Date & Time
+          if (prev === -1) return 0 // After Date & Time, go to first info text
+          // After last info text, loop back to SMP NOTICE BOARD
+          return (prev + 1) >= infoTexts.length ? -2 : prev + 1
         })
         setIsTransitioning(false)
       }, 500)
@@ -89,24 +91,24 @@ const RotatingInfoCard = () => {
         }
 
         .smp-board-title {
-          font-size: 1.5rem !important; /* 24px - optimized for mobile */
+          font-size: 1.75rem !important; /* 28px - covers full card on mobile */
           font-weight: 800 !important;
-          letter-spacing: 0.025em;
+          letter-spacing: 0.05em;
           line-height: 1.2;
-          word-spacing: 0.1em;
+          word-spacing: 0.15em;
         }
 
         /* Small mobile devices */
         @media (min-width: 375px) {
           .smp-board-title {
-            font-size: 1.75rem !important; /* 28px */
+            font-size: 2rem !important; /* 32px */
           }
         }
 
         /* Large mobile / Small tablet */
         @media (min-width: 480px) {
           .smp-board-title {
-            font-size: 2rem !important; /* 32px */
+            font-size: 2.25rem !important; /* 36px */
             white-space: nowrap;
           }
         }
@@ -114,34 +116,34 @@ const RotatingInfoCard = () => {
         /* Tablet and Desktop */
         @media (min-width: 640px) {
           .smp-board-title {
-            font-size: 2.5rem !important; /* 40px */
+            font-size: 2.75rem !important; /* 44px */
           }
         }
 
         .smp-datetime {
-          font-size: 0.75rem !important; /* 12px - optimized for mobile */
-          font-weight: 500 !important;
-          line-height: 1.4;
+          font-size: 1rem !important; /* 16px - standalone display */
+          font-weight: 600 !important;
+          line-height: 1.5;
         }
 
         /* Small mobile devices */
         @media (min-width: 375px) {
           .smp-datetime {
-            font-size: 0.8125rem !important; /* 13px */
+            font-size: 1.125rem !important; /* 18px */
           }
         }
 
         /* Large mobile / Small tablet */
         @media (min-width: 480px) {
           .smp-datetime {
-            font-size: 0.875rem !important; /* 14px */
+            font-size: 1.25rem !important; /* 20px */
           }
         }
 
         /* Tablet and Desktop */
         @media (min-width: 640px) {
           .smp-datetime {
-            font-size: 1rem !important; /* 16px */
+            font-size: 1.5rem !important; /* 24px */
           }
         }
       `}</style>
@@ -149,21 +151,20 @@ const RotatingInfoCard = () => {
       <div
         className={`${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} rounded-t-xl overflow-hidden transition-all duration-700`}
       >
-        <div className="relative min-h-[100px] h-auto sm:h-[100px] flex items-center justify-center px-4 py-4 sm:px-6 sm:py-0">
+        <div className="relative h-[100px] flex items-center justify-center px-4 sm:px-6">
           <div
             className={`w-full text-center ${
               isTransitioning ? 'info-exit' : 'info-enter'
             }`}
             key={currentIndex}
           >
-            {currentIndex === -1 ? (
-              <div className="space-y-2">
-                <div className={`${deptInfo.textClass} smp-board-title`}>
-                  SMP NOTICE BOARD
-                </div>
-                <div className={`${deptInfo.textClass} opacity-90 smp-datetime`}>
-                  {formatDateTime()}
-                </div>
+            {currentIndex === -2 ? (
+              <div className={`${deptInfo.textClass} smp-board-title`}>
+                SMP NOTICE BOARD
+              </div>
+            ) : currentIndex === -1 ? (
+              <div className={`${deptInfo.textClass} smp-datetime`}>
+                {formatDateTime()}
               </div>
             ) : (
               <div className={`text-base sm:text-lg font-semibold ${deptInfo.textClass}`}>
