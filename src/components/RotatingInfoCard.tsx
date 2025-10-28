@@ -90,12 +90,27 @@ const RotatingInfoCard = () => {
 
         .smp-board-title {
           white-space: nowrap;
+          font-size: 2.25rem !important; /* 36px - large and bold on all devices */
+          font-weight: 800 !important;
+          letter-spacing: 0.025em;
         }
 
-        /* Scale down on very small screens if needed */
-        @media (max-width: 400px) {
+        /* Tablet and Desktop */
+        @media (min-width: 640px) {
           .smp-board-title {
-            font-size: 1.5rem !important;
+            font-size: 2.5rem !important; /* 40px - slightly larger on desktop */
+          }
+        }
+
+        .smp-datetime {
+          font-size: 0.875rem !important; /* 14px */
+          font-weight: 500 !important;
+        }
+
+        /* Tablet and Desktop */
+        @media (min-width: 640px) {
+          .smp-datetime {
+            font-size: 1rem !important; /* 16px */
           }
         }
       `}</style>
@@ -112,10 +127,10 @@ const RotatingInfoCard = () => {
           >
             {currentIndex === -1 ? (
               <div className="space-y-2">
-                <div className={`text-3xl sm:text-4xl font-extrabold ${deptInfo.textClass} tracking-wide smp-board-title`}>
+                <div className={`${deptInfo.textClass} smp-board-title`}>
                   SMP NOTICE BOARD
                 </div>
-                <div className={`text-sm sm:text-base font-medium ${deptInfo.textClass} opacity-90`}>
+                <div className={`${deptInfo.textClass} opacity-90 smp-datetime`}>
                   {formatDateTime()}
                 </div>
               </div>
