@@ -89,22 +89,53 @@ const RotatingInfoCard = () => {
         }
 
         .smp-board-title {
-          white-space: nowrap;
-          font-size: 2.25rem !important; /* 36px - large and bold on all devices */
+          font-size: 1.5rem !important; /* 24px - optimized for mobile */
           font-weight: 800 !important;
           letter-spacing: 0.025em;
+          line-height: 1.2;
+          word-spacing: 0.1em;
+        }
+
+        /* Small mobile devices */
+        @media (min-width: 375px) {
+          .smp-board-title {
+            font-size: 1.75rem !important; /* 28px */
+          }
+        }
+
+        /* Large mobile / Small tablet */
+        @media (min-width: 480px) {
+          .smp-board-title {
+            font-size: 2rem !important; /* 32px */
+            white-space: nowrap;
+          }
         }
 
         /* Tablet and Desktop */
         @media (min-width: 640px) {
           .smp-board-title {
-            font-size: 2.5rem !important; /* 40px - slightly larger on desktop */
+            font-size: 2.5rem !important; /* 40px */
           }
         }
 
         .smp-datetime {
-          font-size: 0.875rem !important; /* 14px */
+          font-size: 0.75rem !important; /* 12px - optimized for mobile */
           font-weight: 500 !important;
+          line-height: 1.4;
+        }
+
+        /* Small mobile devices */
+        @media (min-width: 375px) {
+          .smp-datetime {
+            font-size: 0.8125rem !important; /* 13px */
+          }
+        }
+
+        /* Large mobile / Small tablet */
+        @media (min-width: 480px) {
+          .smp-datetime {
+            font-size: 0.875rem !important; /* 14px */
+          }
         }
 
         /* Tablet and Desktop */
@@ -118,7 +149,7 @@ const RotatingInfoCard = () => {
       <div
         className={`${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} rounded-t-xl overflow-hidden transition-all duration-700`}
       >
-        <div className="relative h-[110px] sm:h-[100px] flex items-center justify-center px-6">
+        <div className="relative min-h-[100px] h-auto sm:h-[100px] flex items-center justify-center px-4 py-4 sm:px-6 sm:py-0">
           <div
             className={`w-full text-center ${
               isTransitioning ? 'info-exit' : 'info-enter'
