@@ -145,8 +145,6 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <style>{`
-          @import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
-
           @keyframes popup {
             0% {
               opacity: 0;
@@ -193,36 +191,52 @@ const Dashboard = () => {
             animation: slideOut 0.6s ease-out forwards;
           }
 
-          @keyframes typewriter {
-            from { width: 0; }
-            to { width: 100%; }
+          /* Featured circular animations - supports all scripts including Kannada */
+          @keyframes scaleBlurFade {
+            0% {
+              opacity: 0;
+              transform: scale(0.94) translateY(20px);
+              filter: blur(8px);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+              filter: blur(0);
+            }
           }
 
           .featured-title {
             position: relative;
-            width: fit-content;
-            max-width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typewriter 4s steps(50) 0s 1 normal both;
+            opacity: 0;
+            animation: scaleBlurFade 1.2s ease-out forwards;
           }
 
           .featured-subject {
             position: relative;
-            width: fit-content;
-            max-width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typewriter 3s steps(40) 0.5s 1 normal both;
+            opacity: 0;
+            animation: scaleBlurFade 1.2s ease-out 0.3s forwards;
           }
 
           .featured-body {
             position: relative;
-            width: fit-content;
-            max-width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typewriter 5s steps(60) 3.5s 1 normal both;
+            opacity: 0;
+            animation: scaleBlurFade 1.2s ease-out 0.6s forwards;
+          }
+
+          /* Mobile: Ensure proper display */
+          @media (max-width: 640px) {
+            .featured-body {
+              white-space: normal !important;
+              overflow: visible !important;
+              width: 100% !important;
+            }
+
+            .featured-title,
+            .featured-subject {
+              white-space: normal;
+              overflow: visible;
+              width: 100%;
+            }
           }
         `}</style>
 

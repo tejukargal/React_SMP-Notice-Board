@@ -25,12 +25,21 @@ const authenticateToken = (req: any, res: Response, next: any) => {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 
+  console.log('Auth Header:', authHeader)
+  console.log('Token:', token)
+  console.log('JWT_SECRET:', JWT_SECRET)
+
   if (!token) {
+    console.log('No token provided')
     return res.status(401).json({ error: 'Access denied' })
   }
 
   jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
-    if (err) return res.status(403).json({ error: 'Invalid token' })
+    if (err) {
+      console.log('Token verification error:', err.message)
+      return res.status(403).json({ error: 'Invalid token', details: err.message })
+    }
+    console.log('Token verified successfully for user:', user)
     req.user = user
     next()
   })
@@ -62,6 +71,10 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {
       expiresIn: '24h'
     })
+
+    console.log('Login successful for user:', user.username)
+    console.log('Generated token:', token)
+    console.log('JWT_SECRET used:', JWT_SECRET)
 
     res.json({ token, username: user.username })
   } catch (error) {

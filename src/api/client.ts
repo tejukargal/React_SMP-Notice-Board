@@ -22,6 +22,16 @@ const getAuthHeader = (): Record<string, string> => {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+// Helper function to handle authentication errors
+const handleAuthError = (response: Response) => {
+  if (response.status === 401 || response.status === 403) {
+    // Token is invalid or expired, clear it and redirect to login
+    localStorage.removeItem('smp_auth_token')
+    localStorage.removeItem('smp_auth_user')
+    window.location.href = '/login?error=session_expired'
+  }
+}
+
 // Auth API
 export const authAPI = {
   login: async (username: string, password: string) => {
@@ -77,6 +87,7 @@ export const circularsAPI = {
     })
 
     if (!response.ok) {
+      handleAuthError(response)
       const error = await response.json()
       throw new Error(error.error || 'Failed to create circular')
     }
@@ -95,6 +106,7 @@ export const circularsAPI = {
     })
 
     if (!response.ok) {
+      handleAuthError(response)
       const error = await response.json()
       throw new Error(error.error || 'Failed to update circular')
     }
@@ -109,6 +121,7 @@ export const circularsAPI = {
     })
 
     if (!response.ok) {
+      handleAuthError(response)
       const error = await response.json()
       throw new Error(error.error || 'Failed to delete circular')
     }
@@ -121,6 +134,7 @@ export const circularsAPI = {
     })
 
     if (!response.ok) {
+      handleAuthError(response)
       const error = await response.json()
       throw new Error(error.error || 'Failed to toggle featured')
     }

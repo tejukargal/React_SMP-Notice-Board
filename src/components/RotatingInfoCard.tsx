@@ -87,6 +87,17 @@ const RotatingInfoCard = () => {
         .info-enter {
           animation: infoSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
+
+        .smp-board-title {
+          white-space: nowrap;
+        }
+
+        /* Scale down on very small screens if needed */
+        @media (max-width: 400px) {
+          .smp-board-title {
+            font-size: 1.5rem !important;
+          }
+        }
       `}</style>
 
       <div
@@ -101,7 +112,7 @@ const RotatingInfoCard = () => {
           >
             {currentIndex === -1 ? (
               <div className="space-y-2">
-                <div className={`text-3xl sm:text-4xl font-extrabold ${deptInfo.textClass} tracking-wide`}>
+                <div className={`text-3xl sm:text-4xl font-extrabold ${deptInfo.textClass} tracking-wide smp-board-title`}>
                   SMP NOTICE BOARD
                 </div>
                 <div className={`text-sm sm:text-base font-medium ${deptInfo.textClass} opacity-90`}>
