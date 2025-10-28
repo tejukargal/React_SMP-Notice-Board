@@ -91,25 +91,26 @@ const RotatingInfoCard = () => {
         }
 
         .smp-board-title {
-          font-size: 1.75rem !important; /* 28px - covers full card on mobile */
+          font-family: Impact, sans-serif !important;
+          font-size: 1.5rem !important; /* 24px - optimized for single line on mobile */
           font-weight: 800 !important;
           letter-spacing: 0.05em;
           line-height: 1.2;
           word-spacing: 0.15em;
+          white-space: nowrap !important;
         }
 
         /* Small mobile devices */
         @media (min-width: 375px) {
           .smp-board-title {
-            font-size: 2rem !important; /* 32px */
+            font-size: 1.75rem !important; /* 28px */
           }
         }
 
         /* Large mobile / Small tablet */
         @media (min-width: 480px) {
           .smp-board-title {
-            font-size: 2.25rem !important; /* 36px */
-            white-space: nowrap;
+            font-size: 2rem !important; /* 32px */
           }
         }
 
@@ -121,22 +122,24 @@ const RotatingInfoCard = () => {
         }
 
         .smp-datetime {
-          font-size: 1rem !important; /* 16px - standalone display */
+          font-family: Impact, sans-serif !important;
+          font-size: 0.875rem !important; /* 14px - standalone display */
           font-weight: 600 !important;
           line-height: 1.5;
+          white-space: nowrap !important;
         }
 
         /* Small mobile devices */
         @media (min-width: 375px) {
           .smp-datetime {
-            font-size: 1.125rem !important; /* 18px */
+            font-size: 1rem !important; /* 16px */
           }
         }
 
         /* Large mobile / Small tablet */
         @media (min-width: 480px) {
           .smp-datetime {
-            font-size: 1.25rem !important; /* 20px */
+            font-size: 1.125rem !important; /* 18px */
           }
         }
 
