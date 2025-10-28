@@ -58,13 +58,13 @@ const Dashboard = () => {
     }
   }, [])
 
-  // Re-trigger featured circular animations every 8 seconds
+  // Re-trigger featured circular animations every 10 seconds
   useEffect(() => {
     if (!featuredCircular) return
 
     const interval = setInterval(() => {
       setFeaturedAnimationKey(prev => prev + 1)
-    }, 8000)
+    }, 10000)
 
     return () => clearInterval(interval)
   }, [featuredCircular])
@@ -145,6 +145,8 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <style>{`
+          @import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
+
           @keyframes popup {
             0% {
               opacity: 0;
@@ -191,30 +193,36 @@ const Dashboard = () => {
             animation: slideOut 0.6s ease-out forwards;
           }
 
-          @keyframes featuredFadeSlideIn {
-            0% {
-              opacity: 0;
-              transform: translateY(20px) scale(0.98);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0) scale(1);
-            }
+          @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
           }
 
           .featured-title {
-            animation: featuredFadeSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            opacity: 0;
+            position: relative;
+            width: fit-content;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typewriter 4s steps(50) 0s 1 normal both;
           }
 
           .featured-subject {
-            animation: featuredFadeSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
-            opacity: 0;
+            position: relative;
+            width: fit-content;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typewriter 3s steps(40) 0.5s 1 normal both;
           }
 
           .featured-body {
-            animation: featuredFadeSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
-            opacity: 0;
+            position: relative;
+            width: fit-content;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typewriter 5s steps(60) 3.5s 1 normal both;
           }
         `}</style>
 
@@ -227,13 +235,17 @@ const Dashboard = () => {
               <div className="flex items-center overflow-x-auto scrollbar-hide">
                 {availableCategories.map((dept) => {
                   const deptInfo = departmentInfo[dept]
+                  const count = circulars.filter(c => c.department === dept || c.department === 'All').length
                   return (
                     <button
                       key={dept}
                       onClick={() => navigate(`/circulars?department=${dept}`)}
-                      className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 border-transparent hover:${deptInfo.bgClass} ${deptInfo.textClass} hover:border-current`}
+                      className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 border-transparent hover:${deptInfo.bgClass} ${deptInfo.textClass} hover:border-current flex items-center gap-2`}
                     >
                       {dept}
+                      <span className={`min-w-[24px] h-[24px] flex items-center justify-center px-2 text-xs font-bold text-gray-800 ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-')} rounded-full`}>
+                        {count}
+                      </span>
                     </button>
                   )
                 })}

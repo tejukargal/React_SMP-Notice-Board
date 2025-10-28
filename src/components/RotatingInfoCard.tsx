@@ -11,24 +11,49 @@ const infoTexts = [
 ]
 
 const RotatingInfoCard = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(-1) // Start with -1 to show header first
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
 
   // Rotate through departments for color cycling
-  const currentDept = departments[currentIndex % departments.length]
+  const currentDept = departments[Math.abs(currentIndex) % departments.length]
   const deptInfo = departmentInfo[currentDept]
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsTransitioning(true)
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % infoTexts.length)
+        setCurrentIndex((prev) => {
+          if (prev === -1) return 0 // After header, go to first info text
+          return (prev + 1) % (infoTexts.length + 1) === 0 ? -1 : (prev + 1) % (infoTexts.length + 1) // Loop back to header
+        })
         setIsTransitioning(false)
       }, 500)
     }, 4000)
 
     return () => clearInterval(interval)
   }, [])
+
+  const formatDateTime = () => {
+    return currentTime.toLocaleString('en-IN', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+  }
 
   return (
     <div>
@@ -67,14 +92,27 @@ const RotatingInfoCard = () => {
       <div
         className={`${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} rounded-t-xl overflow-hidden transition-all duration-700`}
       >
-        <div className="relative h-[90px] sm:h-[80px] flex items-center justify-center px-6">
+        <div className="relative h-[110px] sm:h-[100px] flex items-center justify-center px-6">
           <div
-            className={`text-base sm:text-lg font-semibold ${deptInfo.textClass} text-center ${
+            className={`w-full text-center ${
               isTransitioning ? 'info-exit' : 'info-enter'
             }`}
             key={currentIndex}
           >
-            {infoTexts[currentIndex]}
+            {currentIndex === -1 ? (
+              <div className="space-y-2">
+                <div className={`text-3xl sm:text-4xl font-extrabold ${deptInfo.textClass} tracking-wide`}>
+                  SMP NOTICE BOARD
+                </div>
+                <div className={`text-sm sm:text-base font-medium ${deptInfo.textClass} opacity-90`}>
+                  {formatDateTime()}
+                </div>
+              </div>
+            ) : (
+              <div className={`text-base sm:text-lg font-semibold ${deptInfo.textClass}`}>
+                {infoTexts[currentIndex]}
+              </div>
+            )}
           </div>
         </div>
       </div>

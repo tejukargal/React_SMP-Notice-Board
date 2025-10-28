@@ -133,27 +133,34 @@ const AllCirculars = () => {
             <div className="flex items-center overflow-x-auto scrollbar-hide">
               <button
                 onClick={() => handleDepartmentChange('All')}
-                className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 ${
+                className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 flex items-center gap-2 ${
                   selectedDepartment === 'All'
                     ? 'border-gray-900 text-gray-900 bg-gray-50'
                     : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300'
                 }`}
               >
                 All
+                <span className="min-w-[24px] h-[24px] flex items-center justify-center px-2 text-xs font-bold text-gray-100 bg-gray-900 rounded-full">
+                  {circulars.length}
+                </span>
               </button>
               {departments.filter((d) => d !== 'All').map((dept) => {
                 const deptInfo = departmentInfo[dept]
+                const count = circulars.filter(c => c.department === dept || c.department === 'All').length
                 return (
                   <button
                     key={dept}
                     onClick={() => handleDepartmentChange(dept)}
-                    className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 ${
+                    className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 flex items-center gap-2 ${
                       selectedDepartment === dept
                         ? `${deptInfo.borderClass} ${deptInfo.textClass} ${deptInfo.bgClass} border-current`
                         : `border-transparent text-gray-600 hover:${deptInfo.bgClass} hover:${deptInfo.textClass} hover:border-current`
                     }`}
                   >
                     {dept}
+                    <span className={`min-w-[24px] h-[24px] flex items-center justify-center px-2 text-xs font-bold text-gray-800 ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-')} rounded-full`}>
+                      {count}
+                    </span>
                   </button>
                 )
               })}
