@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
-import { departments } from '../utils/departments'
+import { departments, departmentInfo } from '../utils/departments'
 import CircularCard from '../components/CircularCard'
 import CircularModal from '../components/CircularModal'
+import RotatingInfoCard from '../components/RotatingInfoCard'
 
 const AllCirculars = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -99,7 +100,7 @@ const AllCirculars = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <style>{`
           @keyframes popup {
@@ -119,42 +120,49 @@ const AllCirculars = () => {
           }
         `}</style>
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-4">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">All Circulars</h1>
           <p className="text-gray-600">Browse all notices and circulars</p>
         </div>
 
-        {/* Compact Tab Filter */}
-        <div className="mb-6 bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="flex items-center overflow-x-auto scrollbar-hide">
-            <button
-              onClick={() => handleDepartmentChange('All')}
-              className={`flex-shrink-0 px-6 py-4 font-medium transition border-b-2 ${
-                selectedDepartment === 'All'
-                  ? 'border-gray-900 text-gray-900 bg-gray-50'
-                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-              }`}
-            >
-              All
-            </button>
-            {departments.filter((d) => d !== 'All').map((dept) => (
+        {/* Rotating Info Card with Navigation Tabs */}
+        <div className="mb-4 shadow-md rounded-xl overflow-hidden">
+          <RotatingInfoCard />
+          <div className="border-t border-gray-200"></div>
+          <div className="bg-white">
+            <div className="flex items-center overflow-x-auto scrollbar-hide">
               <button
-                key={dept}
-                onClick={() => handleDepartmentChange(dept)}
-                className={`flex-shrink-0 px-6 py-4 font-medium transition border-b-2 ${
-                  selectedDepartment === dept
-                    ? 'border-blue-600 text-blue-600 bg-blue-50'
-                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                onClick={() => handleDepartmentChange('All')}
+                className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 ${
+                  selectedDepartment === 'All'
+                    ? 'border-gray-900 text-gray-900 bg-gray-50'
+                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300'
                 }`}
               >
-                {dept}
+                All
               </button>
-            ))}
+              {departments.filter((d) => d !== 'All').map((dept) => {
+                const deptInfo = departmentInfo[dept]
+                return (
+                  <button
+                    key={dept}
+                    onClick={() => handleDepartmentChange(dept)}
+                    className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 ${
+                      selectedDepartment === dept
+                        ? `${deptInfo.borderClass} ${deptInfo.textClass} ${deptInfo.bgClass} border-current`
+                        : `border-transparent text-gray-600 hover:${deptInfo.bgClass} hover:${deptInfo.textClass} hover:border-current`
+                    }`}
+                  >
+                    {dept}
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
 
         {/* Results Count */}
-        <div className="mb-4">
+        <div className="mb-3">
           <p className="text-sm text-gray-600">
             Showing {filteredCirculars.length} circular(s)
           </p>

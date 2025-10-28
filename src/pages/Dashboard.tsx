@@ -8,6 +8,7 @@ import CircularTicker from '../components/CircularTicker'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from '../components/CSVTicker'
 import CircularPreviewStack from '../components/CircularPreviewStack'
+import RotatingInfoCard from '../components/RotatingInfoCard'
 
 const Dashboard = () => {
   const [circulars, setCirculars] = useState<Circular[]>([])
@@ -15,9 +16,6 @@ const Dashboard = () => {
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [currentInfoIndex, setCurrentInfoIndex] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
-  const [currentDateTime, setCurrentDateTime] = useState(new Date())
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const navigate = useNavigate()
 
@@ -58,110 +56,6 @@ const Dashboard = () => {
     return () => {
       window.removeEventListener('popstate', handleBackButton)
     }
-  }, [])
-
-  // Generate dynamic information array
-  const generateInfo = (): string[] => {
-    const info: string[] = []
-
-    // Current date and time
-    const dateTimeStr = currentDateTime.toLocaleString('en-IN', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    })
-    info.push(dateTimeStr)
-
-    // Total circulars count
-    info.push(`Total ${circulars.length} circular${circulars.length !== 1 ? 's' : ''} available`)
-
-    // Department counts
-    const deptCounts = circulars.reduce((acc, c) => {
-      acc[c.department] = (acc[c.department] || 0) + 1
-      return acc
-    }, {} as Record<Department, number>)
-
-    // Add department-specific counts (only if > 0)
-    Object.entries(deptCounts)
-      .filter(([dept]) => dept !== 'All')
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 3)
-      .forEach(([dept, count]) => {
-        info.push(`${count} ${dept} circular${count !== 1 ? 's' : ''} posted`)
-      })
-
-    // Recent circular info
-    if (circulars.length > 0) {
-      const latest = circulars[0]
-      const daysAgo = Math.floor((Date.now() - new Date(latest.date).getTime()) / (1000 * 60 * 60 * 24))
-      if (daysAgo === 0) {
-        info.push(`Latest circular posted today`)
-      } else if (daysAgo === 1) {
-        info.push(`Latest circular posted yesterday`)
-      } else if (daysAgo < 7) {
-        info.push(`Latest circular posted ${daysAgo} days ago`)
-      }
-    }
-
-    // Featured circular
-    const featuredCount = circulars.filter(c => c.is_featured).length
-    if (featuredCount > 0) {
-      info.push(`Featured circular available`)
-    }
-
-    // Attachments count
-    const totalAttachments = circulars.reduce((sum, c) => sum + (c.attachments?.length || 0), 0)
-    if (totalAttachments > 0) {
-      info.push(`${totalAttachments} attachment${totalAttachments !== 1 ? 's' : ''} shared`)
-    }
-
-    // Features
-    info.push('Real-time updates with instant notifications')
-    info.push('Department-wise categorization for easy access')
-    info.push('Download attachments directly from circulars')
-    info.push('Mobile-friendly responsive design')
-    info.push('Search and filter circulars by category')
-
-    // This week's count
-    const weekAgo = new Date()
-    weekAgo.setDate(weekAgo.getDate() - 7)
-    const thisWeekCount = circulars.filter(c => new Date(c.date) >= weekAgo).length
-    if (thisWeekCount > 0) {
-      info.push(`${thisWeekCount} circular${thisWeekCount !== 1 ? 's' : ''} posted this week`)
-    }
-
-    return info
-  }
-
-  const infoItems = generateInfo()
-
-  // Rotate info every 5 seconds
-  useEffect(() => {
-    if (infoItems.length <= 1) return
-
-    const interval = setInterval(() => {
-      setIsTransitioning(true)
-
-      setTimeout(() => {
-        setCurrentInfoIndex((prev) => (prev + 1) % infoItems.length)
-        setIsTransitioning(false)
-      }, 300)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [infoItems.length])
-
-  // Update date/time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentDateTime(new Date())
-    }, 1000)
-
-    return () => clearInterval(timer)
   }, [])
 
   // Re-trigger featured circular animations every 8 seconds
@@ -249,7 +143,7 @@ const Dashboard = () => {
       <CircularTicker circulars={circulars} />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <style>{`
           @keyframes popup {
             0% {
@@ -324,32 +218,25 @@ const Dashboard = () => {
           }
         `}</style>
 
-        {/* Compact Department Filters - Only show categories with circulars */}
+        {/* Rotating Info Card with Navigation Tabs */}
         {availableCategories.length > 0 && (
-          <div className="mb-8">
-            <div className="mb-4 overflow-hidden">
-              <h2
-                className={`text-lg sm:text-xl md:text-2xl font-bold text-gray-900 transition-all duration-600 whitespace-nowrap overflow-x-hidden ${
-                  isTransitioning ? 'info-text-exit' : 'info-text-enter'
-                }`}
-                key={currentInfoIndex}
-              >
-                <span className="inline-block truncate max-w-full">
-                  {infoItems[currentInfoIndex] || 'Browse by Category'}
-                </span>
-              </h2>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="mb-4 shadow-md rounded-xl overflow-hidden">
+            <RotatingInfoCard />
+            <div className="border-t border-gray-200"></div>
+            <div className="bg-white">
               <div className="flex items-center overflow-x-auto scrollbar-hide">
-                {availableCategories.map((dept) => (
-                  <button
-                    key={dept}
-                    onClick={() => navigate(`/circulars?department=${dept}`)}
-                    className="flex-shrink-0 px-6 py-4 font-medium transition border-b-2 border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-blue-300"
-                  >
-                    {dept}
-                  </button>
-                ))}
+                {availableCategories.map((dept) => {
+                  const deptInfo = departmentInfo[dept]
+                  return (
+                    <button
+                      key={dept}
+                      onClick={() => navigate(`/circulars?department=${dept}`)}
+                      className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 border-transparent hover:${deptInfo.bgClass} ${deptInfo.textClass} hover:border-current`}
+                    >
+                      {dept}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -357,8 +244,8 @@ const Dashboard = () => {
 
         {/* Featured Circular */}
         {featuredCircular && (
-          <div className="mb-8 animate-popup" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center justify-between mb-4">
+          <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
+            <div className="flex items-center justify-between mb-3">
               <h2 className="text-2xl font-bold text-gray-900">Featured Circular</h2>
               <Link
                 to="/circulars"
@@ -464,8 +351,8 @@ const Dashboard = () => {
 
         {/* Compact Preview Stack */}
         {circulars.length > 1 && (
-          <div className="mb-8 animate-popup" style={{ animationDelay: '0.2s' }}>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Preview</h2>
+          <div className="mb-5 animate-popup" style={{ animationDelay: '0.2s' }}>
+            <h2 className="text-xl font-bold text-gray-900 mb-3">Quick Preview</h2>
             <CircularPreviewStack circulars={circulars} />
           </div>
         )}
@@ -473,7 +360,7 @@ const Dashboard = () => {
         {/* Recent Circulars Preview - Only 2 */}
         {circulars.length > 1 && (
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Recent Circulars</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Recent Circulars</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {circulars.filter(c => c.id !== featuredCircular?.id).slice(0, 2).map((circular, index) => (
                 <Link
