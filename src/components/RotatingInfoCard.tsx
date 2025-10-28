@@ -91,62 +91,54 @@ const RotatingInfoCard = () => {
         }
 
         .smp-board-title {
-          font-family: Impact, sans-serif !important;
-          font-size: 2rem !important; /* 32px - larger for mobile visibility */
-          font-weight: 800 !important;
-          letter-spacing: 0.05em;
+          font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
+          font-size: 1.5rem !important; /* 24px - Mobile */
+          font-weight: 900 !important;
+          letter-spacing: 0.025em;
           line-height: 1.2;
-          word-spacing: 0.15em;
+          text-transform: uppercase;
           white-space: nowrap !important;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
-        /* Small mobile devices */
-        @media (min-width: 375px) {
+        /* Tablet */
+        @media (min-width: 768px) {
           .smp-board-title {
             font-size: 2.25rem !important; /* 36px */
           }
         }
 
-        /* Large mobile / Small tablet */
-        @media (min-width: 480px) {
-          .smp-board-title {
-            font-size: 2.5rem !important; /* 40px */
-          }
-        }
-
-        /* Tablet and Desktop */
-        @media (min-width: 640px) {
+        /* Desktop */
+        @media (min-width: 1024px) {
           .smp-board-title {
             font-size: 3rem !important; /* 48px */
           }
         }
 
         .smp-datetime {
-          font-family: Impact, sans-serif !important;
-          font-size: 1.125rem !important; /* 18px - larger for mobile visibility */
-          font-weight: 600 !important;
-          line-height: 1.5;
+          font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
+          font-size: 0.875rem !important; /* 14px - Mobile */
+          font-weight: 700 !important;
+          line-height: 1.3;
           white-space: nowrap !important;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
-        /* Small mobile devices */
-        @media (min-width: 375px) {
+        /* Tablet */
+        @media (min-width: 768px) {
           .smp-datetime {
-            font-size: 1.25rem !important; /* 20px */
+            font-size: 1.125rem !important; /* 18px */
           }
         }
 
-        /* Large mobile / Small tablet */
-        @media (min-width: 480px) {
+        /* Desktop */
+        @media (min-width: 1024px) {
           .smp-datetime {
             font-size: 1.375rem !important; /* 22px */
-          }
-        }
-
-        /* Tablet and Desktop */
-        @media (min-width: 640px) {
-          .smp-datetime {
-            font-size: 1.5rem !important; /* 24px */
           }
         }
       `}</style>
@@ -154,7 +146,7 @@ const RotatingInfoCard = () => {
       <div
         className={`${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} rounded-t-xl overflow-hidden transition-all duration-700`}
       >
-        <div className="relative h-[100px] flex items-center justify-center px-4 sm:px-6">
+        <div className="relative h-[100px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden">
           <div
             className={`w-full text-center ${
               isTransitioning ? 'info-exit' : 'info-enter'
