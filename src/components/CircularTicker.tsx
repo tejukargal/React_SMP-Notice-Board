@@ -114,26 +114,26 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
           <div className="sm:hidden flex flex-col items-center justify-center gap-0.5">
             {/* Line 1: Department + Title */}
             <div className="flex items-center justify-center gap-2">
-              <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold flex-shrink-0 text-white">
+              <span className={`px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold flex-shrink-0 ${deptInfo.textClass}`}>
                 {currentCircular.department}
               </span>
-              <span className="font-bold text-xs line-clamp-1 text-white">{currentCircular.title}</span>
+              <span className={`font-bold text-xs line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
             </div>
             {/* Line 2: Subject */}
-            <div className="text-white/90 text-xs line-clamp-1 px-4">
+            <div className={`${deptInfo.textClass} opacity-90 text-xs line-clamp-1 px-4`}>
               {currentCircular.subject}
             </div>
           </div>
 
           {/* Desktop layout: Single line */}
           <div className="hidden sm:flex sm:flex-wrap items-center justify-center gap-3">
-            <span className="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold text-white">
+            <span className={`px-3 py-1 bg-white/20 rounded-full text-xs font-semibold ${deptInfo.textClass}`}>
               {currentCircular.department}
             </span>
-            <span className="text-sm text-white">•</span>
-            <span className="font-bold text-lg line-clamp-1 text-white">{currentCircular.title}</span>
-            <span className="text-sm text-white">•</span>
-            <span className="text-white/90 text-base line-clamp-1">{currentCircular.subject}</span>
+            <span className={`text-sm ${deptInfo.textClass}`}>•</span>
+            <span className={`font-bold text-lg line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
+            <span className={`text-sm ${deptInfo.textClass}`}>•</span>
+            <span className={`${deptInfo.textClass} opacity-90 text-base line-clamp-1`}>{currentCircular.subject}</span>
           </div>
         </div>
       </div>
@@ -141,7 +141,7 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
       {/* Progress indicator */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
         <div
-          className="h-full bg-white transition-all"
+          className={`h-full ${deptInfo.textClass} bg-current transition-all`}
           style={{
             width: isVisible ? '100%' : '0%',
             transition: isVisible ? 'width 4s linear' : 'width 0.5s linear',
