@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
-import { circularsAPI } from '../api/client'
 import { Circular, Department } from '../types'
 import { departmentInfo } from '../utils/departments'
 import CircularTicker from '../components/CircularTicker'
@@ -9,18 +8,17 @@ import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from '../components/CSVTicker'
 import CircularPreviewStack from '../components/CircularPreviewStack'
 import RotatingInfoCard from '../components/RotatingInfoCard'
+import { useCirculars } from '../context/CircularsContext'
 
 const Dashboard = () => {
-  const [circulars, setCirculars] = useState<Circular[]>([])
+  const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [featuredCircular, setFeaturedCircular] = useState<Circular | null>(null)
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const navigate = useNavigate()
 
   useEffect(() => {
-    loadCirculars()
+    fetchCirculars()
   }, [])
 
   // Handle back button press to exit app
@@ -58,6 +56,21 @@ const Dashboard = () => {
     }
   }, [])
 
+  // Update featured circular and categories when circulars change
+  useEffect(() => {
+    if (circulars.length > 0) {
+      // Find featured circular or use latest
+      const featured = circulars.find(c => c.is_featured) || circulars[0]
+      setFeaturedCircular(featured)
+
+      // Get unique categories that have circulars
+      const uniqueCategories = Array.from(new Set(circulars.map(c => c.department)))
+      // Filter out 'All' and sort to put it first if it exists
+      const categoriesWithoutAll = uniqueCategories.filter(cat => cat !== 'All')
+      setAvailableCategories(categoriesWithoutAll as Department[])
+    }
+  }, [circulars])
+
   // Re-trigger featured circular animations every 15 seconds
   useEffect(() => {
     if (!featuredCircular) return
@@ -68,27 +81,6 @@ const Dashboard = () => {
 
     return () => clearInterval(interval)
   }, [featuredCircular])
-
-  const loadCirculars = async () => {
-    try {
-      const data = await circularsAPI.getAll()
-      setCirculars(data)
-
-      // Find featured circular or use latest
-      const featured = data.find(c => c.is_featured) || data[0]
-      setFeaturedCircular(featured)
-
-      // Get unique categories that have circulars
-      const uniqueCategories = Array.from(new Set(data.map(c => c.department)))
-      // Filter out 'All' and sort to put it first if it exists
-      const categoriesWithoutAll = uniqueCategories.filter(cat => cat !== 'All')
-      setAvailableCategories(categoriesWithoutAll as Department[])
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {

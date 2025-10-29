@@ -1,18 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { circularsAPI } from '../api/client'
-import { Circular, Department } from '../types'
+import { Department } from '../types'
 import { departments, departmentInfo } from '../utils/departments'
 import CircularCard from '../components/CircularCard'
 import CircularModal from '../components/CircularModal'
 import RotatingInfoCard from '../components/RotatingInfoCard'
+import { useCirculars } from '../context/CircularsContext'
+import type { Circular } from '../types'
 
 const AllCirculars = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [circulars, setCirculars] = useState<Circular[]>([])
-  const [filteredCirculars, setFilteredCirculars] = useState<Circular[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [selectedDepartment, setSelectedDepartment] = useState<Department | 'All'>('All')
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
 
@@ -21,35 +19,18 @@ const AllCirculars = () => {
     if (dept && departments.includes(dept)) {
       setSelectedDepartment(dept)
     }
-    loadCirculars()
+    fetchCirculars()
   }, [])
 
-  useEffect(() => {
-    filterCirculars()
-  }, [circulars, selectedDepartment])
-
-  const loadCirculars = async () => {
-    try {
-      const data = await circularsAPI.getAll()
-      setCirculars(data)
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const filterCirculars = () => {
+  // Use useMemo to optimize filtering
+  const filteredCirculars = useMemo(() => {
     if (selectedDepartment === 'All') {
-      setFilteredCirculars(circulars)
-    } else {
-      setFilteredCirculars(
-        circulars.filter(
-          (c) => c.department === selectedDepartment || c.department === 'All'
-        )
-      )
+      return circulars
     }
-  }
+    return circulars.filter(
+      (c) => c.department === selectedDepartment || c.department === 'All'
+    )
+  }, [circulars, selectedDepartment])
 
   const handleDepartmentChange = (dept: Department | 'All') => {
     setSelectedDepartment(dept)

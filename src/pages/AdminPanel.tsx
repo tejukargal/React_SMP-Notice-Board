@@ -4,34 +4,22 @@ import { circularsAPI } from '../api/client'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
 import CircularForm from '../components/CircularForm'
+import { useCirculars } from '../context/CircularsContext'
 
 const AdminPanel = () => {
-  const [circulars, setCirculars] = useState<Circular[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { circulars, loading, error, fetchCirculars, deleteCircular: removeFromCache } = useCirculars()
   const [showForm, setShowForm] = useState(false)
   const [editingCircular, setEditingCircular] = useState<Circular | null>(null)
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
   useEffect(() => {
-    loadCirculars()
+    fetchCirculars(true) // Force refresh for admin panel
   }, [])
-
-  const loadCirculars = async () => {
-    try {
-      const data = await circularsAPI.getAll()
-      setCirculars(data)
-    } catch (err: any) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleDelete = async (id: string) => {
     try {
       await circularsAPI.delete(id)
-      setCirculars(circulars.filter((c) => c.id !== id))
+      removeFromCache(id)
       setDeleteConfirm(null)
     } catch (err: any) {
       alert('Failed to delete circular: ' + err.message)
@@ -46,13 +34,13 @@ const AdminPanel = () => {
   const handleFormClose = () => {
     setShowForm(false)
     setEditingCircular(null)
-    loadCirculars()
+    fetchCirculars(true) // Force refresh after form close
   }
 
   const handleToggleFeatured = async (id: string) => {
     try {
       await circularsAPI.toggleFeatured(id)
-      loadCirculars()
+      fetchCirculars(true) // Force refresh to update featured status
     } catch (err: any) {
       alert('Failed to set as featured: ' + err.message)
     }
