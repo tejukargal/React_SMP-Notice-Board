@@ -15,6 +15,18 @@ const RotatingInfoCard = () => {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
 
+  // Load Impact font for all devices
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.href = 'https://fonts.cdnfonts.com/css/impact'
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
+
+    return () => {
+      document.head.removeChild(link)
+    }
+  }, [])
+
   // Update time every second
   useEffect(() => {
     const timer = setInterval(() => {
@@ -29,7 +41,11 @@ const RotatingInfoCard = () => {
   const deptInfo = departmentInfo[currentDept]
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    // Determine duration based on current index
+    // SMP NOTICE BOARD (-2) stays for 8 seconds, others stay for 4 seconds
+    const duration = currentIndex === -2 ? 8000 : 4000
+
+    const timeout = setTimeout(() => {
       setIsTransitioning(true)
       setTimeout(() => {
         setCurrentIndex((prev) => {
@@ -40,10 +56,10 @@ const RotatingInfoCard = () => {
         })
         setIsTransitioning(false)
       }, 500)
-    }, 4000)
+    }, duration)
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearTimeout(timeout)
+  }, [currentIndex])
 
   const formatDate = () => {
     return currentTime.toLocaleString('en-IN', {
@@ -96,7 +112,7 @@ const RotatingInfoCard = () => {
         }
 
         .smp-board-title {
-          font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
+          font-family: 'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
           font-size: 1.875rem !important; /* 30px - Mobile (balanced size) */
           font-weight: 900 !important;
           letter-spacing: 0.025em;
@@ -106,6 +122,8 @@ const RotatingInfoCard = () => {
           max-width: 100%;
           overflow: hidden;
           text-overflow: ellipsis;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
 
         /* Tablet */
