@@ -1,10 +1,8 @@
 import { X, Calendar, FileText, Download } from 'lucide-react'
-import { useState } from 'react'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from './CSVTicker'
-import AttachmentPreview from './AttachmentPreview'
 
 interface CircularModalProps {
   circular: Circular
@@ -13,7 +11,6 @@ interface CircularModalProps {
 
 const CircularModal = ({ circular, onClose }: CircularModalProps) => {
   const info = departmentInfo[circular.department]
-  const [previewFile, setPreviewFile] = useState<{ name: string; type: string; base64: string; size: number } | null>(null)
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -146,10 +143,11 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
                 {circular.attachments
                   .filter(file => !isCSVFile(file))
                   .map((file, index) => (
-                    <button
+                    <a
                       key={index}
-                      onClick={() => setPreviewFile(file)}
-                      className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group w-full text-left"
+                      href={file.base64}
+                      download={file.name}
+                      className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
                     >
                       <FileText className="w-10 h-10 text-blue-600 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
@@ -161,7 +159,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
                         </p>
                       </div>
                       <Download className="w-5 h-5 text-gray-400 group-hover:text-blue-600 flex-shrink-0" />
-                    </button>
+                    </a>
                   ))}
               </div>
             </div>
@@ -178,14 +176,6 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
           </button>
         </div>
       </div>
-
-      {/* Attachment Preview Modal */}
-      {previewFile && (
-        <AttachmentPreview
-          file={previewFile}
-          onClose={() => setPreviewFile(null)}
-        />
-      )}
     </div>
   )
 }

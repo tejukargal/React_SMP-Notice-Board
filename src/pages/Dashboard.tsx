@@ -9,7 +9,6 @@ import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from '../components/CSVTicker'
 import CircularPreviewStack from '../components/CircularPreviewStack'
 import RotatingInfoCard from '../components/RotatingInfoCard'
-import AttachmentPreview from '../components/AttachmentPreview'
 
 const Dashboard = () => {
   const [circulars, setCirculars] = useState<Circular[]>([])
@@ -18,7 +17,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
-  const [previewFile, setPreviewFile] = useState<{ name: string; type: string; base64: string; size: number } | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -352,10 +350,11 @@ const Dashboard = () => {
                       {featuredCircular.attachments
                         .filter(file => !file.name.toLowerCase().trim().endsWith('.csv'))
                         .map((file, index) => (
-                          <button
+                          <a
                             key={index}
-                            onClick={() => setPreviewFile(file)}
-                            className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group text-left w-full"
+                            href={file.base64}
+                            download={file.name}
+                            className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
                           >
                             <FileText className="w-8 h-8 text-blue-600 flex-shrink-0" />
                             <div className="flex-1 min-w-0">
@@ -366,7 +365,7 @@ const Dashboard = () => {
                                 {(file.size / 1024).toFixed(2)} KB
                               </p>
                             </div>
-                          </button>
+                          </a>
                         ))}
                     </div>
                   </div>
@@ -432,14 +431,6 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-
-      {/* Attachment Preview Modal */}
-      {previewFile && (
-        <AttachmentPreview
-          file={previewFile}
-          onClose={() => setPreviewFile(null)}
-        />
-      )}
     </div>
   )
 }
