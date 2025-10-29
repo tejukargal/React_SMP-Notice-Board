@@ -307,7 +307,7 @@ const Dashboard = () => {
                 </div>
 
                 <h3
-                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 featured-title"
+                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 featured-title line-clamp-2 sm:line-clamp-none"
                   key={`title-${featuredAnimationKey}`}
                 >
                   {featuredCircular.title}
