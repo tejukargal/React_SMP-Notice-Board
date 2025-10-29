@@ -72,7 +72,11 @@ const Header = () => {
               >
                 Sanjay Memorial Polytechnic, Sagar
               </h1>
-              <p className="text-xs text-gray-600">Notice Board</p>
+              <p className={`text-xs font-bold ${deptInfo.textClass} opacity-80 transition-all duration-700`}
+                style={{ fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif" }}
+              >
+                Notice Board
+              </p>
             </div>
             <div className="sm:hidden">
               <div>
@@ -81,7 +85,11 @@ const Header = () => {
                 >
                   Sanjay Memorial Polytechnic, Sagar
                 </h1>
-                <p className="text-xs text-gray-600">Notice Board</p>
+                <p className={`text-xs font-bold ${deptInfo.textClass} opacity-80 transition-all duration-700`}
+                  style={{ fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif" }}
+                >
+                  Notice Board
+                </p>
               </div>
             </div>
           </Link>
