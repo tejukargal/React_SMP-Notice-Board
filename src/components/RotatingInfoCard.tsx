@@ -81,34 +81,34 @@ const RotatingInfoCard = () => {
   return (
     <div>
       <style>{`
-        @keyframes infoSlideOut {
+        @keyframes infoRollOut {
           0% {
-            transform: translateY(0);
+            transform: translateX(0);
             opacity: 1;
           }
           100% {
-            transform: translateY(-20px);
+            transform: translateX(-100%);
             opacity: 0;
           }
         }
 
-        @keyframes infoSlideIn {
+        @keyframes infoRollIn {
           0% {
-            transform: translateY(20px);
+            transform: translateX(100%);
             opacity: 0;
           }
           100% {
-            transform: translateY(0);
+            transform: translateX(0);
             opacity: 1;
           }
         }
 
         .info-exit {
-          animation: infoSlideOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: infoRollOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         .info-enter {
-          animation: infoSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: infoRollIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         .smp-board-title {
@@ -172,7 +172,7 @@ const RotatingInfoCard = () => {
       <div
         className={`${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} rounded-t-xl overflow-hidden transition-all duration-700`}
       >
-        <div className="relative h-[100px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden">
+        <div className="relative h-[70px] sm:h-[80px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden">
           <div
             className={`w-full text-center ${
               isTransitioning ? 'info-exit' : 'info-enter'
