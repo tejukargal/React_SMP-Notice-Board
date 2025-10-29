@@ -14,6 +14,26 @@
             "date": 1761379521760,
             "name": "D:\\Apps\\React_SMP Notice Board\\logs\\nile-mcp-server-2025-10-25.log",
             "hash": "3919883d25e2b6b2ce27f9b95f4d84865020b343d13e03ae367a66aff94e00b1"
+        },
+        {
+            "date": 1761417077172,
+            "name": "D:\\Apps\\React_SMP Notice Board\\logs\\nile-mcp-server-2025-10-26.log",
+            "hash": "4536948435122dbef33bfdd910c896f65228888de26e5a42f56ebbdd737dbd31"
+        },
+        {
+            "date": 1761578603951,
+            "name": "D:\\Apps\\React_SMP Notice Board\\logs\\nile-mcp-server-2025-10-27.log",
+            "hash": "ad35cbf8d502faaca4326ffaa6a88a5fb708c553dbfd062a760ba144d53e49d3"
+        },
+        {
+            "date": 1761657738557,
+            "name": "D:\\Apps\\React_SMP Notice Board\\logs\\nile-mcp-server-2025-10-28.log",
+            "hash": "a85991db8e01022bc4ecd8009e41d8a703e25d552db389ac7df1df0846477f80"
+        },
+        {
+            "date": 1761705896237,
+            "name": "D:\\Apps\\React_SMP Notice Board\\logs\\nile-mcp-server-2025-10-29.log",
+            "hash": "c81d5a6fde5e86c736bc313b383d4f6fe91f4e1d4daa927646f300013f9000ae"
         }
     ],
     "hashType": "sha256"

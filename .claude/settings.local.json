@@ -20,7 +20,9 @@
       "Bash(claude mcp add netlify npx -- -y @netlify/mcp-server-netlify)",
       "Bash(npx -y @netlify/mcp-server-netlify --version)",
       "Bash(claude mcp list:*)",
-      "Bash(claude mcp remove:*)"
+      "Bash(claude mcp remove:*)",
+      "mcp__nile-database__list-databases",
+      "mcp__nile-database__read-resource"
     ]
   },
   "enableAllProjectMcpServers": true,
