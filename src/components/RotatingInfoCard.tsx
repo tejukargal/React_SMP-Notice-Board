@@ -172,7 +172,7 @@ const RotatingInfoCard = () => {
       <div
         className={`${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} rounded-t-xl overflow-hidden transition-all duration-700`}
       >
-        <div className="relative h-[70px] sm:h-[80px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden">
+        <div className="relative h-[55px] sm:h-[60px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden">
           <div
             className={`w-full text-center ${
               isTransitioning ? 'info-exit' : 'info-enter'
