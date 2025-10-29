@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { Circular, Department } from '../types'
