@@ -45,12 +45,17 @@ const RotatingInfoCard = () => {
     return () => clearInterval(interval)
   }, [])
 
-  const formatDateTime = () => {
+  const formatDate = () => {
     return currentTime.toLocaleString('en-IN', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+    })
+  }
+
+  const formatTime = () => {
+    return currentTime.toLocaleString('en-IN', {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
@@ -92,7 +97,7 @@ const RotatingInfoCard = () => {
 
         .smp-board-title {
           font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
-          font-size: 1.75rem !important; /* 28px - Mobile (increased from 24px) */
+          font-size: 2rem !important; /* 32px - Mobile (increased from 28px) */
           font-weight: 900 !important;
           letter-spacing: 0.025em;
           line-height: 1.2;
@@ -158,8 +163,9 @@ const RotatingInfoCard = () => {
                 SMP NOTICE BOARD
               </div>
             ) : currentIndex === -1 ? (
-              <div className={`${deptInfo.textClass} smp-datetime`}>
-                {formatDateTime()}
+              <div className={`${deptInfo.textClass} smp-datetime flex flex-col items-center justify-center gap-1`}>
+                <div>{formatDate()}</div>
+                <div>{formatTime()}</div>
               </div>
             ) : (
               <div className={`text-base sm:text-lg font-semibold ${deptInfo.textClass}`}>
