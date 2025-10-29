@@ -13,7 +13,7 @@ const AdminPanel = () => {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchCirculars(true) // Force refresh for admin panel
+    fetchCirculars() // Use cache if available, only fetch if needed
   }, [])
 
   const handleDelete = async (id: string) => {
