@@ -285,7 +285,7 @@ const Dashboard = () => {
             <div
               className={`${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
             >
-              <div className="p-6 sm:p-8">
+              <div className="p-4 sm:p-8">
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span
