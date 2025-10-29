@@ -1,13 +1,39 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X, LogOut, User } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { departmentInfo, departments } from '../utils/departments'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentDeptIndex, setCurrentDeptIndex] = useState(0)
   const location = useLocation()
   const navigate = useNavigate()
   const { isAuth, username, logout } = useAuth()
+
+  // Load Impact font for header
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.href = 'https://fonts.cdnfonts.com/css/impact'
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
+
+    return () => {
+      document.head.removeChild(link)
+    }
+  }, [])
+
+  // Cycle through departments every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDeptIndex((prev) => (prev + 1) % departments.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const currentDept = departments[currentDeptIndex]
+  const deptInfo = departmentInfo[currentDept]
 
   const handleLogout = () => {
     logout()
@@ -32,19 +58,27 @@ const Header = () => {
           {/* Logo and Title */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm sm:text-base">SMP</span>
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 ${deptInfo.bgClass} rounded-lg flex items-center justify-center transition-all duration-700`}>
+                <span className={`${deptInfo.textClass} font-extrabold text-sm sm:text-base transition-all duration-700`}
+                  style={{ fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif" }}
+                >
+                  SMP
+                </span>
               </div>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-gray-900">
+              <h1 className={`text-xl font-extrabold ${deptInfo.textClass} transition-all duration-700`}
+                style={{ fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif" }}
+              >
                 Sanjay Memorial Polytechnic, Sagar
               </h1>
               <p className="text-xs text-gray-600">Notice Board</p>
             </div>
             <div className="sm:hidden">
               <div>
-                <h1 className="text-sm font-bold text-gray-900 leading-tight">
+                <h1 className={`text-sm font-extrabold ${deptInfo.textClass} leading-tight transition-all duration-700`}
+                  style={{ fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif" }}
+                >
                   Sanjay Memorial Polytechnic, Sagar
                 </h1>
                 <p className="text-xs text-gray-600">Notice Board</p>
