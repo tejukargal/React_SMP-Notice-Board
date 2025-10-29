@@ -92,7 +92,7 @@ const RotatingInfoCard = () => {
 
         .smp-board-title {
           font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
-          font-size: 1.5rem !important; /* 24px - Mobile */
+          font-size: 1.75rem !important; /* 28px - Mobile (increased from 24px) */
           font-weight: 900 !important;
           letter-spacing: 0.025em;
           line-height: 1.2;
