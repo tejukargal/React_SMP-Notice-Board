@@ -107,7 +107,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
       `}</style>
 
       <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg shadow-lg overflow-hidden">
-        <div className="relative h-[220px] sm:h-[160px]">
+        <div className="relative h-[180px] sm:h-[160px]">
           {/* Background/Stacked text layer */}
           {previewCirculars.length > 1 && (
             <div className="absolute inset-0 p-4 sm:p-5">
