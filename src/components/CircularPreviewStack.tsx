@@ -106,20 +106,33 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         }
       `}</style>
 
-      <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg shadow-lg overflow-hidden">
+      <div className={`relative ${currentDeptInfo.bgClass} border-l-4 ${currentDeptInfo.borderClass} rounded-lg shadow-lg overflow-hidden transition-all duration-700`}>
         <div className="relative h-[160px] sm:h-[120px]">
           {/* Background/Stacked text layer */}
           {previewCirculars.length > 1 && (
             <div className="absolute inset-0 p-4 sm:p-5">
+              {/* Subject for next circular */}
               <div
-                className={`text-sm text-justify leading-relaxed line-clamp-5 sm:line-clamp-3 ${nextDeptInfo.textClass} opacity-40 ${
+                className={`text-xs font-bold mb-1 ${nextDeptInfo.textClass} opacity-40 ${
                   isTransitioning ? 'stack-text-exit' : 'stack-text-enter'
                 }`}
                 style={{
                   transform: 'translateX(8px)',
                   filter: 'blur(0.5px)',
                 }}
-                key={`stack-${nextCircular.id}`}
+                key={`stack-subject-${nextCircular.id}`}
+              >
+                {nextCircular.subject}
+              </div>
+              <div
+                className={`text-sm text-justify leading-relaxed line-clamp-4 sm:line-clamp-[2.5] ${nextDeptInfo.textClass} opacity-40 ${
+                  isTransitioning ? 'stack-text-exit' : 'stack-text-enter'
+                }`}
+                style={{
+                  transform: 'translateX(8px)',
+                  filter: 'blur(0.5px)',
+                }}
+                key={`stack-body-${nextCircular.id}`}
               >
                 {stripHtml(nextCircular.body)}
               </div>
@@ -128,11 +141,21 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
 
           {/* Main text layer */}
           <div className="absolute inset-0 p-4 sm:p-5 bg-gradient-to-br from-white/95 to-white/90">
+            {/* Subject */}
             <div
-              className={`text-sm text-justify ${currentDeptInfo.textClass} leading-relaxed line-clamp-5 sm:line-clamp-3 ${
+              className={`text-xs font-bold mb-1 ${currentDeptInfo.textClass} ${
                 isTransitioning ? 'text-exit' : 'text-enter'
               }`}
-              key={`main-${currentCircular.id}`}
+              key={`main-subject-${currentCircular.id}`}
+            >
+              {currentCircular.subject}
+            </div>
+            {/* Body */}
+            <div
+              className={`text-sm text-justify ${currentDeptInfo.textClass} leading-relaxed line-clamp-4 sm:line-clamp-[2.5] ${
+                isTransitioning ? 'text-exit' : 'text-enter'
+              }`}
+              key={`main-body-${currentCircular.id}`}
             >
               {stripHtml(currentCircular.body)}
             </div>
@@ -140,12 +163,12 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         </div>
 
         {/* Department and Date info at bottom */}
-        <div className="px-4 sm:px-5 pb-3 pt-2 bg-white/80 backdrop-blur-sm border-t border-gray-200">
+        <div className={`px-4 sm:px-5 pb-3 pt-2 ${currentDeptInfo.bgClass} border-t ${currentDeptInfo.borderClass} transition-all duration-700`}>
           <div className="flex items-center justify-between text-xs">
             <span className={`${currentDeptInfo.textClass} font-semibold`}>
               {currentCircular.department}
             </span>
-            <span className="text-gray-500">
+            <span className={`${currentDeptInfo.textClass} opacity-80`}>
               {new Date(currentCircular.date).toLocaleDateString('en-IN', {
                 day: 'numeric',
                 month: 'short',
@@ -171,7 +194,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
               }}
               className={`h-1.5 rounded-full transition-all ${
                 index === currentIndex
-                  ? 'w-6 bg-blue-600'
+                  ? `w-6 ${currentDeptInfo.textClass} bg-current`
                   : 'w-1.5 bg-gray-300 hover:bg-gray-400'
               }`}
               aria-label={`Go to circular ${index + 1}`}
