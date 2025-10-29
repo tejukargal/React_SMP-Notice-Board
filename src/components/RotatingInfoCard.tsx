@@ -97,7 +97,7 @@ const RotatingInfoCard = () => {
 
         .smp-board-title {
           font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
-          font-size: 2rem !important; /* 32px - Mobile (increased from 28px) */
+          font-size: 1.875rem !important; /* 30px - Mobile (balanced size) */
           font-weight: 900 !important;
           letter-spacing: 0.025em;
           line-height: 1.2;
@@ -124,26 +124,29 @@ const RotatingInfoCard = () => {
 
         .smp-datetime {
           font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
-          font-size: 0.875rem !important; /* 14px - Mobile */
+          font-size: 1rem !important; /* 16px - Mobile (increased from 14px) */
           font-weight: 700 !important;
           line-height: 1.3;
-          white-space: nowrap !important;
-          max-width: 100%;
+        }
+
+        .smp-datetime > div {
+          white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          max-width: 100%;
         }
 
         /* Tablet */
         @media (min-width: 768px) {
           .smp-datetime {
-            font-size: 1.125rem !important; /* 18px */
+            font-size: 1.25rem !important; /* 20px (increased from 18px) */
           }
         }
 
         /* Desktop */
         @media (min-width: 1024px) {
           .smp-datetime {
-            font-size: 1.375rem !important; /* 22px */
+            font-size: 1.5rem !important; /* 24px (increased from 22px) */
           }
         }
       `}</style>
