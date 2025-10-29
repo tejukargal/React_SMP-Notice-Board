@@ -14,18 +14,6 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
   const currentDept = departments[Math.abs(currentIndex) % departments.length]
   const deptInfo = departmentInfo[currentDept]
 
-  // Load Impact font for consistency with RotatingInfoCard
-  useEffect(() => {
-    const link = document.createElement('link')
-    link.href = 'https://fonts.cdnfonts.com/css/impact'
-    link.rel = 'stylesheet'
-    document.head.appendChild(link)
-
-    return () => {
-      document.head.removeChild(link)
-    }
-  }, [])
-
   // Add welcome messages, principal and developer credits in the circulars
   const enhancedCirculars = [...circulars]
   if (circulars.length > 0) {
@@ -115,11 +103,7 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
   const currentCircular = enhancedCirculars[currentIndex]
 
   return (
-    <div className={`${deptInfo.bgClass} border-l-4 ${deptInfo.borderClass} overflow-hidden relative h-16 sm:h-20 transition-all duration-700`}
-      style={{
-        fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif"
-      }}
-    >
+    <div className={`${deptInfo.bgClass} overflow-hidden relative h-16 sm:h-20 transition-all duration-700`}>
       <div
         className={`flex items-center justify-center px-4 h-full transition-opacity duration-500 ${
           isVisible ? 'opacity-100' : 'opacity-0'
@@ -130,34 +114,34 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
           <div className="sm:hidden flex flex-col items-center justify-center gap-0.5">
             {/* Line 1: Department + Title */}
             <div className="flex items-center justify-center gap-2">
-              <span className={`px-2 py-0.5 ${deptInfo.textClass} bg-white/30 rounded-full text-xs font-bold flex-shrink-0`}>
+              <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold flex-shrink-0 text-white">
                 {currentCircular.department}
               </span>
-              <span className={`font-extrabold text-xs line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
+              <span className="font-bold text-xs line-clamp-1 text-white">{currentCircular.title}</span>
             </div>
             {/* Line 2: Subject */}
-            <div className={`${deptInfo.textClass} opacity-80 text-xs line-clamp-1 px-4 font-semibold`}>
+            <div className="text-white/90 text-xs line-clamp-1 px-4">
               {currentCircular.subject}
             </div>
           </div>
 
           {/* Desktop layout: Single line */}
           <div className="hidden sm:flex sm:flex-wrap items-center justify-center gap-3">
-            <span className={`px-3 py-1 ${deptInfo.textClass} bg-white/30 rounded-full text-xs font-bold`}>
+            <span className="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold text-white">
               {currentCircular.department}
             </span>
-            <span className={`text-sm ${deptInfo.textClass} font-bold`}>•</span>
-            <span className={`font-extrabold text-lg line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
-            <span className={`text-sm ${deptInfo.textClass} font-bold`}>•</span>
-            <span className={`${deptInfo.textClass} opacity-80 text-base line-clamp-1 font-semibold`}>{currentCircular.subject}</span>
+            <span className="text-sm text-white">•</span>
+            <span className="font-bold text-lg line-clamp-1 text-white">{currentCircular.title}</span>
+            <span className="text-sm text-white">•</span>
+            <span className="text-white/90 text-base line-clamp-1">{currentCircular.subject}</span>
           </div>
         </div>
       </div>
 
       {/* Progress indicator */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/30">
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
         <div
-          className={`h-full ${deptInfo.textClass} bg-current transition-all`}
+          className="h-full bg-white transition-all"
           style={{
             width: isVisible ? '100%' : '0%',
             transition: isVisible ? 'width 4s linear' : 'width 0.5s linear',
