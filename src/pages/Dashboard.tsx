@@ -183,6 +183,14 @@ const Dashboard = () => {
             animation: slideOut 0.6s ease-out forwards;
           }
 
+          /* Featured circular modern font - Josefin Sans Bold */
+          .featured-circular-modern {
+            font-family: 'Josefin Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+          }
+
           /* Featured circular animations - supports all scripts including Kannada */
           @keyframes scaleBlurFade {
             0% {
@@ -201,18 +209,23 @@ const Dashboard = () => {
             position: relative;
             opacity: 0;
             animation: scaleBlurFade 1.2s ease-out forwards;
+            letter-spacing: -0.02em;
+            font-weight: 800;
           }
 
           .featured-subject {
             position: relative;
             opacity: 0;
             animation: scaleBlurFade 1.2s ease-out 0.3s forwards;
+            letter-spacing: -0.01em;
+            font-weight: 600;
           }
 
           .featured-body {
             position: relative;
             opacity: 0;
             animation: scaleBlurFade 1.2s ease-out 0.6s forwards;
+            letter-spacing: -0.005em;
           }
 
           /* Mobile: Ensure proper display */
@@ -275,7 +288,7 @@ const Dashboard = () => {
             </div>
 
             <div
-              className={`${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
+              className={`featured-circular-modern ${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
             >
               <div className="p-4 sm:p-8">
                 <div className="mb-4">
