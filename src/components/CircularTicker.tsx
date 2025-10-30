@@ -103,7 +103,7 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
   const currentCircular = enhancedCirculars[currentIndex]
 
   return (
-    <div className={`${deptInfo.bgClass} overflow-hidden relative h-16 sm:h-20 transition-all duration-700 shadow-md`}>
+    <div className={`${deptInfo.bgClass} overflow-hidden relative h-16 sm:h-20 transition-all duration-700 shadow-md`} style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
       <div
         className={`flex items-center justify-center px-4 h-full transition-opacity duration-500 ${
           isVisible ? 'opacity-100' : 'opacity-0'

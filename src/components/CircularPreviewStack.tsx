@@ -43,7 +43,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
       <style>{`
         @keyframes textSlideOut {
           0% {

@@ -189,7 +189,7 @@ const RotatingInfoCard = () => {
                 <div>{formatTime()}</div>
               </div>
             ) : (
-              <div className={`text-base sm:text-lg font-semibold ${deptInfo.textClass}`}>
+              <div className={`text-base sm:text-lg font-semibold ${deptInfo.textClass}`} style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
                 {infoTexts[currentIndex]}
               </div>
             )}

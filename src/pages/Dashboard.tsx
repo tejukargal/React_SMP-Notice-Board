@@ -250,7 +250,7 @@ const Dashboard = () => {
           <div className="mb-4 shadow-md rounded-xl overflow-hidden">
             <RotatingInfoCard />
             <div className="border-t border-gray-200"></div>
-            <div className="bg-white">
+            <div className="bg-white" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
               <div className="flex items-center overflow-x-auto scrollbar-hide">
                 {availableCategories.map((dept) => {
                   const deptInfo = departmentInfo[dept]
@@ -398,7 +398,7 @@ const Dashboard = () => {
                   key={circular.id}
                   to={`/circulars`}
                   className={`${departmentInfo[circular.department].bgClass} border-l-4 ${departmentInfo[circular.department].borderClass} rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow animate-popup`}
-                  style={{ animationDelay: `${0.2 + index * 0.1}s` }}
+                  style={{ animationDelay: `${0.2 + index * 0.1}s`, fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span
