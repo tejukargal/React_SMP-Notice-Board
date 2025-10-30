@@ -277,10 +277,11 @@ const Dashboard = () => {
         {featuredCircular && (
           <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-2xl font-bold text-gray-900">Featured Circular</h2>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Featured Circular</h2>
               <Link
                 to="/circulars"
                 className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm"
+                style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
               >
                 View All
                 <ArrowRight className="w-4 h-4" />
@@ -383,7 +384,7 @@ const Dashboard = () => {
         {/* Compact Preview Stack */}
         {circulars.length > 1 && (
           <div className="mb-5 animate-popup" style={{ animationDelay: '0.2s' }}>
-            <h2 className="text-xl font-bold text-gray-900 mb-3">Quick Preview</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-3" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Quick Preview</h2>
             <CircularPreviewStack circulars={circulars} />
           </div>
         )}
@@ -391,7 +392,7 @@ const Dashboard = () => {
         {/* Recent Circulars Preview - Only 2 */}
         {circulars.length > 1 && (
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">Recent Circulars</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Recent Circulars</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {circulars.filter(c => c.id !== featuredCircular?.id).slice(0, 2).map((circular, index) => (
                 <Link
