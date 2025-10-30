@@ -183,9 +183,9 @@ const Dashboard = () => {
             animation: slideOut 0.6s ease-out forwards;
           }
 
-          /* Featured circular modern font - Josefin Sans Bold */
+          /* Featured circular modern font - Josefin Sans for English, Noto Sans Kannada for Kannada */
           .featured-circular-modern {
-            font-family: 'Josefin Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Josefin Sans', 'Noto Sans Kannada', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
