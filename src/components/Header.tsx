@@ -11,11 +11,11 @@ const Header = () => {
   const navigate = useNavigate()
   const { isAuth, username, logout } = useAuth()
 
-  // Cycle through departments every 5 seconds
+  // Cycle through departments every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentDeptIndex((prev) => (prev + 1) % departments.length)
-    }, 5000)
+    }, 8000)
 
     return () => clearInterval(interval)
   }, [])
@@ -41,14 +41,52 @@ const Header = () => {
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
+      <style>{`
+        @keyframes flipLetter {
+          0% {
+            transform: rotateX(0deg);
+            opacity: 1;
+          }
+          50% {
+            transform: rotateX(90deg);
+            opacity: 0;
+          }
+          100% {
+            transform: rotateX(0deg);
+            opacity: 1;
+          }
+        }
+
+        .flip-letter-1 {
+          animation: flipLetter 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+          animation-delay: 0s;
+        }
+
+        .flip-letter-2 {
+          animation: flipLetter 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+          animation-delay: 0.4s;
+        }
+
+        .flip-letter-3 {
+          animation: flipLetter 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+          animation-delay: 0.8s;
+        }
+
+        .logo-letter {
+          display: inline-block;
+          transform-style: preserve-3d;
+        }
+      `}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Title */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
             <div className="flex-shrink-0">
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 ${deptInfo.bgClass} rounded-lg flex items-center justify-center transition-all duration-700`}>
-                <span className={`${deptInfo.textClass} font-extrabold text-sm sm:text-base transition-all duration-700`}>
-                  SMP
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 ${deptInfo.bgClass} rounded-lg flex items-center justify-center transition-colors duration-700`}>
+                <span className={`${deptInfo.textClass} font-extrabold text-sm sm:text-base transition-colors duration-700 flex`} key={currentDeptIndex}>
+                  <span className="logo-letter flip-letter-1">S</span>
+                  <span className="logo-letter flip-letter-2">M</span>
+                  <span className="logo-letter flip-letter-3">P</span>
                 </span>
               </div>
             </div>

@@ -243,6 +243,44 @@ const Dashboard = () => {
               width: 100%;
             }
           }
+
+          /* View All animation */
+          @keyframes flipChar {
+            0%, 80% {
+              transform: rotateX(0deg);
+              opacity: 1;
+            }
+            90% {
+              transform: rotateX(90deg);
+              opacity: 0;
+            }
+            100% {
+              transform: rotateX(0deg);
+              opacity: 1;
+            }
+          }
+
+          .flip-char {
+            display: inline-block;
+            transform-style: preserve-3d;
+            animation: flipChar 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          }
+
+          .flip-char-1 { animation-delay: 0s; }
+          .flip-char-2 { animation-delay: 0.1s; }
+          .flip-char-3 { animation-delay: 0.2s; }
+          .flip-char-4 { animation-delay: 0.3s; }
+          .flip-char-5 { animation-delay: 0.4s; }
+          .flip-char-6 { animation-delay: 0.5s; }
+          .flip-char-7 { animation-delay: 0.6s; }
+          .flip-char-8 { animation-delay: 0.7s; }
+
+          .arrow-icon {
+            display: inline-block;
+            transform-style: preserve-3d;
+            animation: flipChar 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            animation-delay: 0.8s;
+          }
         `}</style>
 
         {/* Rotating Info Card with Navigation Tabs */}
@@ -280,11 +318,20 @@ const Dashboard = () => {
               <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Featured Circular</h2>
               <Link
                 to="/circulars"
-                className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm"
+                className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
                 style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
               >
-                View All
-                <ArrowRight className="w-4 h-4" />
+                <span className="flex">
+                  <span className="flip-char flip-char-1">V</span>
+                  <span className="flip-char flip-char-2">i</span>
+                  <span className="flip-char flip-char-3">e</span>
+                  <span className="flip-char flip-char-4">w</span>
+                  <span className="flip-char flip-char-5">&nbsp;</span>
+                  <span className="flip-char flip-char-6">A</span>
+                  <span className="flip-char flip-char-7">l</span>
+                  <span className="flip-char flip-char-8">l</span>
+                </span>
+                <ArrowRight className="w-4 h-4 arrow-icon" />
               </Link>
             </div>
 
