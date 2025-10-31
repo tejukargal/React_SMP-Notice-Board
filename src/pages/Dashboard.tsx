@@ -376,7 +376,7 @@ const Dashboard = () => {
                 <div
                   className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[18px] [&>*]:font-bold featured-body"
                   key={`body-${featuredAnimationKey}`}
-                  dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body)}
+                  dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body, departmentInfo[featuredCircular.department].color, departmentInfo[featuredCircular.department].lightColor)}
                 />
 
                 {/* CSV Ticker Preview */}
@@ -407,14 +407,14 @@ const Dashboard = () => {
                             key={index}
                             href={file.base64}
                             download={file.name}
-                            className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
+                            className={`flex items-center gap-3 p-3 bg-white border-2 ${departmentInfo[featuredCircular.department].borderClass} rounded-lg hover:shadow-md transition group`}
                           >
-                            <FileText className="w-8 h-8 text-blue-600 flex-shrink-0" />
+                            <FileText className={`w-8 h-8 ${departmentInfo[featuredCircular.department].textClass} flex-shrink-0`} />
                             <div className="flex-1 min-w-0">
-                              <p className="font-medium text-gray-900 truncate group-hover:text-blue-600">
+                              <p className={`font-medium ${departmentInfo[featuredCircular.department].textClass} truncate`}>
                                 {file.name}
                               </p>
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-gray-600">
                                 {(file.size / 1024).toFixed(2)} KB
                               </p>
                             </div>

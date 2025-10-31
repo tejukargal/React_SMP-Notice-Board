@@ -113,7 +113,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
             </h3>
             <div
               className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={renderHtmlContent(circular.body)}
+              dangerouslySetInnerHTML={renderHtmlContent(circular.body, info.color, info.lightColor)}
             />
           </div>
 
@@ -147,18 +147,18 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
                       key={index}
                       href={file.base64}
                       download={file.name}
-                      className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition group"
+                      className={`flex items-center gap-3 p-4 ${info.bgClass} border-2 ${info.borderClass} rounded-lg hover:shadow-md transition group`}
                     >
-                      <FileText className="w-10 h-10 text-blue-600 flex-shrink-0" />
+                      <FileText className={`w-10 h-10 ${info.textClass} flex-shrink-0`} />
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 truncate group-hover:text-blue-600">
+                        <p className={`font-medium ${info.textClass} truncate`}>
                           {file.name}
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-600">
                           {file.type} • {(file.size / 1024).toFixed(2)} KB
                         </p>
                       </div>
-                      <Download className="w-5 h-5 text-gray-400 group-hover:text-blue-600 flex-shrink-0" />
+                      <Download className={`w-5 h-5 ${info.textClass} opacity-70 flex-shrink-0`} />
                     </a>
                   ))}
               </div>

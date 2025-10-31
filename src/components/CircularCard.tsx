@@ -51,7 +51,7 @@ const CircularCard = ({ circular, onClick }: CircularCardProps) => {
         {/* Body Preview */}
         <div
           className="text-sm text-gray-600 line-clamp-3 mb-4"
-          dangerouslySetInnerHTML={renderHtmlContent(circular.body)}
+          dangerouslySetInnerHTML={renderHtmlContent(circular.body, info.color, info.lightColor)}
         />
 
         {/* Footer */}
