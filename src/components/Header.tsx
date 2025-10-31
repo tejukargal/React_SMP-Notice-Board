@@ -53,22 +53,14 @@ const Header = () => {
               </div>
             </div>
             <div className="hidden sm:block">
-              <h1 className={`text-xl font-extrabold ${deptInfo.textClass} transition-all duration-700`}>
+              <h1 className={`text-2xl font-extrabold ${deptInfo.textClass} transition-all duration-700`}>
                 Sanjay Memorial Polytechnic, Sagar
               </h1>
-              <p className={`text-xs font-bold ${deptInfo.textClass} opacity-80 transition-all duration-700`}>
-                Notice Board
-              </p>
             </div>
             <div className="sm:hidden">
-              <div>
-                <h1 className={`text-sm font-extrabold ${deptInfo.textClass} leading-tight transition-all duration-700`}>
-                  Sanjay Memorial Polytechnic, Sagar
-                </h1>
-                <p className={`text-xs font-bold ${deptInfo.textClass} opacity-80 transition-all duration-700`}>
-                  Notice Board
-                </p>
-              </div>
+              <h1 className={`text-base font-extrabold ${deptInfo.textClass} leading-tight transition-all duration-700`}>
+                Sanjay Memorial Polytechnic, Sagar
+              </h1>
             </div>
           </Link>
 
