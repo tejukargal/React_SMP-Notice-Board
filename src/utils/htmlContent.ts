@@ -8,7 +8,7 @@ export const isHtmlContent = (content: string): boolean => {
 /**
  * Converts URLs in text to highlighted card-style links
  */
-const linkifyUrls = (text: string, color: string = '#3B82F6', lightColor: string = '#EFF6FF'): string => {
+const linkifyUrls = (text: string, color: string = '#3B82F6'): string => {
   // Enhanced URL regex to match http, https, www, and common domain patterns
   const urlPattern = /(\b(?:https?:\/\/|www\.)[^\s<>"{}|\\^`\[\]]+)/gi
 
@@ -32,18 +32,18 @@ const linkifyUrls = (text: string, color: string = '#3B82F6', lightColor: string
  * Sanitizes HTML content to ensure safe rendering
  * Removes potentially dangerous attributes and keeps only formatting
  */
-export const sanitizeHtmlContent = (content: string, color?: string, lightColor?: string): string => {
+export const sanitizeHtmlContent = (content: string, color?: string): string => {
   let sanitized = content
 
   if (!isHtmlContent(content)) {
     // Plain text - convert URLs to card-style links first, then newlines to <br> tags
-    sanitized = linkifyUrls(content, color, lightColor)
+    sanitized = linkifyUrls(content, color)
     sanitized = sanitized.replace(/\n/g, '<br>')
     return sanitized
   }
 
   // For HTML content, linkify URLs first
-  sanitized = linkifyUrls(sanitized, color, lightColor)
+  sanitized = linkifyUrls(sanitized, color)
 
   // Remove script tags and other dangerous elements
   sanitized = sanitized.replace(/<script[^>]*>.*?<\/script>/gi, '')
@@ -56,6 +56,6 @@ export const sanitizeHtmlContent = (content: string, color?: string, lightColor?
 /**
  * Renders HTML content safely for display
  */
-export const renderHtmlContent = (content: string, color?: string, lightColor?: string): { __html: string } => {
-  return { __html: sanitizeHtmlContent(content, color, lightColor) }
+export const renderHtmlContent = (content: string, color?: string): { __html: string } => {
+  return { __html: sanitizeHtmlContent(content, color) }
 }

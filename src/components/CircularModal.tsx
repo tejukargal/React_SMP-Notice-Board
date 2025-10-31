@@ -113,7 +113,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
             </h3>
             <div
               className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={renderHtmlContent(circular.body, info.color, info.lightColor)}
+              dangerouslySetInnerHTML={renderHtmlContent(circular.body, info.color)}
             />
           </div>
 
