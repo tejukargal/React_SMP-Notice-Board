@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Josefin Sans', 'Noto Sans Kannada', 'sans-serif'],
+      },
       colors: {
         'ce': {
           DEFAULT: '#3B82F6',

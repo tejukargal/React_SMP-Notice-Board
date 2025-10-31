@@ -111,29 +111,22 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
       >
         <div className="text-center max-w-5xl w-full">
           {/* Mobile layout: 2 lines */}
-          <div className="sm:hidden flex flex-col items-center justify-center gap-0.5">
-            {/* Line 1: Department + Title */}
-            <div className="flex items-center justify-center gap-2">
-              <span className={`px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold flex-shrink-0 ${deptInfo.textClass}`}>
-                {currentCircular.department}
-              </span>
-              <span className={`font-bold text-xs line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
+          <div className="sm:hidden flex flex-col items-center justify-center gap-1">
+            {/* Line 1: Title */}
+            <div className={`font-bold text-sm line-clamp-1 px-4 ${deptInfo.textClass}`}>
+              {currentCircular.title}
             </div>
             {/* Line 2: Subject */}
-            <div className={`${deptInfo.textClass} opacity-90 text-xs line-clamp-1 px-4`}>
+            <div className={`${deptInfo.textClass} opacity-90 text-sm line-clamp-1 px-4`}>
               {currentCircular.subject}
             </div>
           </div>
 
           {/* Desktop layout: Single line */}
           <div className="hidden sm:flex sm:flex-wrap items-center justify-center gap-3">
-            <span className={`px-3 py-1 bg-white/20 rounded-full text-xs font-semibold ${deptInfo.textClass}`}>
-              {currentCircular.department}
-            </span>
-            <span className={`text-sm ${deptInfo.textClass}`}>•</span>
-            <span className={`font-bold text-lg line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
-            <span className={`text-sm ${deptInfo.textClass}`}>•</span>
-            <span className={`${deptInfo.textClass} opacity-90 text-base line-clamp-1`}>{currentCircular.subject}</span>
+            <span className={`font-bold text-xl line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
+            <span className={`text-base ${deptInfo.textClass}`}>•</span>
+            <span className={`${deptInfo.textClass} opacity-90 text-lg line-clamp-1`}>{currentCircular.subject}</span>
           </div>
         </div>
       </div>

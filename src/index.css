@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply antialiased;
+    font-family: 'Josefin Sans', 'Noto Sans Kannada', sans-serif;
   }
 }
 
