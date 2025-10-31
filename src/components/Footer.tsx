@@ -33,25 +33,25 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="text-center">
-          {/* Share Link */}
-          <button
-            onClick={handleShare}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-sm mb-4 transition-colors group"
-          >
-            <Share2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
-            <span className="underline decoration-dotted underline-offset-4">
-              Share this app link to Friends
-            </span>
-          </button>
+    <footer className="bg-gray-50 border-t border-gray-200 mt-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="text-center space-y-2">
+          {/* Share Link - Pill shaped like department badge */}
+          <div>
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-full text-sm font-semibold border-2 border-blue-600 transition-all group"
+            >
+              <Share2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span>Share this app link to Friends</span>
+            </button>
+          </div>
 
           {/* Copyright */}
           <p className="text-gray-600 text-sm">
             &copy; {new Date().getFullYear()} Sanjay Memorial Polytechnic, Sagar
           </p>
-          <p className="text-gray-500 text-xs mt-1">
+          <p className="text-gray-500 text-xs">
             All rights reserved
           </p>
         </div>

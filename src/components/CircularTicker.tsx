@@ -131,13 +131,14 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
         </div>
       </div>
 
-      {/* Progress indicator */}
+      {/* Progress indicator - starts from center and expands to both sides */}
       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20">
         <div
-          className={`h-full ${deptInfo.textClass} bg-current transition-all`}
+          className={`h-full w-full ${deptInfo.textClass} bg-current`}
           style={{
-            width: isVisible ? '100%' : '0%',
-            transition: isVisible ? 'width 4s linear' : 'width 0.5s linear',
+            transformOrigin: 'center',
+            transform: isVisible ? 'scaleX(1)' : 'scaleX(0)',
+            transition: isVisible ? 'transform 4s linear' : 'transform 0.5s linear',
           }}
         />
       </div>
