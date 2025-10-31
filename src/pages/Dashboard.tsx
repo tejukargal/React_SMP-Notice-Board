@@ -407,7 +407,7 @@ const Dashboard = () => {
                             key={index}
                             href={file.base64}
                             download={file.name}
-                            className={`flex items-center gap-3 p-3 bg-white border-2 ${departmentInfo[featuredCircular.department].borderClass} rounded-lg hover:shadow-md transition group`}
+                            className={`flex items-center gap-3 p-3 bg-transparent border-2 ${departmentInfo[featuredCircular.department].borderClass} rounded-lg hover:shadow-md transition group`}
                           >
                             <FileText className={`w-8 h-8 ${departmentInfo[featuredCircular.department].textClass} flex-shrink-0`} />
                             <div className="flex-1 min-w-0">

@@ -147,7 +147,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
                       key={index}
                       href={file.base64}
                       download={file.name}
-                      className={`flex items-center gap-3 p-4 ${info.bgClass} border-2 ${info.borderClass} rounded-lg hover:shadow-md transition group`}
+                      className={`flex items-center gap-3 p-4 bg-transparent border-2 ${info.borderClass} rounded-lg hover:shadow-md transition group`}
                     >
                       <FileText className={`w-10 h-10 ${info.textClass} flex-shrink-0`} />
                       <div className="flex-1 min-w-0">
