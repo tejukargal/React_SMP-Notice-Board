@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, AlignJustify } from 'lucide-react'
+import { Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, AlignJustify, List, ListOrdered } from 'lucide-react'
 
 interface RichTextEditorProps {
   value: string
@@ -75,6 +75,11 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Enter text...' }: Rich
 
         <div className="w-px bg-gray-300 mx-1"></div>
 
+        <ToolbarButton icon={List} command="insertUnorderedList" title="Bullet List" />
+        <ToolbarButton icon={ListOrdered} command="insertOrderedList" title="Numbered List" />
+
+        <div className="w-px bg-gray-300 mx-1"></div>
+
         <ToolbarButton icon={AlignLeft} command="justifyLeft" title="Align Left" />
         <ToolbarButton icon={AlignCenter} command="justifyCenter" title="Align Center" />
         <ToolbarButton icon={AlignRight} command="justifyRight" title="Align Right" />
@@ -97,6 +102,25 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Enter text...' }: Rich
           color: #9ca3af;
           pointer-events: none;
           position: absolute;
+        }
+
+        [contentEditable] ul,
+        [contentEditable] ol {
+          margin-left: 1.5rem;
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        [contentEditable] ul {
+          list-style-type: disc;
+        }
+
+        [contentEditable] ol {
+          list-style-type: decimal;
+        }
+
+        [contentEditable] li {
+          margin-bottom: 0.25rem;
         }
       `}</style>
     </div>

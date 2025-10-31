@@ -7,6 +7,25 @@
     @apply antialiased;
     font-family: 'Josefin Sans', 'Noto Sans Kannada', sans-serif;
   }
+
+  /* List styles for rendered content */
+  ul, ol {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li {
+    margin-bottom: 0.25rem;
+  }
 }
 
 @layer utilities {
