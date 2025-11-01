@@ -92,7 +92,7 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
     setIsRotating(true)
     const timer = setTimeout(() => {
       setIsRotating(false)
-    }, 600)
+    }, 500)
     return () => clearTimeout(timer)
   }, [currentIndex])
 
@@ -111,7 +111,8 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
         style={{
           transformStyle: 'preserve-3d',
           transform: `rotateX(${-90 * currentIndex}deg)`,
-          transition: isRotating ? 'transform 0.6s ease-in-out' : 'none',
+          transition: isRotating ? 'transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1)' : 'none',
+          willChange: 'transform',
         }}
       >
         {enhancedCirculars.map((circular, index) => {
@@ -125,6 +126,8 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
               style={{
                 backfaceVisibility: 'hidden',
                 transform: `rotateX(${90 * index}deg) translateZ(2.5rem)`,
+                WebkitBackfaceVisibility: 'hidden',
+                WebkitFontSmoothing: 'antialiased',
               }}
             >
               <div className="text-center max-w-5xl w-full">
