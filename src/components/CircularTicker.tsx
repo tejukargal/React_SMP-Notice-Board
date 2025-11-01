@@ -10,10 +10,6 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isRotating, setIsRotating] = useState(false)
 
-  // Rotate through departments for color cycling (same as RotatingInfoCard)
-  const currentDept = departments[Math.abs(currentIndex) % departments.length]
-  const deptInfo = departmentInfo[currentDept]
-
   // Add welcome messages, principal and developer credits in the circulars
   const enhancedCirculars = [...circulars]
   if (circulars.length > 0) {
