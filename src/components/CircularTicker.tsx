@@ -6,7 +6,7 @@ interface CircularTickerProps {
   circulars: Circular[]
 }
 
-const CircularTicker = ({ circulars }: CircularTickerProps) => {
+const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [rotation, setRotation] = useState(0)
   const [isRotating, setIsRotating] = useState(false)
