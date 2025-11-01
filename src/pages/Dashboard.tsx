@@ -378,7 +378,7 @@ const Dashboard = () => {
                 </p>
 
                 <div
-                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[18px] [&>*]:font-bold featured-body"
+                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[18px] [&>*]:font-normal featured-body"
                   key={`body-${featuredAnimationKey}`}
                   dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body, departmentInfo[featuredCircular.department].color)}
                 />
