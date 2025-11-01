@@ -8,6 +8,7 @@ interface CircularTickerProps {
 
 const CircularTicker = ({ circulars }: CircularTickerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [rotation, setRotation] = useState(0)
   const [isRotating, setIsRotating] = useState(false)
 
   // Add welcome messages, principal and developer credits in the circulars
@@ -81,20 +82,21 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
     if (enhancedCirculars.length === 0) return
 
     const interval = setInterval(() => {
+      setRotation((prev) => prev - 90) // Always rotate forward (negative direction)
       setCurrentIndex((prev) => (prev + 1) % enhancedCirculars.length)
     }, 4000) // Show each circular for 4 seconds
 
     return () => clearInterval(interval)
   }, [enhancedCirculars.length])
 
-  // Trigger rotation animation whenever currentIndex changes
+  // Trigger rotation animation whenever rotation changes
   useEffect(() => {
     setIsRotating(true)
     const timer = setTimeout(() => {
       setIsRotating(false)
     }, 500)
     return () => clearTimeout(timer)
-  }, [currentIndex])
+  }, [rotation])
 
   if (enhancedCirculars.length === 0) return null
 
@@ -110,7 +112,7 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
         className="relative h-full"
         style={{
           transformStyle: 'preserve-3d',
-          transform: `rotateX(${-90 * currentIndex}deg)`,
+          transform: `rotateX(${rotation}deg)`,
           transition: isRotating ? 'transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1)' : 'none',
           willChange: 'transform',
         }}
