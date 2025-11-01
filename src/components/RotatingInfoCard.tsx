@@ -5,7 +5,7 @@ import { Department } from '../types'
 
 const RotatingInfoCard = () => {
   const { circulars } = useCirculars()
-  const [currentIndex, setCurrentIndex] = useState(-3) // Start with -3 to show SMP NOTICE BOARD first
+  const [currentIndex, setCurrentIndex] = useState(-2) // Start with -2 to show SMP NOTICE BOARD first
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [availableDepartments, setAvailableDepartments] = useState<Department[]>([])
@@ -46,25 +46,24 @@ const RotatingInfoCard = () => {
 
   useEffect(() => {
     // Determine duration based on current index
-    // SMP NOTICE BOARD (-3) stays for 8 seconds, others stay for 4 seconds
-    const duration = currentIndex === -3 ? 8000 : 4000
+    // SMP NOTICE BOARD (-2) stays for 8 seconds, others stay for 4 seconds
+    const duration = currentIndex === -2 ? 8000 : 4000
 
     const timeout = setTimeout(() => {
       setIsTransitioning(true)
       setTimeout(() => {
         setCurrentIndex((prev) => {
-          if (prev === -3) return -2 // After SMP NOTICE BOARD, show Date & Time
-          if (prev === -2) return -1 // After Date & Time, show Principal Name
-          if (prev === -1) return 0 // After Principal Name, show "Available Circulars"
+          if (prev === -2) return -1 // After SMP NOTICE BOARD, show Date & Time
+          if (prev === -1) return 0 // After Date & Time, show "Available Circulars"
           // After "Available Circulars", loop through departments
           const deptCount = availableDepartments.length
-          if (deptCount === 0) return -3 // No departments, loop back to SMP NOTICE BOARD
+          if (deptCount === 0) return -2 // No departments, loop back to SMP NOTICE BOARD
           // Department indices start from 1
           if (prev >= 0 && prev < deptCount) return prev + 1
           // After last department, show info text
           if (prev === deptCount) return deptCount + 1
           // After info text, loop back to SMP NOTICE BOARD
-          return -3
+          return -2
         })
         setIsTransitioning(false)
       }, 500)
@@ -275,18 +274,14 @@ const RotatingInfoCard = () => {
             }`}
             key={currentIndex}
           >
-            {currentIndex === -3 ? (
+            {currentIndex === -2 ? (
               <div className={`${deptInfo.textClass} smp-board-title`}>
                 SMP NOTICE BOARD
               </div>
-            ) : currentIndex === -2 ? (
+            ) : currentIndex === -1 ? (
               <div className={`${deptInfo.textClass} smp-datetime flex flex-col items-center justify-center gap-1`}>
                 <div>{formatDate()}</div>
                 <div>{formatTime()}</div>
-              </div>
-            ) : currentIndex === -1 ? (
-              <div className={`${deptInfo.textClass} principal-name`}>
-                Principal: Sri. VIDYADHARA C A
               </div>
             ) : currentIndex === 0 ? (
               <div className={`${deptInfo.textClass} available-circulars-text`}>

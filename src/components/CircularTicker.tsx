@@ -10,73 +10,85 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [rotation, setRotation] = useState(0)
   const [isRotating, setIsRotating] = useState(false)
+  const [currentTime, setCurrentTime] = useState(new Date())
 
-  // Add welcome messages, principal and developer credits in the circulars
-  const enhancedCirculars = [...circulars]
-  if (circulars.length > 0) {
-    // Welcome message 1
-    const welcomeMessage1: Circular = {
-      id: 'welcome-message-1',
-      title: 'Welcome To SMP Notice Board',
-      subject: '',
-      department: 'Office',
-      date: new Date().toISOString(),
-      body: '',
-      attachments: [],
-      is_featured: false,
-      created_at: new Date().toISOString(),
-    }
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
 
-    // Welcome message 2
-    const welcomeMessage2: Circular = {
-      id: 'welcome-message-2',
-      title: 'Visit Daily For Latest Circulars, Memos & Announcements',
-      subject: '',
-      department: 'Office',
-      date: new Date().toISOString(),
-      body: '',
-      attachments: [],
-      is_featured: false,
-      created_at: new Date().toISOString(),
-    }
+    return () => clearInterval(timer)
+  }, [])
 
-    // Principal credit - shown first
-    const principalCredit: Circular = {
-      id: 'principal-credit',
-      title: 'Principal: Sri Vidyadhara C A',
-      subject: '',
-      department: 'Office',
-      date: new Date().toISOString(),
-      body: '',
-      attachments: [],
-      is_featured: false,
-      created_at: new Date().toISOString(),
-    }
-
-    // Developer credit
-    const developerCredit: Circular = {
-      id: 'developer-credit',
-      title: 'Developed by Thejaraj R, SMP',
-      subject: '',
-      department: 'Office',
-      date: new Date().toISOString(),
-      body: '',
-      attachments: [],
-      is_featured: false,
-      created_at: new Date().toISOString(),
-    }
-
-    // Insert welcome messages at the beginning
-    enhancedCirculars.unshift(welcomeMessage2)
-    enhancedCirculars.unshift(welcomeMessage1)
-
-    // Insert principal credit after welcome messages
-    enhancedCirculars.splice(2, 0, principalCredit)
-
-    // Insert developer credit at middle position
-    const insertPosition = Math.floor(enhancedCirculars.length / 2) || enhancedCirculars.length
-    enhancedCirculars.splice(insertPosition, 0, developerCredit)
+  const formatDate = () => {
+    return currentTime.toLocaleDateString('en-IN', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
   }
+
+  const formatTime = () => {
+    return currentTime.toLocaleTimeString('en-IN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+  }
+
+  // Only display Date, Time, and Welcome To SMP - loop these 3 items only
+  const enhancedCirculars: Circular[] = []
+
+  // Date display
+  const dateDisplay: Circular = {
+    id: 'date-display',
+    title: formatDate(),
+    subject: '',
+    department: 'Office',
+    date: new Date().toISOString(),
+    body: '',
+    attachments: [],
+    is_featured: false,
+    created_at: new Date().toISOString(),
+  }
+
+  // Time display
+  const timeDisplay: Circular = {
+    id: 'time-display',
+    title: formatTime(),
+    subject: '',
+    department: 'Office',
+    date: new Date().toISOString(),
+    body: '',
+    attachments: [],
+    is_featured: false,
+    created_at: new Date().toISOString(),
+  }
+
+  // Welcome to SMP
+  const welcomeMessage: Circular = {
+    id: 'welcome-message',
+    title: 'Welcome To SMP',
+    subject: '',
+    department: 'Office',
+    date: new Date().toISOString(),
+    body: '',
+    attachments: [],
+    is_featured: false,
+    created_at: new Date().toISOString(),
+  }
+
+  // Add items in order: Date, Time, Welcome, Date (to complete 4-sided cube)
+  enhancedCirculars.push(dateDisplay)
+  enhancedCirculars.push(timeDisplay)
+  enhancedCirculars.push(welcomeMessage)
+  // Duplicate date to complete the 4-sided rotation cube
+  enhancedCirculars.push({
+    ...dateDisplay,
+    id: 'date-display-repeat',
+  })
 
   useEffect(() => {
     if (enhancedCirculars.length === 0) return
@@ -134,12 +146,12 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
             >
               <div className="text-center max-w-5xl w-full px-2 sm:px-4">
                 {/* Mobile layout */}
-                <div className={`sm:hidden font-bold text-xl leading-tight line-clamp-2 ${nextDeptInfo.textClass}`}>
+                <div className={`sm:hidden font-bold text-2xl leading-tight line-clamp-2 ${nextDeptInfo.textClass}`}>
                   {circular.title}
                 </div>
 
                 {/* Desktop layout */}
-                <div className={`hidden sm:block font-bold text-2xl line-clamp-1 ${nextDeptInfo.textClass}`}>
+                <div className={`hidden sm:block font-bold text-3xl line-clamp-1 ${nextDeptInfo.textClass}`}>
                   {circular.title}
                 </div>
               </div>
