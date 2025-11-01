@@ -38,8 +38,21 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
     })
   }
 
-  // Only display Date, Time, and Welcome To SMP - loop these 3 items only
+  // Only display Welcome, Date, and Time - loop these 3 items only
   const enhancedCirculars: Circular[] = []
+
+  // Welcome to SMP
+  const welcomeMessage: Circular = {
+    id: 'welcome-message',
+    title: 'Welcome To SMP',
+    subject: '',
+    department: 'Office',
+    date: new Date().toISOString(),
+    body: '',
+    attachments: [],
+    is_featured: false,
+    created_at: new Date().toISOString(),
+  }
 
   // Date display
   const dateDisplay: Circular = {
@@ -67,34 +80,16 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
     created_at: new Date().toISOString(),
   }
 
-  // Welcome to SMP
-  const welcomeMessage: Circular = {
-    id: 'welcome-message',
-    title: 'Welcome To SMP',
-    subject: '',
-    department: 'Office',
-    date: new Date().toISOString(),
-    body: '',
-    attachments: [],
-    is_featured: false,
-    created_at: new Date().toISOString(),
-  }
-
-  // Add items in order: Date, Time, Welcome, Date (to complete 4-sided cube)
+  // Add items in order: Welcome, Date, Time (3-sided cube)
+  enhancedCirculars.push(welcomeMessage)
   enhancedCirculars.push(dateDisplay)
   enhancedCirculars.push(timeDisplay)
-  enhancedCirculars.push(welcomeMessage)
-  // Duplicate date to complete the 4-sided rotation cube
-  enhancedCirculars.push({
-    ...dateDisplay,
-    id: 'date-display-repeat',
-  })
 
   useEffect(() => {
     if (enhancedCirculars.length === 0) return
 
     const interval = setInterval(() => {
-      setRotation((prev) => prev - 90) // Always rotate forward (negative direction)
+      setRotation((prev) => prev - 120) // 3-sided cube rotation (360/3 = 120 degrees)
       setCurrentIndex((prev) => (prev + 1) % enhancedCirculars.length)
     }, 4000) // Show each circular for 4 seconds
 
@@ -139,7 +134,7 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
               className={`${nextDeptInfo.bgClass} absolute inset-0 flex items-center justify-center px-4`}
               style={{
                 backfaceVisibility: 'hidden',
-                transform: `rotateX(${90 * index}deg) translateZ(2.5rem)`,
+                transform: `rotateX(${120 * index}deg) translateZ(2.5rem)`,
                 WebkitBackfaceVisibility: 'hidden',
                 WebkitFontSmoothing: 'antialiased',
               }}
