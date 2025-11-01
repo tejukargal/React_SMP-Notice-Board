@@ -132,9 +132,9 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
                 WebkitFontSmoothing: 'antialiased',
               }}
             >
-              <div className="text-center max-w-5xl w-full px-4">
+              <div className="text-center max-w-5xl w-full px-3 sm:px-4">
                 {/* Mobile layout */}
-                <div className={`sm:hidden font-bold text-base line-clamp-2 ${nextDeptInfo.textClass}`}>
+                <div className={`sm:hidden font-bold text-lg leading-tight line-clamp-2 ${nextDeptInfo.textClass}`}>
                   {circular.title}
                 </div>
 
