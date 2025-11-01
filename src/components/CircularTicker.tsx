@@ -8,7 +8,7 @@ interface CircularTickerProps {
 
 const CircularTicker = ({ circulars }: CircularTickerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
+  const [isRotating, setIsRotating] = useState(false)
 
   // Rotate through departments for color cycling (same as RotatingInfoCard)
   const currentDept = departments[Math.abs(currentIndex) % departments.length]
@@ -85,63 +85,102 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
     if (enhancedCirculars.length === 0) return
 
     const interval = setInterval(() => {
-      // Fade out
-      setIsVisible(false)
-
-      // After fade out, change content and fade in
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % enhancedCirculars.length)
-        setIsVisible(true)
-      }, 500) // Wait for fade out to complete
+      setCurrentIndex((prev) => (prev + 1) % enhancedCirculars.length)
     }, 4000) // Show each circular for 4 seconds
 
     return () => clearInterval(interval)
   }, [enhancedCirculars.length])
 
+  // Trigger rotation animation whenever currentIndex changes
+  useEffect(() => {
+    setIsRotating(true)
+    const timer = setTimeout(() => {
+      setIsRotating(false)
+    }, 600)
+    return () => clearTimeout(timer)
+  }, [currentIndex])
+
   if (enhancedCirculars.length === 0) return null
 
-  const currentCircular = enhancedCirculars[currentIndex]
-
   return (
-    <div className={`${deptInfo.bgClass} overflow-hidden relative h-16 sm:h-20 transition-all duration-700 shadow-md`} style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+    <div
+      className="overflow-hidden relative h-16 sm:h-20 shadow-md"
+      style={{
+        fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
+        perspective: '1000px'
+      }}
+    >
       <div
-        className={`flex items-center justify-center px-4 h-full transition-opacity duration-500 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}
+        className="relative h-full"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: `rotateX(${-90 * currentIndex}deg)`,
+          transition: isRotating ? 'transform 0.6s ease-in-out' : 'none',
+        }}
       >
-        <div className="text-center max-w-5xl w-full">
-          {/* Mobile layout: 2 lines */}
-          <div className="sm:hidden flex flex-col items-center justify-center gap-1">
-            {/* Line 1: Title */}
-            <div className={`font-bold text-sm line-clamp-1 px-4 ${deptInfo.textClass}`}>
-              {currentCircular.title}
-            </div>
-            {/* Line 2: Subject */}
-            <div className={`${deptInfo.textClass} opacity-90 text-sm line-clamp-1 px-4`}>
-              {currentCircular.subject}
-            </div>
-          </div>
+        {enhancedCirculars.map((circular, index) => {
+          const nextDept = departments[Math.abs(index) % departments.length]
+          const nextDeptInfo = departmentInfo[nextDept]
 
-          {/* Desktop layout: Single line */}
-          <div className="hidden sm:flex sm:flex-wrap items-center justify-center gap-3">
-            <span className={`font-bold text-xl line-clamp-1 ${deptInfo.textClass}`}>{currentCircular.title}</span>
-            <span className={`text-base ${deptInfo.textClass}`}>•</span>
-            <span className={`${deptInfo.textClass} opacity-90 text-lg line-clamp-1`}>{currentCircular.subject}</span>
-          </div>
-        </div>
+          return (
+            <div
+              key={circular.id}
+              className={`${nextDeptInfo.bgClass} absolute inset-0 flex items-center justify-center px-4`}
+              style={{
+                backfaceVisibility: 'hidden',
+                transform: `rotateX(${90 * index}deg) translateZ(2.5rem)`,
+              }}
+            >
+              <div className="text-center max-w-5xl w-full">
+                {/* Mobile layout: 2 lines */}
+                <div className="sm:hidden flex flex-col items-center justify-center gap-1">
+                  {/* Line 1: Title */}
+                  <div className={`font-bold text-sm line-clamp-1 px-4 ${nextDeptInfo.textClass}`}>
+                    {circular.title}
+                  </div>
+                  {/* Line 2: Subject */}
+                  <div className={`${nextDeptInfo.textClass} opacity-90 text-sm line-clamp-1 px-4`}>
+                    {circular.subject}
+                  </div>
+                </div>
+
+                {/* Desktop layout: Single line */}
+                <div className="hidden sm:flex sm:flex-wrap items-center justify-center gap-3">
+                  <span className={`font-bold text-xl line-clamp-1 ${nextDeptInfo.textClass}`}>{circular.title}</span>
+                  <span className={`text-base ${nextDeptInfo.textClass}`}>•</span>
+                  <span className={`${nextDeptInfo.textClass} opacity-90 text-lg line-clamp-1`}>{circular.subject}</span>
+                </div>
+              </div>
+
+              {/* Progress indicator - only show on current face */}
+              {index === currentIndex && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20">
+                  <div
+                    key={`progress-${currentIndex}`}
+                    className={`h-full w-full ${nextDeptInfo.textClass} bg-current`}
+                    style={{
+                      transformOrigin: 'center',
+                      animation: 'progressExpand 4s linear',
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
 
-      {/* Progress indicator - starts from center and expands to both sides */}
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20">
-        <div
-          className={`h-full w-full ${deptInfo.textClass} bg-current`}
-          style={{
-            transformOrigin: 'center',
-            transform: isVisible ? 'scaleX(1)' : 'scaleX(0)',
-            transition: isVisible ? 'transform 4s linear' : 'transform 0.5s linear',
-          }}
-        />
-      </div>
+      {/* Keyframe animation */}
+      <style>{`
+        @keyframes progressExpand {
+          0% {
+            transform: scaleX(0);
+          }
+          100% {
+            transform: scaleX(1);
+          }
+        }
+      `}</style>
     </div>
   )
 }
