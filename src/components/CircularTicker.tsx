@@ -132,24 +132,15 @@ const CircularTicker = ({ circulars }: CircularTickerProps) => {
                 WebkitFontSmoothing: 'antialiased',
               }}
             >
-              <div className="text-center max-w-5xl w-full">
-                {/* Mobile layout: 2 lines */}
-                <div className="sm:hidden flex flex-col items-center justify-center gap-1">
-                  {/* Line 1: Title */}
-                  <div className={`font-bold text-sm line-clamp-1 px-4 ${nextDeptInfo.textClass}`}>
-                    {circular.title}
-                  </div>
-                  {/* Line 2: Subject */}
-                  <div className={`${nextDeptInfo.textClass} opacity-90 text-sm line-clamp-1 px-4`}>
-                    {circular.subject}
-                  </div>
+              <div className="text-center max-w-5xl w-full px-4">
+                {/* Mobile layout */}
+                <div className={`sm:hidden font-bold text-base line-clamp-2 ${nextDeptInfo.textClass}`}>
+                  {circular.title}
                 </div>
 
-                {/* Desktop layout: Single line */}
-                <div className="hidden sm:flex sm:flex-wrap items-center justify-center gap-3">
-                  <span className={`font-bold text-xl line-clamp-1 ${nextDeptInfo.textClass}`}>{circular.title}</span>
-                  <span className={`text-base ${nextDeptInfo.textClass}`}>•</span>
-                  <span className={`${nextDeptInfo.textClass} opacity-90 text-lg line-clamp-1`}>{circular.subject}</span>
+                {/* Desktop layout */}
+                <div className={`hidden sm:block font-bold text-2xl line-clamp-1 ${nextDeptInfo.textClass}`}>
+                  {circular.title}
                 </div>
               </div>
 
