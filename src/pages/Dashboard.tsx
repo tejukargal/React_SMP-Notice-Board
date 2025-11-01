@@ -338,33 +338,37 @@ const Dashboard = () => {
             <div
               className={`featured-circular-modern ${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
             >
-              <div className="p-4 sm:p-8">
-                <div className="mb-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span
-                      className={`px-4 py-1.5 ${departmentInfo[featuredCircular.department].bgClass} ${departmentInfo[featuredCircular.department].textClass} rounded-full text-sm font-semibold border-2 ${departmentInfo[featuredCircular.department].borderClass}`}
-                    >
-                      {featuredCircular.department}
-                    </span>
-                    <div className="flex items-center gap-2 text-gray-600 text-base">
-                      <Calendar className="w-4 h-4" />
-                      <span>{formatDate(featuredCircular.date)}</span>
-                    </div>
+              {/* Header Section */}
+              <div className={`${departmentInfo[featuredCircular.department].bgClass} p-4 sm:p-6 border-b-2 ${departmentInfo[featuredCircular.department].borderClass}`}>
+                <div className="flex items-center justify-between mb-3">
+                  <span
+                    className={`px-4 py-1.5 bg-white ${departmentInfo[featuredCircular.department].textClass} rounded-full text-sm font-semibold border-2 ${departmentInfo[featuredCircular.department].borderClass} shadow-sm`}
+                  >
+                    {featuredCircular.department}
+                  </span>
+                  <div className="flex items-center gap-2 text-gray-700 text-base font-medium">
+                    <Calendar className="w-4 h-4" />
+                    <span>{formatDate(featuredCircular.date)}</span>
                   </div>
-                  {featuredCircular.attachments && featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length > 0 && (
-                    <div className="flex items-center gap-1 text-gray-600 text-sm">
-                      <FileText className="w-4 h-4" />
-                      <span>{featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length} attachment(s)</span>
-                    </div>
-                  )}
                 </div>
 
                 <h3
-                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 featured-title"
+                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 featured-title"
                   key={`title-${featuredAnimationKey}`}
                 >
                   {featuredCircular.title}
                 </h3>
+
+                {featuredCircular.attachments && featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length > 0 && (
+                  <div className="flex items-center gap-1 text-gray-700 text-sm font-medium mt-2">
+                    <FileText className="w-4 h-4" />
+                    <span>{featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length} attachment(s)</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Body Section */}
+              <div className="p-4 sm:p-8">
 
                 <p
                   className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4 featured-subject`}
