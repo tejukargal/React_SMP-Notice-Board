@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { Circular, Department } from '../types'
 import { departmentInfo } from '../utils/departments'
-import CircularTicker from '../components/CircularTicker'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from '../components/CSVTicker'
 import CircularPreviewStack from '../components/CircularPreviewStack'
@@ -149,11 +148,14 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen animate-fadeIn">
-      {/* Ticker */}
-      <CircularTicker circulars={circulars} />
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Header */}
+        <div className="mb-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Dashboard</h1>
+          <p className="text-gray-600">Welcome to SMP Notice Board</p>
+        </div>
+
         <style>{`
           @keyframes fadeIn {
             from {

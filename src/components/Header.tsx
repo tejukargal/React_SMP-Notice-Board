@@ -7,9 +7,20 @@ import { departmentInfo, departments } from '../utils/departments'
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentDeptIndex, setCurrentDeptIndex] = useState(0)
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [currentTime, setCurrentTime] = useState(new Date())
   const location = useLocation()
   const navigate = useNavigate()
   const { isAuth, username, logout } = useAuth()
+
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
 
   // Cycle through departments every 8 seconds
   useEffect(() => {
@@ -20,8 +31,47 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
+  // Cycle through text items: College Name -> Welcome Message -> Date & Time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prev) => (prev + 1) % 3)
+    }, 5000) // Change every 5 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
   const currentDept = departments[currentDeptIndex]
   const deptInfo = departmentInfo[currentDept]
+
+  const formatDate = () => {
+    return currentTime.toLocaleDateString('en-IN', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  }
+
+  const formatTime = () => {
+    return currentTime.toLocaleTimeString('en-IN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+  }
+
+  const getHeaderText = () => {
+    switch (currentTextIndex) {
+      case 0:
+        return 'Sanjay Memorial Polytechnic, Sagar'
+      case 1:
+        return 'Welcome To SMP'
+      case 2:
+        return `${formatDate()} | ${formatTime()}`
+      default:
+        return 'Sanjay Memorial Polytechnic, Sagar'
+    }
+  }
 
   const handleLogout = () => {
     logout()
@@ -82,6 +132,29 @@ const Header = () => {
           display: inline-block;
           transform-style: preserve-3d;
         }
+
+        @keyframes fadeInOut {
+          0% {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          10% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          90% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+        }
+
+        .header-text-animate {
+          animation: fadeInOut 5s ease-in-out;
+        }
       `}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -97,13 +170,19 @@ const Header = () => {
               </div>
             </div>
             <div className="hidden sm:block">
-              <h1 className={`text-2xl font-extrabold ${deptInfo.textClass} transition-all duration-700`}>
-                Sanjay Memorial Polytechnic, Sagar
+              <h1
+                className={`text-2xl font-extrabold ${deptInfo.textClass} transition-all duration-700 header-text-animate`}
+                key={currentTextIndex}
+              >
+                {getHeaderText()}
               </h1>
             </div>
             <div className="sm:hidden">
-              <h1 className={`text-base font-extrabold ${deptInfo.textClass} leading-tight transition-all duration-700`}>
-                Sanjay Memorial Polytechnic, Sagar
+              <h1
+                className={`text-base font-extrabold ${deptInfo.textClass} leading-tight transition-all duration-700 header-text-animate`}
+                key={currentTextIndex}
+              >
+                {getHeaderText()}
               </h1>
             </div>
           </a>
