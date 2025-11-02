@@ -120,10 +120,10 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
         <div className="text-center">
           <div className="loader mb-4 mx-auto"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600 text-lg font-medium">Loading...</p>
           <style>{`
             .loader {
               width: 50px;
