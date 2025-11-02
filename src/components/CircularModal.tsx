@@ -189,7 +189,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 flex-shrink-0 rounded-b-2xl sm:rounded-b-xl">
           <button
             onClick={handleClose}
-            className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
+            className={`px-6 py-2.5 ${info.bgClass} border-2 ${info.borderClass} ${info.textClass} rounded-lg hover:opacity-90 font-semibold transition-all hover:shadow-md`}
           >
             Close
           </button>
