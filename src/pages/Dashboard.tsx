@@ -24,42 +24,55 @@ const Dashboard = () => {
     fetchCirculars()
   }, [])
 
-  // Handle back button for modal and app exit
+  // Handle back button for modal only
   useEffect(() => {
+    if (!selectedCircular) return
+
     const handlePopState = () => {
-      // If modal is open, close it and navigate to All Circulars instead of exiting
-      if (selectedCircular) {
-        setSelectedCircular(null)
-        navigate('/circulars')
-        return
-      }
-
-      // Exit app directly without confirmation
-      window.close()
-
-      // Fallback if window.close() doesn't work
-      setTimeout(() => {
-        if (!window.closed) {
-          window.location.href = 'about:blank'
-        }
-      }, 100)
+      // Close modal and navigate to All Circulars
+      setSelectedCircular(null)
+      navigate('/circulars')
     }
+
+    // Push a state entry when modal opens
+    window.history.pushState(null, '', '/')
 
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
-
-    // Push a state entry when modal opens or on mount
-    if (selectedCircular) {
-      window.history.pushState(null, '', '/')
-    } else {
-      // Push initial state on mount
-      window.history.pushState(null, '', '/')
-    }
 
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
   }, [selectedCircular, navigate])
+
+  // Handle back button on dashboard (without modal) to exit app
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      // Only exit if we're on the dashboard page
+      if (window.location.pathname === '/' && !selectedCircular) {
+        e.preventDefault()
+        // Exit app directly without confirmation
+        window.close()
+
+        // Fallback if window.close() doesn't work
+        setTimeout(() => {
+          if (!window.closed) {
+            window.location.href = 'about:blank'
+          }
+        }, 100)
+      }
+    }
+
+    // Listen for back button
+    window.addEventListener('popstate', handlePopState)
+
+    // Push initial state on mount
+    window.history.pushState(null, '', '/')
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [selectedCircular])
 
   // Update featured circular and categories when circulars change
   useEffect(() => {

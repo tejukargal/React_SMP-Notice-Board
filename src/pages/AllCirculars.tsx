@@ -14,6 +14,7 @@ const AllCirculars = () => {
   const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [selectedDepartment, setSelectedDepartment] = useState<Department | 'All'>('All')
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
+  const [animationKey, setAnimationKey] = useState(0)
 
   useEffect(() => {
     const dept = searchParams.get('department') as Department
@@ -31,6 +32,8 @@ const AllCirculars = () => {
     const handlePopState = () => {
       // Close modal and stay on All Circulars
       setSelectedCircular(null)
+      // Trigger animation when returning from modal
+      setAnimationKey(prev => prev + 1)
       // Navigate to ensure we're on All Circulars page
       navigate('/circulars', { replace: true })
     }
@@ -182,7 +185,7 @@ const AllCirculars = () => {
 
         {/* Circulars Grid */}
         {filteredCirculars.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div key={animationKey} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCirculars.map((circular, index) => (
               <div
                 key={circular.id}
@@ -215,7 +218,11 @@ const AllCirculars = () => {
       {selectedCircular && (
         <CircularModal
           circular={selectedCircular}
-          onClose={() => setSelectedCircular(null)}
+          onClose={() => {
+            setSelectedCircular(null)
+            // Trigger animation when closing modal
+            setAnimationKey(prev => prev + 1)
+          }}
         />
       )}
     </div>
