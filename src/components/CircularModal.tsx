@@ -84,7 +84,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         }
       `}</style>
       <div
-        className="bg-white rounded-xl max-w-3xl w-[95vw] sm:w-full h-[85vh] flex flex-col animate-popup"
+        className="bg-white rounded-xl max-w-3xl w-[98vw] sm:w-full h-[85vh] flex flex-col animate-popup"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Fixed */}
