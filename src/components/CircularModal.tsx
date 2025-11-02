@@ -24,6 +24,24 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
     }
   }, [])
 
+  // Handle back button/gesture to navigate to All Circulars
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate('/circulars')
+      onClose()
+    }
+
+    // Push a state entry so back button triggers popstate
+    window.history.pushState(null, '', window.location.pathname)
+
+    // Listen for back button/gesture
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [navigate, onClose])
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
       day: 'numeric',
