@@ -26,8 +26,27 @@ const Dashboard = () => {
 
   // Handle back button press to exit app from dashboard
   useEffect(() => {
-    const handleBackButton = () => {
-      // Always show exit confirmation and prevent default back navigation
+    // Clear all history and make dashboard the only entry
+    const clearHistory = () => {
+      // Get the current history length
+      const historyLength = window.history.length
+
+      // Go back to clear all forward history
+      if (historyLength > 1) {
+        window.history.go(-(historyLength - 1))
+      }
+
+      // Then replace current state with dashboard
+      setTimeout(() => {
+        window.history.replaceState(null, '', '/')
+      }, 100)
+    }
+
+    clearHistory()
+
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault()
+
       const confirmExit = window.confirm('Do you want to exit the app?')
       if (confirmExit) {
         // Try to close the window/tab
@@ -40,21 +59,10 @@ const Dashboard = () => {
           }
         }, 100)
       } else {
-        // Stay on dashboard - push to history to block back
-        navigate('/', { replace: true })
+        // Stay on dashboard - prevent going back
+        window.history.pushState(null, '', '/')
       }
     }
-
-    const handlePopState = (e: PopStateEvent) => {
-      e.preventDefault()
-      // Immediately navigate back to dashboard
-      navigate('/', { replace: true })
-      // Then show exit dialog
-      handleBackButton()
-    }
-
-    // Clear any forward history and ensure we're on dashboard
-    window.history.replaceState(null, '', '/')
 
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
@@ -62,7 +70,7 @@ const Dashboard = () => {
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [navigate])
+  }, [])
 
   // Update featured circular and categories when circulars change
   useEffect(() => {
