@@ -99,10 +99,31 @@ const AllCirculars = () => {
             animation: popup 0.6s ease-out forwards;
             opacity: 0;
           }
+
+          /* Page title animation - same as featured circular */
+          @keyframes scaleBlurFade {
+            0% {
+              opacity: 0;
+              transform: scale(0.94) translateY(20px);
+              filter: blur(8px);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+              filter: blur(0);
+            }
+          }
+
+          .page-title-animate {
+            position: relative;
+            opacity: 0;
+            animation: scaleBlurFade 1.2s ease-out forwards;
+            letter-spacing: -0.02em;
+          }
         `}</style>
         {/* Header */}
         <div className="mb-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">All Circulars</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 page-title-animate" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>All Circulars</h1>
           <p className="text-gray-600">Browse all notices and circulars</p>
         </div>
 

@@ -152,7 +152,7 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
         <div className="mb-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 featured-title" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Dashboard</h1>
           <p className="text-gray-600">Welcome to SMP Notice Board</p>
         </div>
 
