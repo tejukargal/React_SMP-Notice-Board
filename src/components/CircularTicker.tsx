@@ -9,7 +9,6 @@ interface CircularTickerProps {
 const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [rotation, setRotation] = useState(0)
-  const [isRotating, setIsRotating] = useState(true) // Start with rotation enabled
   const [currentTime, setCurrentTime] = useState(new Date())
 
   // Update time every second
@@ -96,14 +95,6 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
     return () => clearInterval(interval)
   }, [enhancedCirculars.length])
 
-  // Trigger rotation animation whenever rotation changes
-  useEffect(() => {
-    setIsRotating(true)
-    const timer = setTimeout(() => {
-      setIsRotating(false)
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [rotation])
 
   if (enhancedCirculars.length === 0) return null
 
@@ -120,7 +111,7 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
         style={{
           transformStyle: 'preserve-3d',
           transform: `rotateX(${rotation}deg)`,
-          transition: isRotating ? 'transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1)' : 'none',
+          transition: 'transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1)',
           willChange: 'transform',
         }}
       >
