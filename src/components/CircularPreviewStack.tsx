@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
 
@@ -7,6 +8,7 @@ interface CircularPreviewStackProps {
 }
 
 const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
+  const navigate = useNavigate()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
@@ -106,7 +108,10 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         }
       `}</style>
 
-      <div className={`relative ${currentDeptInfo.bgClass} border-l-4 ${currentDeptInfo.borderClass} rounded-lg shadow-lg overflow-hidden transition-all duration-700`}>
+      <div
+        onClick={() => navigate('/circulars')}
+        className={`relative ${currentDeptInfo.bgClass} border-l-4 ${currentDeptInfo.borderClass} rounded-lg shadow-lg overflow-hidden transition-all duration-700 cursor-pointer hover:shadow-xl`}
+      >
         <div className="relative h-[160px] sm:h-[120px]">
           {/* Background/Stacked text layer */}
           {previewCirculars.length > 1 && (
@@ -185,7 +190,8 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
           {previewCirculars.map((_, index) => (
             <button
               key={index}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
                 setIsTransitioning(true)
                 setTimeout(() => {
                   setCurrentIndex(index)

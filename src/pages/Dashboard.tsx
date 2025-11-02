@@ -349,7 +349,7 @@ const Dashboard = () => {
 
                 {/* Title */}
                 <h3
-                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-2 line-clamp-2 animate-popup"
+                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 animate-popup pb-3 border-b border-gray-300"
                   key={`title-${featuredAnimationKey}`}
                 >
                   {featuredCircular.title}
