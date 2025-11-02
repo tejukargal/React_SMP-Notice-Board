@@ -47,10 +47,9 @@ const Dashboard = () => {
 
   // Handle back button on dashboard (without modal) to exit app
   useEffect(() => {
-    const handlePopState = (e: PopStateEvent) => {
-      // Only exit if we're on the dashboard page
+    const handlePopState = () => {
+      // Only exit if we're on the dashboard page and no modal is open
       if (window.location.pathname === '/' && !selectedCircular) {
-        e.preventDefault()
         // Exit app directly without confirmation
         window.close()
 
@@ -66,13 +65,15 @@ const Dashboard = () => {
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
 
-    // Push initial state on mount
-    window.history.pushState(null, '', '/')
-
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
   }, [selectedCircular])
+
+  // Push initial history state on mount only
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.pathname)
+  }, [])
 
   // Update featured circular and categories when circulars change
   useEffect(() => {

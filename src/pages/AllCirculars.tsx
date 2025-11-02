@@ -34,8 +34,7 @@ const AllCirculars = () => {
       setSelectedCircular(null)
       // Trigger animation when returning from modal
       setAnimationKey(prev => prev + 1)
-      // Navigate to ensure we're on All Circulars page
-      navigate('/circulars', { replace: true })
+      // Don't call navigate here - let browser handle the history naturally
     }
 
     // Push a state entry when modal opens
@@ -47,7 +46,7 @@ const AllCirculars = () => {
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [selectedCircular, navigate])
+  }, [selectedCircular])
 
   // Use useMemo to optimize filtering
   const filteredCirculars = useMemo(() => {
