@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [activeDepartment, setActiveDepartment] = useState<Department | null>(null)
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
   const tabsContainerRef = useRef<HTMLDivElement>(null)
   const activeTabRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
@@ -24,11 +25,15 @@ const Dashboard = () => {
     fetchCirculars()
   }, [])
 
+  // Mark initial load as complete once data is loaded
+  useEffect(() => {
+    if (!loading && circulars.length > 0) {
+      setIsInitialLoad(false)
+    }
+  }, [loading, circulars.length])
+
   // Handle back button press to exit app from dashboard
   useEffect(() => {
-    // Push a state to enable back button detection
-    window.history.pushState(null, '', '/')
-
     const handlePopState = (e: PopStateEvent) => {
       e.preventDefault()
 
@@ -51,6 +56,9 @@ const Dashboard = () => {
 
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
+
+    // Push initial state after listener is set up to avoid glitch
+    window.history.pushState(null, '', '/')
 
     return () => {
       window.removeEventListener('popstate', handlePopState)
@@ -116,9 +124,9 @@ const Dashboard = () => {
     })
   }
 
-  if (loading) {
+  if (loading && isInitialLoad) {
     return (
-      <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-gray-50 z-50 flex items-center justify-center transition-opacity duration-300">
         <div className="text-center">
           <div className="loader mb-4 mx-auto"></div>
           <p className="text-gray-600 text-lg font-medium">Loading...</p>
@@ -156,13 +164,26 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen animate-fadeIn">
       {/* Ticker */}
       <CircularTicker circulars={circulars} />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <style>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+
+          .animate-fadeIn {
+            animation: fadeIn 0.3s ease-in forwards;
+          }
+
           @keyframes popup {
             0% {
               opacity: 0;
