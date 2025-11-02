@@ -88,9 +88,9 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Fixed */}
-        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-6 py-5 flex-shrink-0`}>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
+        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-4 sm:px-6 py-5 flex-shrink-0`}>
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
                 <span
                   className={`px-4 py-1.5 ${info.textClass} rounded-full text-sm font-bold border-2 ${info.borderClass} w-fit`}
@@ -102,13 +102,13 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
                   <span className="truncate">{formatDate(circular.date)}</span>
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 line-clamp-2">{circular.title}</h2>
+              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 line-clamp-2 break-words">{circular.title}</h2>
             </div>
             <button
               onClick={handleClose}
-              className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-lg transition"
+              className="flex-shrink-0 p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition"
             >
-              <X className="w-6 h-6 text-gray-600" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
             </button>
           </div>
         </div>
