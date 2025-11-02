@@ -330,7 +330,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Featured Circular</h2>
               <Link
-                to="/circulars"
+                to={featuredCircular ? `/circulars?department=${featuredCircular.department}` : '/circulars'}
                 className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
                 style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
               >
@@ -426,7 +426,7 @@ const Dashboard = () => {
               {circulars.filter(c => c.id !== featuredCircular?.id).slice(0, 2).map((circular, index) => (
                 <Link
                   key={circular.id}
-                  to={`/circulars`}
+                  to={`/circulars?department=${circular.department}`}
                   className={`${departmentInfo[circular.department].bgClass} border-l-4 ${departmentInfo[circular.department].borderClass} rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow animate-popup`}
                   style={{ animationDelay: `${0.2 + index * 0.1}s`, fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
                 >
