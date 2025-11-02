@@ -24,32 +24,27 @@ const Dashboard = () => {
     fetchCirculars()
   }, [])
 
-  // Handle back button press to exit app from dashboard
+  // Clear navigation history and handle back button to exit app
   useEffect(() => {
-    const handlePopState = (e: PopStateEvent) => {
-      e.preventDefault()
+    // Replace current history entry to clear any previous navigation
+    window.history.replaceState(null, '', '/')
 
-      const confirmExit = window.confirm('Do you want to exit the app?')
-      if (confirmExit) {
-        // Try to close the window/tab
-        window.close()
+    const handlePopState = () => {
+      // Exit app directly without confirmation
+      window.close()
 
-        // If window.close() doesn't work, navigate to about:blank
-        setTimeout(() => {
-          if (!window.closed) {
-            window.location.href = 'about:blank'
-          }
-        }, 100)
-      } else {
-        // Stay on dashboard - prevent going back
-        window.history.pushState(null, '', '/')
-      }
+      // Fallback if window.close() doesn't work
+      setTimeout(() => {
+        if (!window.closed) {
+          window.location.href = 'about:blank'
+        }
+      }, 100)
     }
 
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
 
-    // Push initial state after listener is set up to avoid glitch
+    // Push a new state so back button triggers popstate
     window.history.pushState(null, '', '/')
 
     return () => {
