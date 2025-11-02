@@ -28,7 +28,7 @@ interface CircularsProviderProps {
 
 export const CircularsProvider = ({ children }: CircularsProviderProps) => {
   const [circulars, setCirculars] = useState<Circular[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [lastFetch, setLastFetch] = useState<number>(0)
 
@@ -40,6 +40,7 @@ export const CircularsProvider = ({ children }: CircularsProviderProps) => {
 
     // Return cached data if it's still fresh and not forced
     if (!force && circulars.length > 0 && (now - lastFetch) < CACHE_DURATION) {
+      setLoading(false)
       return
     }
 

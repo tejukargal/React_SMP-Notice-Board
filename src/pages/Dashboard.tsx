@@ -16,7 +16,6 @@ const Dashboard = () => {
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [activeDepartment, setActiveDepartment] = useState<Department | null>(null)
-  const [isInitialLoad, setIsInitialLoad] = useState(true)
   const tabsContainerRef = useRef<HTMLDivElement>(null)
   const activeTabRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
@@ -24,13 +23,6 @@ const Dashboard = () => {
   useEffect(() => {
     fetchCirculars()
   }, [])
-
-  // Mark initial load as complete once data is loaded
-  useEffect(() => {
-    if (!loading && circulars.length > 0) {
-      setIsInitialLoad(false)
-    }
-  }, [loading, circulars.length])
 
   // Handle back button press to exit app from dashboard
   useEffect(() => {
@@ -124,7 +116,7 @@ const Dashboard = () => {
     })
   }
 
-  if (loading && isInitialLoad) {
+  if (loading) {
     return (
       <div className="fixed inset-0 bg-gray-50 z-50 flex items-center justify-center transition-opacity duration-300">
         <div className="text-center">
