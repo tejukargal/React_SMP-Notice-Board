@@ -121,10 +121,11 @@ const AdminPanel = () => {
           </div>
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition shadow-md hover:shadow-lg"
+            className="flex items-center gap-2 px-4 sm:px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition shadow-md hover:shadow-lg whitespace-nowrap"
           >
-            <Plus className="w-5 h-5" />
-            Add Circular
+            <Plus className="w-5 h-5 flex-shrink-0" />
+            <span className="hidden xs:inline sm:inline">Add Circular</span>
+            <span className="inline xs:hidden sm:hidden">Add</span>
           </button>
         </div>
 

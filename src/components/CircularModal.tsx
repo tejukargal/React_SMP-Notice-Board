@@ -72,15 +72,15 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-6 py-5 flex-shrink-0`}>
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
                 <span
-                  className={`px-4 py-1.5 ${info.textClass} rounded-full text-sm font-bold border-2 ${info.borderClass}`}
+                  className={`px-4 py-1.5 ${info.textClass} rounded-full text-sm font-bold border-2 ${info.borderClass} w-fit`}
                 >
                   {circular.department}
                 </span>
-                <div className="flex items-center gap-2 text-gray-600 text-sm">
-                  <Calendar className="w-4 h-4" />
-                  <span>{formatDate(circular.date)}</span>
+                <div className="flex items-center gap-2 text-gray-600 text-xs sm:text-sm whitespace-nowrap">
+                  <Calendar className="w-4 h-4 flex-shrink-0" />
+                  <span className="truncate">{formatDate(circular.date)}</span>
                 </div>
               </div>
               <h2 className="text-2xl font-bold text-gray-900">{circular.title}</h2>
