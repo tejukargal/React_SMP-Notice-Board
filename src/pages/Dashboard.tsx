@@ -311,9 +311,9 @@ const Dashboard = () => {
           <div className="mb-4 shadow-md rounded-xl overflow-hidden">
             <RotatingInfoCard onDepartmentChange={setActiveDepartment} />
             <div className="border-t border-gray-200"></div>
-            <div className="bg-white py-6" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+            <div className="bg-white" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
               <div ref={tabsContainerRef} className="overflow-x-auto scrollbar-hide">
-                <div className="flex items-center justify-center gap-3 px-6 min-w-max py-1">
+                <div className="flex items-center overflow-x-auto scrollbar-hide">
                   {availableCategories.map((dept) => {
                     const deptInfo = departmentInfo[dept]
                     const count = circulars.filter(c => c.department === dept || c.department === 'All').length
@@ -323,14 +323,14 @@ const Dashboard = () => {
                         key={dept}
                         ref={isActive ? activeTabRef : null}
                         onClick={() => navigate(`/circulars?department=${dept}`)}
-                        className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold border-2 transition-all flex items-center gap-2 ${
+                        className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold border-2 transition-all flex items-center gap-1.5 mx-1.5 my-3 ${
                           isActive
                             ? `bg-white ${deptInfo.textClass} ${deptInfo.borderClass} shadow-md scale-105`
                             : `bg-gray-50 text-gray-700 border-gray-300 hover:border-gray-400 hover:shadow-sm`
                         }`}
                       >
                         <span className="whitespace-nowrap">{dept}</span>
-                        <span className={`min-w-[20px] h-[20px] flex items-center justify-center px-2 text-xs font-bold rounded-full ${
+                        <span className={`min-w-[16px] h-[16px] flex items-center justify-center px-1 text-[10px] font-bold rounded-full ${
                           isActive
                             ? `text-white ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-').replace('bg-opacity-100', '')}`
                             : `text-gray-700 bg-gray-200`
