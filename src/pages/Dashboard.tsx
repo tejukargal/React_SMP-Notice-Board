@@ -452,10 +452,7 @@ const Dashboard = () => {
       {selectedCircular && (
         <CircularModal
           circular={selectedCircular}
-          onClose={() => {
-            setSelectedCircular(null)
-            navigate('/circulars')
-          }}
+          onClose={() => setSelectedCircular(null)}
         />
       )}
     </div>

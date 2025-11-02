@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { useNavigate } from 'react-router-dom'
 import { X, Calendar, FileText, Download } from 'lucide-react'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
@@ -12,6 +13,7 @@ interface CircularModalProps {
 }
 
 const CircularModal = ({ circular, onClose }: CircularModalProps) => {
+  const navigate = useNavigate()
   const info = departmentInfo[circular.department]
 
   // Lock body scroll when modal is open
@@ -37,13 +39,19 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
     return fileName.endsWith('.csv') || fileType.includes('csv')
   }
 
+  // Handle close with navigation to All Circulars
+  const handleClose = () => {
+    navigate('/circulars')
+    onClose()
+  }
+
   // Debug logging
   console.log('Circular attachments:', circular.attachments)
 
   const modalContent = (
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 animate-fadeIn"
-      onClick={onClose}
+      onClick={handleClose}
       style={{ zIndex: 9999 }}
     >
       <style>{`
@@ -97,7 +105,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
               <h2 className="text-2xl font-bold text-gray-900">{circular.title}</h2>
             </div>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-lg transition"
             >
               <X className="w-6 h-6 text-gray-600" />
@@ -180,7 +188,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         {/* Footer - Fixed */}
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 flex-shrink-0">
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
           >
             Close
