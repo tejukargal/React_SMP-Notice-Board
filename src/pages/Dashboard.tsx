@@ -7,6 +7,7 @@ import { renderHtmlContent } from '../utils/htmlContent'
 import CSVTicker from '../components/CSVTicker'
 import CircularPreviewStack from '../components/CircularPreviewStack'
 import RotatingInfoCard from '../components/RotatingInfoCard'
+import CircularModal from '../components/CircularModal'
 import { useCirculars } from '../context/CircularsContext'
 
 const Dashboard = () => {
@@ -15,6 +16,7 @@ const Dashboard = () => {
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [activeDepartment, setActiveDepartment] = useState<Department | null>(null)
+  const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
   const tabsContainerRef = useRef<HTMLDivElement>(null)
   const activeTabRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
@@ -322,99 +324,62 @@ const Dashboard = () => {
             </div>
 
             <div
-              className={`featured-circular-modern ${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow`}
+              onClick={() => setSelectedCircular(featuredCircular)}
+              className={`featured-circular-modern ${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
             >
-              {/* Header Section */}
-              <div className={`${departmentInfo[featuredCircular.department].bgClass} p-4 sm:p-6 border-b-2 ${departmentInfo[featuredCircular.department].borderClass}`}>
+              <div className="p-5">
+                {/* Header with Date */}
                 <div className="flex items-center justify-between mb-3">
                   <span
-                    className={`px-4 py-1.5 bg-white ${departmentInfo[featuredCircular.department].textClass} rounded-full text-sm font-semibold border-2 ${departmentInfo[featuredCircular.department].borderClass} shadow-sm`}
+                    className={`px-3 py-1.5 ${departmentInfo[featuredCircular.department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[featuredCircular.department].borderClass}`}
                   >
                     {featuredCircular.department}
                   </span>
-                  <div className="flex items-center gap-2 text-gray-700 text-base font-medium">
-                    <Calendar className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5 text-gray-600 text-xs">
+                    <Calendar className="w-3.5 h-3.5" />
                     <span>{formatDate(featuredCircular.date)}</span>
                   </div>
                 </div>
 
+                {/* Title */}
                 <h3
-                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 animate-popup"
+                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-2 line-clamp-2 animate-popup"
                   key={`title-${featuredAnimationKey}`}
                 >
                   {featuredCircular.title}
                 </h3>
 
-                {featuredCircular.attachments && featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length > 0 && (
-                  <div className="flex items-center gap-1 text-gray-700 text-sm font-medium mt-2">
-                    <FileText className="w-4 h-4" />
-                    <span>{featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length} attachment(s)</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Body Section */}
-              <div className="p-4 sm:p-8">
-
+                {/* Subject */}
                 <p
-                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4 animate-popup`}
+                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-semibold mb-3 line-clamp-2 animate-popup`}
                   key={`subject-${featuredAnimationKey}`}
                   style={{ animationDelay: '0.1s' }}
                 >
                   {featuredCircular.subject}
                 </p>
 
+                {/* Body Preview */}
                 <div
-                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[18px] [&>*]:font-normal animate-popup"
+                  className="text-[18px] text-gray-600 line-clamp-3 mb-4 animate-popup"
                   key={`body-${featuredAnimationKey}`}
                   style={{ animationDelay: '0.2s' }}
                   dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body, departmentInfo[featuredCircular.department].color)}
                 />
 
-                {/* CSV Ticker Preview */}
-                {featuredCircular.attachments && featuredCircular.attachments.some(file => file.name.toLowerCase().endsWith('.csv')) && (
-                  <div className="mt-6">
-                    {featuredCircular.attachments
-                      .filter(file => file.name.toLowerCase().endsWith('.csv'))
-                      .map((file, index) => (
-                        <CSVTicker
-                          key={index}
-                          csvBase64={file.base64}
-                          fileName={file.name}
-                          department={featuredCircular.department}
-                        />
-                      ))}
-                  </div>
-                )}
-
-                {/* Attachments - Exclude CSV files as they are shown in ticker */}
-                {featuredCircular.attachments && featuredCircular.attachments.filter(file => !file.name.toLowerCase().trim().endsWith('.csv')).length > 0 && (
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <h4 className="font-semibold text-gray-900 mb-3">Attachments:</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {featuredCircular.attachments
-                        .filter(file => !file.name.toLowerCase().trim().endsWith('.csv'))
-                        .map((file, index) => (
-                          <a
-                            key={index}
-                            href={file.base64}
-                            download={file.name}
-                            className={`flex items-center gap-3 p-3 bg-transparent border-2 ${departmentInfo[featuredCircular.department].borderClass} rounded-lg hover:shadow-md transition group`}
-                          >
-                            <FileText className={`w-8 h-8 ${departmentInfo[featuredCircular.department].textClass} flex-shrink-0`} />
-                            <div className="flex-1 min-w-0">
-                              <p className={`font-medium ${departmentInfo[featuredCircular.department].textClass} truncate`}>
-                                {file.name}
-                              </p>
-                              <p className="text-xs text-gray-600">
-                                {(file.size / 1024).toFixed(2)} KB
-                              </p>
-                            </div>
-                          </a>
-                        ))}
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                  {featuredCircular.attachments && featuredCircular.attachments.length > 0 ? (
+                    <div className="flex items-center gap-1.5 text-gray-600 text-xs">
+                      <FileText className="w-4 h-4" />
+                      <span>{featuredCircular.attachments.length} attachment(s)</span>
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <div className="text-xs text-gray-500">No attachments</div>
+                  )}
+                  <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
+                    View Details →
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -476,6 +441,17 @@ const Dashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Modal */}
+      {selectedCircular && (
+        <CircularModal
+          circular={selectedCircular}
+          onClose={() => {
+            setSelectedCircular(null)
+            navigate('/circulars')
+          }}
+        />
+      )}
     </div>
   )
 }
