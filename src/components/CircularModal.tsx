@@ -50,7 +50,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
 
   const modalContent = (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 animate-fadeIn"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 sm:p-4 animate-fadeIn"
       onClick={handleClose}
       style={{ zIndex: 9999 }}
     >
@@ -84,11 +84,11 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         }
       `}</style>
       <div
-        className="bg-white rounded-xl max-w-3xl w-[98vw] sm:w-full h-[85vh] flex flex-col animate-popup"
+        className="bg-white rounded-2xl sm:rounded-xl max-w-3xl w-full sm:w-full h-[90vh] sm:h-[85vh] flex flex-col animate-popup shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Fixed */}
-        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-4 sm:px-6 py-5 flex-shrink-0`}>
+        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-4 sm:px-6 py-5 flex-shrink-0 rounded-t-2xl sm:rounded-t-xl`}>
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
@@ -186,7 +186,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         </div>
 
         {/* Footer - Fixed */}
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 flex-shrink-0">
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 flex-shrink-0 rounded-b-2xl sm:rounded-b-xl">
           <button
             onClick={handleClose}
             className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition"
