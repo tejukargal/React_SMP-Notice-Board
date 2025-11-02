@@ -24,12 +24,17 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
 
   // Handle browser back button
   useEffect(() => {
+    let isModalClosing = false
+
     const handlePopState = () => {
-      onClose()
+      if (!isModalClosing) {
+        isModalClosing = true
+        onClose()
+      }
     }
 
-    // Push a state entry when modal opens
-    window.history.pushState({ modalOpen: true }, '')
+    // Push a state entry when modal opens with current URL
+    window.history.pushState({ modalOpen: true }, '', window.location.href)
 
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
