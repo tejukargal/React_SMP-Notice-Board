@@ -24,24 +24,6 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
     }
   }, [])
 
-  // Handle back button/gesture to navigate to All Circulars
-  useEffect(() => {
-    const handlePopState = () => {
-      navigate('/circulars')
-      onClose()
-    }
-
-    // Push a state entry so back button triggers popstate
-    window.history.pushState(null, '', window.location.pathname)
-
-    // Listen for back button/gesture
-    window.addEventListener('popstate', handlePopState)
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState)
-    }
-  }, [navigate, onClose])
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
       day: 'numeric',
@@ -102,7 +84,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         }
       `}</style>
       <div
-        className="bg-white rounded-2xl max-w-3xl w-full h-[85vh] flex flex-col animate-popup"
+        className="bg-white rounded-2xl max-w-3xl w-[95vw] sm:w-full h-[85vh] flex flex-col animate-popup"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Fixed */}
@@ -120,7 +102,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
                   <span className="truncate">{formatDate(circular.date)}</span>
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">{circular.title}</h2>
+              <h2 className="text-2xl font-bold text-gray-900 line-clamp-2">{circular.title}</h2>
             </div>
             <button
               onClick={handleClose}
