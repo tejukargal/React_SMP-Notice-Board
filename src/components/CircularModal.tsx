@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { X, Calendar, FileText, Download } from 'lucide-react'
 import { Circular } from '../types'
 import { departmentInfo } from '../utils/departments'
@@ -11,6 +13,14 @@ interface CircularModalProps {
 
 const CircularModal = ({ circular, onClose }: CircularModalProps) => {
   const info = departmentInfo[circular.department]
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -30,10 +40,11 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
   // Debug logging
   console.log('Circular attachments:', circular.attachments)
 
-  return (
+  const modalContent = (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4 animate-fadeIn"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 animate-fadeIn"
       onClick={onClose}
+      style={{ zIndex: 9999 }}
     >
       <style>{`
         @keyframes fadeIn {
@@ -178,6 +189,8 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
       </div>
     </div>
   )
+
+  return createPortal(modalContent, document.body)
 }
 
 export default CircularModal
