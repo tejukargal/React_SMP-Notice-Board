@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { Department } from '../types'
 import { departments, departmentInfo } from '../utils/departments'
 import CircularCard from '../components/CircularCard'
@@ -10,7 +10,6 @@ import type { Circular } from '../types'
 
 const AllCirculars = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const navigate = useNavigate()
   const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [selectedDepartment, setSelectedDepartment] = useState<Department | 'All'>('All')
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
