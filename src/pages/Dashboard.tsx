@@ -26,9 +26,9 @@ const Dashboard = () => {
 
   // Clear navigation history and handle back button to exit app
   useEffect(() => {
-    const handlePopState = () => {
-      // Don't exit if modal is open
-      if (selectedCircular) {
+    const handlePopState = (event: PopStateEvent) => {
+      // Don't exit if modal is/was open (check both current state and event state)
+      if (selectedCircular || event.state?.modalOpen || event.state?.modalClosed) {
         return
       }
 
@@ -47,7 +47,7 @@ const Dashboard = () => {
     window.addEventListener('popstate', handlePopState)
 
     // Push a state entry so back button triggers popstate
-    window.history.pushState(null, '', '/')
+    window.history.pushState({ dashboardReady: true }, '', '/')
 
     return () => {
       window.removeEventListener('popstate', handlePopState)

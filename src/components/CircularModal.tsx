@@ -26,9 +26,12 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
   useEffect(() => {
     let isModalClosing = false
 
-    const handlePopState = () => {
+    const handlePopState = (event: PopStateEvent) => {
       if (!isModalClosing) {
         isModalClosing = true
+        // Push a state back to maintain history and prevent blank screen
+        window.history.pushState({ modalClosed: true }, '', window.location.href)
+        // Then close the modal (which will navigate for Dashboard)
         onClose()
       }
     }
