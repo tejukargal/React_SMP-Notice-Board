@@ -80,7 +80,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Title */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
+          <Link to="/" replace className="flex items-center space-x-2 sm:space-x-3">
             <div className="flex-shrink-0">
               <div className={`w-10 h-10 sm:w-12 sm:h-12 ${deptInfo.bgClass} rounded-lg flex items-center justify-center transition-colors duration-700`}>
                 <span className={`${deptInfo.textClass} font-extrabold text-sm sm:text-base transition-colors duration-700 flex`} key={currentDeptIndex}>
@@ -111,6 +111,7 @@ const Header = () => {
                 <Link
                   key={link.to}
                   to={link.to}
+                  replace={link.to === '/'}
                   className={`px-4 py-2 rounded-lg font-medium transition ${
                     isActive(link.to)
                       ? 'bg-blue-100 text-blue-700'
@@ -170,6 +171,7 @@ const Header = () => {
                   <Link
                     key={link.to}
                     to={link.to}
+                    replace={link.to === '/'}
                     onClick={() => setIsMenuOpen(false)}
                     className={`px-4 py-3 rounded-lg font-medium transition ${
                       isActive(link.to)
