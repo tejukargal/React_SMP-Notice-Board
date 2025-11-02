@@ -31,10 +31,10 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Cycle through text items: College Name -> Welcome Message -> Date & Time
+  // Cycle through text items: College Name -> Welcome Message -> Date -> Time
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTextIndex((prev) => (prev + 1) % 3)
+      setCurrentTextIndex((prev) => (prev + 1) % 4)
     }, 5000) // Change every 5 seconds
 
     return () => clearInterval(interval)
@@ -67,7 +67,9 @@ const Header = () => {
       case 1:
         return 'Welcome To SMP'
       case 2:
-        return `${formatDate()} | ${formatTime()}`
+        return formatDate()
+      case 3:
+        return formatTime()
       default:
         return 'Sanjay Memorial Polytechnic, Sagar'
     }

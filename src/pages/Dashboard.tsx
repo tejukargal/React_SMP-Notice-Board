@@ -63,13 +63,13 @@ const Dashboard = () => {
     }
   }, [circulars])
 
-  // Re-trigger featured circular animations every 15 seconds
+  // Re-trigger featured circular animations every 10 seconds
   useEffect(() => {
     if (!featuredCircular) return
 
     const interval = setInterval(() => {
       setFeaturedAnimationKey(prev => prev + 1)
-    }, 15000)
+    }, 10000)
 
     return () => clearInterval(interval)
   }, [featuredCircular])
@@ -151,8 +151,8 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
-        <div className="mb-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 featured-title" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Dashboard</h1>
+        <div className="mb-4 animate-popup" style={{ animationDelay: '0s' }}>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Dashboard</h1>
           <p className="text-gray-600">Welcome to SMP Notice Board</p>
         </div>
 
@@ -224,59 +224,6 @@ const Dashboard = () => {
             text-rendering: optimizeLegibility;
           }
 
-          /* Featured circular animations - supports all scripts including Kannada */
-          @keyframes scaleBlurFade {
-            0% {
-              opacity: 0;
-              transform: scale(0.94) translateY(20px);
-              filter: blur(8px);
-            }
-            100% {
-              opacity: 1;
-              transform: scale(1) translateY(0);
-              filter: blur(0);
-            }
-          }
-
-          .featured-title {
-            position: relative;
-            opacity: 0;
-            animation: scaleBlurFade 1.2s ease-out forwards;
-            letter-spacing: -0.02em;
-            font-weight: 800;
-          }
-
-          .featured-subject {
-            position: relative;
-            opacity: 0;
-            animation: scaleBlurFade 1.2s ease-out 0.3s forwards;
-            letter-spacing: -0.01em;
-            font-weight: 600;
-          }
-
-          .featured-body {
-            position: relative;
-            opacity: 0;
-            animation: scaleBlurFade 1.2s ease-out 0.6s forwards;
-            letter-spacing: -0.005em;
-          }
-
-          /* Mobile: Ensure proper display */
-          @media (max-width: 640px) {
-            .featured-body {
-              white-space: normal !important;
-              overflow: visible !important;
-              width: 100% !important;
-            }
-
-            .featured-title,
-            .featured-subject {
-              white-space: normal;
-              overflow: visible;
-              width: 100%;
-            }
-          }
-
           /* View All animation */
           @keyframes flipChar {
             0%, 80% {
@@ -322,35 +269,29 @@ const Dashboard = () => {
             <RotatingInfoCard onDepartmentChange={setActiveDepartment} />
             <div className="border-t border-gray-200"></div>
             <div className="bg-white" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
-              <div ref={tabsContainerRef} className="overflow-x-auto scrollbar-hide">
-                <div className="flex items-center">
-                  {availableCategories.map((dept) => {
-                    const deptInfo = departmentInfo[dept]
-                    const count = circulars.filter(c => c.department === dept || c.department === 'All').length
-                    const isActive = activeDepartment === dept
-                    return (
-                      <button
-                        key={dept}
-                        ref={isActive ? activeTabRef : null}
-                        onClick={() => navigate(`/circulars?department=${dept}`)}
-                        className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold border-2 transition-all flex items-center gap-1.5 mx-1.5 my-3 ${
-                          isActive
-                            ? `bg-white ${deptInfo.textClass} ${deptInfo.borderClass} shadow-md scale-105`
-                            : `bg-gray-50 text-gray-700 border-gray-300 hover:border-gray-400 hover:shadow-sm`
-                        }`}
-                      >
-                        <span className="whitespace-nowrap">{dept}</span>
-                        <span className={`min-w-[16px] h-[16px] flex items-center justify-center px-1 text-[10px] font-bold rounded-full ${
-                          isActive
-                            ? `${deptInfo.textClass} ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-').replace('bg-opacity-100', '')}`
-                            : `text-gray-700 bg-gray-200`
-                        }`}>
-                          {count}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
+              <div ref={tabsContainerRef} className="flex items-center overflow-x-auto scrollbar-hide">
+                {availableCategories.map((dept) => {
+                  const deptInfo = departmentInfo[dept]
+                  const count = circulars.filter(c => c.department === dept || c.department === 'All').length
+                  const isActive = activeDepartment === dept
+                  return (
+                    <button
+                      key={dept}
+                      ref={isActive ? activeTabRef : null}
+                      onClick={() => navigate(`/circulars?department=${dept}`)}
+                      className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 flex items-center gap-2 ${
+                        isActive
+                          ? `${deptInfo.borderClass} ${deptInfo.textClass} ${deptInfo.bgClass} border-current animate-popup`
+                          : `border-transparent text-gray-600 hover:${deptInfo.bgClass} hover:${deptInfo.textClass} hover:border-current`
+                      }`}
+                    >
+                      {dept}
+                      <span className={`min-w-[24px] h-[24px] flex items-center justify-center px-2 text-xs font-bold text-gray-800 ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-')} rounded-full`}>
+                        {count}
+                      </span>
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -398,7 +339,7 @@ const Dashboard = () => {
                 </div>
 
                 <h3
-                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 featured-title"
+                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 animate-popup"
                   key={`title-${featuredAnimationKey}`}
                 >
                   {featuredCircular.title}
@@ -416,15 +357,17 @@ const Dashboard = () => {
               <div className="p-4 sm:p-8">
 
                 <p
-                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4 featured-subject`}
+                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-medium mb-4 animate-popup`}
                   key={`subject-${featuredAnimationKey}`}
+                  style={{ animationDelay: '0.1s' }}
                 >
                   {featuredCircular.subject}
                 </p>
 
                 <div
-                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[18px] [&>*]:font-normal featured-body"
+                  className="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed [&>*]:text-[18px] [&>*]:font-normal animate-popup"
                   key={`body-${featuredAnimationKey}`}
+                  style={{ animationDelay: '0.2s' }}
                   dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body, departmentInfo[featuredCircular.department].color)}
                 />
 
