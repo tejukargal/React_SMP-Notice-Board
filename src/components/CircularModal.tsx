@@ -22,31 +22,6 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
     }
   }, [])
 
-  // Handle browser back button
-  useEffect(() => {
-    let isModalClosing = false
-
-    const handlePopState = (event: PopStateEvent) => {
-      if (!isModalClosing) {
-        isModalClosing = true
-        // Push a state back to maintain history and prevent blank screen
-        window.history.pushState({ modalClosed: true }, '', window.location.href)
-        // Then close the modal (which will navigate for Dashboard)
-        onClose()
-      }
-    }
-
-    // Push a state entry when modal opens with current URL
-    window.history.pushState({ modalOpen: true }, '', window.location.href)
-
-    // Listen for back button
-    window.addEventListener('popstate', handlePopState)
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState)
-    }
-  }, [onClose])
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
       day: 'numeric',
@@ -101,7 +76,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         }
       `}</style>
       <div
-        className="bg-white rounded-2xl max-w-3xl w-full sm:w-full md:w-[90%] h-[85vh] flex flex-col animate-popup"
+        className="bg-white rounded-2xl max-w-3xl w-full h-[85vh] flex flex-col animate-popup"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Fixed */}

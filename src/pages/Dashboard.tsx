@@ -26,9 +26,11 @@ const Dashboard = () => {
 
   // Clear navigation history and handle back button to exit app
   useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      // Don't exit if modal is/was open (check both current state and event state)
-      if (selectedCircular || event.state?.modalOpen || event.state?.modalClosed) {
+    const handlePopState = () => {
+      // If modal is open, close it and navigate to All Circulars instead of exiting
+      if (selectedCircular) {
+        setSelectedCircular(null)
+        navigate('/circulars')
         return
       }
 
@@ -47,12 +49,12 @@ const Dashboard = () => {
     window.addEventListener('popstate', handlePopState)
 
     // Push a state entry so back button triggers popstate
-    window.history.pushState({ dashboardReady: true }, '', '/')
+    window.history.pushState(null, '', '/')
 
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [selectedCircular])
+  }, [selectedCircular, navigate])
 
   // Update featured circular and categories when circulars change
   useEffect(() => {
