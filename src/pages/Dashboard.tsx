@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { Circular, Department } from '../types'
@@ -15,6 +15,9 @@ const Dashboard = () => {
   const [featuredCircular, setFeaturedCircular] = useState<Circular | null>(null)
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
+  const [activeDepartment, setActiveDepartment] = useState<Department | null>(null)
+  const tabsContainerRef = useRef<HTMLDivElement>(null)
+  const activeTabRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -81,6 +84,26 @@ const Dashboard = () => {
 
     return () => clearInterval(interval)
   }, [featuredCircular])
+
+  // Auto-scroll active tab into view
+  useEffect(() => {
+    if (activeDepartment && activeTabRef.current && tabsContainerRef.current) {
+      const tabElement = activeTabRef.current
+      const containerElement = tabsContainerRef.current
+
+      // Calculate scroll position to center the active tab
+      const tabLeft = tabElement.offsetLeft
+      const tabWidth = tabElement.offsetWidth
+      const containerWidth = containerElement.offsetWidth
+      const scrollPosition = tabLeft - (containerWidth / 2) + (tabWidth / 2)
+
+      // Smooth scroll to the active tab
+      containerElement.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      })
+    }
+  }, [activeDepartment])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -286,26 +309,38 @@ const Dashboard = () => {
         {/* Rotating Info Card with Navigation Tabs */}
         {availableCategories.length > 0 && (
           <div className="mb-4 shadow-md rounded-xl overflow-hidden">
-            <RotatingInfoCard />
+            <RotatingInfoCard onDepartmentChange={setActiveDepartment} />
             <div className="border-t border-gray-200"></div>
-            <div className="bg-white" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
-              <div className="flex items-center overflow-x-auto scrollbar-hide">
-                {availableCategories.map((dept) => {
-                  const deptInfo = departmentInfo[dept]
-                  const count = circulars.filter(c => c.department === dept || c.department === 'All').length
-                  return (
-                    <button
-                      key={dept}
-                      onClick={() => navigate(`/circulars?department=${dept}`)}
-                      className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 border-transparent hover:${deptInfo.bgClass} ${deptInfo.textClass} hover:border-current flex items-center gap-2`}
-                    >
-                      {dept}
-                      <span className={`min-w-[24px] h-[24px] flex items-center justify-center px-2 text-xs font-bold text-gray-800 ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-')} rounded-full`}>
-                        {count}
-                      </span>
-                    </button>
-                  )
-                })}
+            <div className="bg-white py-6" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+              <div ref={tabsContainerRef} className="overflow-x-auto scrollbar-hide">
+                <div className="flex items-center justify-center gap-3 px-6 min-w-max py-1">
+                  {availableCategories.map((dept) => {
+                    const deptInfo = departmentInfo[dept]
+                    const count = circulars.filter(c => c.department === dept || c.department === 'All').length
+                    const isActive = activeDepartment === dept
+                    return (
+                      <button
+                        key={dept}
+                        ref={isActive ? activeTabRef : null}
+                        onClick={() => navigate(`/circulars?department=${dept}`)}
+                        className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold border-2 transition-all flex items-center gap-2 ${
+                          isActive
+                            ? `bg-white ${deptInfo.textClass} ${deptInfo.borderClass} shadow-md scale-105`
+                            : `bg-gray-50 text-gray-700 border-gray-300 hover:border-gray-400 hover:shadow-sm`
+                        }`}
+                      >
+                        <span className="whitespace-nowrap">{dept}</span>
+                        <span className={`min-w-[20px] h-[20px] flex items-center justify-center px-2 text-xs font-bold rounded-full ${
+                          isActive
+                            ? `text-white ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-').replace('bg-opacity-100', '')}`
+                            : `text-gray-700 bg-gray-200`
+                        }`}>
+                          {count}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           </div>

@@ -3,7 +3,11 @@ import { departmentInfo, departments } from '../utils/departments'
 import { useCirculars } from '../context/CircularsContext'
 import { Department } from '../types'
 
-const RotatingInfoCard = () => {
+interface RotatingInfoCardProps {
+  onDepartmentChange?: (department: Department | null) => void
+}
+
+const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
   const { circulars } = useCirculars()
   const [currentIndex, setCurrentIndex] = useState(-2) // Start with -2 to show SMP NOTICE BOARD first
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -71,6 +75,16 @@ const RotatingInfoCard = () => {
 
     return () => clearTimeout(timeout)
   }, [currentIndex, availableDepartments])
+
+  // Notify parent component when current department changes
+  useEffect(() => {
+    if (currentIndex > 0 && currentIndex <= availableDepartments.length) {
+      const currentDepartment = availableDepartments[currentIndex - 1]
+      onDepartmentChange?.(currentDepartment)
+    } else {
+      onDepartmentChange?.(null)
+    }
+  }, [currentIndex, availableDepartments, onDepartmentChange])
 
   const formatDate = () => {
     return currentTime.toLocaleString('en-IN', {
