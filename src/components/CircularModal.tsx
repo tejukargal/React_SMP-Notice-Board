@@ -24,12 +24,13 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
     }
   }, [])
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    })
+  // Compact date format for modal (dd-mmm-yy)
+  const formatDateCompact = (dateString: string) => {
+    const date = new Date(dateString)
+    const day = date.getDate().toString().padStart(2, '0')
+    const month = date.toLocaleDateString('en-IN', { month: 'short' })
+    const year = date.getFullYear().toString().slice(-2)
+    return `${day}-${month}-${year}`
   }
 
   // Helper function to check if a file is CSV
@@ -91,15 +92,15 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         <div className={`${info.bgClass} border-b-2 ${info.borderClass} px-4 sm:px-6 py-5 flex-shrink-0 rounded-t-2xl sm:rounded-t-xl`}>
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
                 <span
                   className={`px-4 py-1.5 ${info.textClass} rounded-full text-sm font-bold border-2 ${info.borderClass} w-fit`}
                 >
                   {circular.department}
                 </span>
-                <div className="flex items-center gap-2 text-gray-600 text-xs sm:text-sm whitespace-nowrap">
-                  <Calendar className="w-4 h-4 flex-shrink-0" />
-                  <span className="truncate">{formatDate(circular.date)}</span>
+                <div className="flex items-center gap-1.5 text-gray-600 text-xs sm:text-sm whitespace-nowrap">
+                  <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="truncate">{formatDateCompact(circular.date)}</span>
                 </div>
               </div>
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 line-clamp-2 break-words">{circular.title}</h2>
