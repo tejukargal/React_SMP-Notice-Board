@@ -24,32 +24,33 @@ const Dashboard = () => {
     fetchCirculars()
   }, [])
 
-  // Handle back button press to exit app
+  // Handle back button press to exit app from dashboard
   useEffect(() => {
+    // Clear history and replace with dashboard only
+    window.history.replaceState(null, '', '/')
+
     const handleBackButton = (e: PopStateEvent) => {
       e.preventDefault()
 
-      // Check if we're on Dashboard (root path)
-      if (window.location.pathname === '/') {
-        const confirmExit = window.confirm('Do you want to exit the app?')
-        if (confirmExit) {
-          // Try to close the window/tab
-          window.close()
+      const confirmExit = window.confirm('Do you want to exit the app?')
+      if (confirmExit) {
+        // Try to close the window/tab
+        window.close()
 
-          // If window.close() doesn't work (most modern browsers block it),
-          // navigate to about:blank or show a message
+        // If window.close() doesn't work, navigate to about:blank
+        setTimeout(() => {
           if (!window.closed) {
             window.location.href = 'about:blank'
           }
-        } else {
-          // Push a new state to prevent going back
-          window.history.pushState(null, '', window.location.pathname)
-        }
+        }, 100)
+      } else {
+        // Push state again to prevent going back
+        window.history.pushState(null, '', '/')
       }
     }
 
-    // Push initial state
-    window.history.pushState(null, '', window.location.pathname)
+    // Push initial state to create a new history entry
+    window.history.pushState(null, '', '/')
 
     // Listen for back button
     window.addEventListener('popstate', handleBackButton)
