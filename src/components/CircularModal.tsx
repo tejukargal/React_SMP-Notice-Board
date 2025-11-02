@@ -22,6 +22,23 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
     }
   }, [])
 
+  // Handle browser back button
+  useEffect(() => {
+    const handlePopState = () => {
+      onClose()
+    }
+
+    // Push a state entry when modal opens
+    window.history.pushState({ modalOpen: true }, '')
+
+    // Listen for back button
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [onClose])
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
       day: 'numeric',
@@ -76,7 +93,7 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         }
       `}</style>
       <div
-        className="bg-white rounded-2xl max-w-3xl w-full h-[85vh] flex flex-col animate-popup"
+        className="bg-white rounded-2xl max-w-3xl w-full sm:w-full md:w-[90%] h-[85vh] flex flex-col animate-popup"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Fixed */}
