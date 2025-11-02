@@ -25,23 +25,21 @@ const AllCirculars = () => {
 
   // Handle back button when modal is open
   useEffect(() => {
+    // Only handle back button when modal is open
+    if (!selectedCircular) return
+
     const handlePopState = () => {
-      // If modal is open, close it and stay on All Circulars
-      if (selectedCircular) {
-        setSelectedCircular(null)
-        // Navigate to ensure we're on All Circulars page
-        navigate('/circulars', { replace: true })
-        return
-      }
+      // Close modal and stay on All Circulars
+      setSelectedCircular(null)
+      // Navigate to ensure we're on All Circulars page
+      navigate('/circulars', { replace: true })
     }
+
+    // Push a state entry when modal opens
+    window.history.pushState(null, '', '/circulars')
 
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
-
-    // Push a state entry when modal opens
-    if (selectedCircular) {
-      window.history.pushState(null, '', '/circulars')
-    }
 
     return () => {
       window.removeEventListener('popstate', handlePopState)
