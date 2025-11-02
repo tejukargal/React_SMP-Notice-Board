@@ -337,7 +337,7 @@ const Dashboard = () => {
                         <span className="whitespace-nowrap">{dept}</span>
                         <span className={`min-w-[16px] h-[16px] flex items-center justify-center px-1 text-[10px] font-bold rounded-full ${
                           isActive
-                            ? `text-white ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-').replace('bg-opacity-100', '')}`
+                            ? `${deptInfo.textClass} ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-').replace('bg-opacity-100', '')}`
                             : `text-gray-700 bg-gray-200`
                         }`}>
                           {count}

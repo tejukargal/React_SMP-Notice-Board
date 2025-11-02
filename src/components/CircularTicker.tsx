@@ -25,7 +25,7 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
     return currentTime.toLocaleDateString('en-IN', {
       weekday: 'long',
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
     })
   }
@@ -91,7 +91,7 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
     const interval = setInterval(() => {
       setRotation((prev) => prev - 120) // 3-sided cube rotation (360/3 = 120 degrees)
       setCurrentIndex((prev) => (prev + 1) % enhancedCirculars.length)
-    }, 4000) // Show each circular for 4 seconds
+    }, 15000) // Show each circular for 15 seconds
 
     return () => clearInterval(interval)
   }, [enhancedCirculars.length])
@@ -159,7 +159,7 @@ const CircularTicker = ({ circulars: _circulars }: CircularTickerProps) => {
                     className={`h-full w-full ${nextDeptInfo.textClass} bg-current`}
                     style={{
                       transformOrigin: 'center',
-                      animation: 'progressExpand 4s linear',
+                      animation: 'progressExpand 15s linear',
                     }}
                   />
                 </div>
