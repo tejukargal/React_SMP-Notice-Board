@@ -84,11 +84,11 @@ const CircularModal = ({ circular, onClose }: CircularModalProps) => {
         }
       `}</style>
       <div
-        className="bg-white rounded-2xl sm:rounded-xl max-w-3xl w-full sm:w-full h-[90vh] sm:h-[85vh] flex flex-col animate-popup shadow-2xl"
+        className="bg-white rounded-2xl sm:rounded-xl max-w-3xl w-full h-[80vh] flex flex-col animate-popup shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - Fixed */}
-        <div className={`${info.bgClass} border-b-4 ${info.borderClass} px-4 sm:px-6 py-5 flex-shrink-0 rounded-t-2xl sm:rounded-t-xl`}>
+        <div className={`${info.bgClass} border-b-2 ${info.borderClass} px-4 sm:px-6 py-5 flex-shrink-0 rounded-t-2xl sm:rounded-t-xl`}>
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
