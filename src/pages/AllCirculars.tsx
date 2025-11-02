@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Department } from '../types'
 import { departments, departmentInfo } from '../utils/departments'
 import CircularCard from '../components/CircularCard'
@@ -10,6 +10,7 @@ import type { Circular } from '../types'
 
 const AllCirculars = () => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
   const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [selectedDepartment, setSelectedDepartment] = useState<Department | 'All'>('All')
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
@@ -23,6 +24,21 @@ const AllCirculars = () => {
     fetchCirculars()
   }, [])
 
+  // Handle back button when on All Circulars page (no modal open) - go to Dashboard
+  useEffect(() => {
+    if (selectedCircular) return // Don't interfere when modal is open
+
+    const handleBackToDashboard = () => {
+      navigate('/', { replace: true })
+    }
+
+    window.addEventListener('popstate', handleBackToDashboard)
+
+    return () => {
+      window.removeEventListener('popstate', handleBackToDashboard)
+    }
+  }, [selectedCircular, navigate])
+
   // Handle back button when modal is open
   useEffect(() => {
     // Only handle back button when modal is open
@@ -33,11 +49,10 @@ const AllCirculars = () => {
       setSelectedCircular(null)
       // Trigger animation when returning from modal
       setAnimationKey(prev => prev + 1)
-      // Don't call navigate here - let browser handle the history naturally
     }
 
-    // Push a state entry when modal opens
-    window.history.pushState(null, '', '/circulars')
+    // Push a state entry when modal opens to enable back button
+    window.history.pushState({ modal: true }, '', '/circulars')
 
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
