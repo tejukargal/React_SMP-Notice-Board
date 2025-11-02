@@ -27,6 +27,11 @@ const Dashboard = () => {
   // Clear navigation history and handle back button to exit app
   useEffect(() => {
     const handlePopState = () => {
+      // Don't exit if modal is open
+      if (selectedCircular) {
+        return
+      }
+
       // Exit app directly without confirmation
       window.close()
 
@@ -47,7 +52,7 @@ const Dashboard = () => {
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [])
+  }, [selectedCircular])
 
   // Update featured circular and categories when circulars change
   useEffect(() => {
