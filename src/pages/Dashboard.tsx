@@ -26,9 +26,6 @@ const Dashboard = () => {
 
   // Clear navigation history and handle back button to exit app
   useEffect(() => {
-    // Replace current history entry to clear any previous navigation
-    window.history.replaceState(null, '', '/')
-
     const handlePopState = () => {
       // Exit app directly without confirmation
       window.close()
@@ -44,7 +41,7 @@ const Dashboard = () => {
     // Listen for back button
     window.addEventListener('popstate', handlePopState)
 
-    // Push a new state so back button triggers popstate
+    // Push a state entry so back button triggers popstate
     window.history.pushState(null, '', '/')
 
     return () => {
