@@ -88,20 +88,25 @@ const Dashboard = () => {
   // Auto-scroll active tab into view
   useEffect(() => {
     if (activeDepartment && activeTabRef.current && tabsContainerRef.current) {
-      const tabElement = activeTabRef.current
-      const containerElement = tabsContainerRef.current
+      // Small delay to ensure DOM has updated
+      setTimeout(() => {
+        const tabElement = activeTabRef.current
+        const containerElement = tabsContainerRef.current
 
-      // Calculate scroll position to center the active tab
-      const tabLeft = tabElement.offsetLeft
-      const tabWidth = tabElement.offsetWidth
-      const containerWidth = containerElement.offsetWidth
-      const scrollPosition = tabLeft - (containerWidth / 2) + (tabWidth / 2)
+        if (tabElement && containerElement) {
+          // Calculate scroll position to center the active tab
+          const tabLeft = tabElement.offsetLeft
+          const tabWidth = tabElement.offsetWidth
+          const containerWidth = containerElement.offsetWidth
+          const scrollPosition = tabLeft - (containerWidth / 2) + (tabWidth / 2)
 
-      // Smooth scroll to the active tab
-      containerElement.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
-      })
+          // Smooth scroll to the active tab
+          containerElement.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
     }
   }, [activeDepartment])
 
@@ -313,7 +318,7 @@ const Dashboard = () => {
             <div className="border-t border-gray-200"></div>
             <div className="bg-white" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
               <div ref={tabsContainerRef} className="overflow-x-auto scrollbar-hide">
-                <div className="flex items-center overflow-x-auto scrollbar-hide">
+                <div className="flex items-center">
                   {availableCategories.map((dept) => {
                     const deptInfo = departmentInfo[dept]
                     const count = circulars.filter(c => c.department === dept || c.department === 'All').length

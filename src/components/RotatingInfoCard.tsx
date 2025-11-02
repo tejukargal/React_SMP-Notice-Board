@@ -11,7 +11,6 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
   const { circulars } = useCirculars()
   const [currentIndex, setCurrentIndex] = useState(-2) // Start with -2 to show SMP NOTICE BOARD first
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [currentTime, setCurrentTime] = useState(new Date())
   const [availableDepartments, setAvailableDepartments] = useState<Department[]>([])
 
   // Load Impact font for all devices
@@ -24,15 +23,6 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
     return () => {
       document.head.removeChild(link)
     }
-  }, [])
-
-  // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-
-    return () => clearInterval(timer)
   }, [])
 
   // Get available departments from circulars
@@ -57,16 +47,15 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
       setIsTransitioning(true)
       setTimeout(() => {
         setCurrentIndex((prev) => {
-          if (prev === -2) return -1 // After SMP NOTICE BOARD, show Date & Time
-          if (prev === -1) return 0 // After Date & Time, show "Available Circulars"
+          if (prev === -2) return 0 // After SMP NOTICE BOARD, show "Available Circulars"
           // After "Available Circulars", loop through departments
           const deptCount = availableDepartments.length
           if (deptCount === 0) return -2 // No departments, loop back to SMP NOTICE BOARD
           // Department indices start from 1
           if (prev >= 0 && prev < deptCount) return prev + 1
-          // After last department, show info text
+          // After last department, show filter message
           if (prev === deptCount) return deptCount + 1
-          // After info text, loop back to SMP NOTICE BOARD
+          // After filter message, loop back to SMP NOTICE BOARD
           return -2
         })
         setIsTransitioning(false)
@@ -86,22 +75,6 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
     }
   }, [currentIndex, availableDepartments, onDepartmentChange])
 
-  const formatDate = () => {
-    return currentTime.toLocaleString('en-IN', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
-
-  const formatTime = () => {
-    return currentTime.toLocaleString('en-IN', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    })
-  }
 
   return (
     <div>
@@ -292,11 +265,6 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
               <div className={`${deptInfo.textClass} smp-board-title`}>
                 SMP NOTICE BOARD
               </div>
-            ) : currentIndex === -1 ? (
-              <div className={`${deptInfo.textClass} smp-datetime flex flex-col items-center justify-center gap-1`}>
-                <div>{formatDate()}</div>
-                <div>{formatTime()}</div>
-              </div>
             ) : currentIndex === 0 ? (
               <div className={`${deptInfo.textClass} available-circulars-text`}>
                 Available Circulars
@@ -307,7 +275,7 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
               </div>
             ) : (
               <div className={`${deptInfo.textClass} info-message`}>
-                Stay updated with the latest circulars and announcements
+                Click the buttons to Filter
               </div>
             )}
           </div>
