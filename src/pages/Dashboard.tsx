@@ -330,7 +330,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Featured Circular</h2>
               <Link
-                to={featuredCircular ? `/circulars?department=${featuredCircular.department}` : '/circulars'}
+                to='/circulars'
                 className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
                 style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
               >
