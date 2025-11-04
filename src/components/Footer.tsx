@@ -5,8 +5,8 @@ const Footer = () => {
 
   const handleShare = async () => {
     const shareData = {
-      title: 'SMP Notice Board',
-      text: 'Check out the SMP Notice Board for latest circulars, memos & announcements!',
+      title: 'SMP CONNECT',
+      text: 'Check out SMP CONNECT for latest circulars, memos & announcements!',
       url: appUrl,
     }
 

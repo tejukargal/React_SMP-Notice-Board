@@ -1,5 +1,5 @@
 # PowerShell script to start both servers
-Write-Host "Starting SMP Notice Board Application..." -ForegroundColor Green
+Write-Host "Starting SMP CONNECT Application..." -ForegroundColor Green
 Write-Host ""
 
 # Start backend in new window

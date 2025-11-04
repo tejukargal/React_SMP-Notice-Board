@@ -1,4 +1,4 @@
-# SMP Notice Board
+# SMP CONNECT
 
 A modern notice board application for Sanjay Memorial Polytechnic, Sagar.
 

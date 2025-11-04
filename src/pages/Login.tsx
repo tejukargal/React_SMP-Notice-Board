@@ -39,7 +39,7 @@ const Login = () => {
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            SMP Notice Board
+            SMP CONNECT
           </h1>
           <p className="text-gray-600">Sanjay Memorial Polytechnic, Sagar</p>
         </div>

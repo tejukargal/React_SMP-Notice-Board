@@ -9,7 +9,7 @@ interface RotatingInfoCardProps {
 
 const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
   const { circulars } = useCirculars()
-  const [currentIndex, setCurrentIndex] = useState(-2) // Start with -2 to show SMP NOTICE BOARD first
+  const [currentIndex, setCurrentIndex] = useState(-2) // Start with -2 to show SMP CONNECT first
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [availableDepartments, setAvailableDepartments] = useState<Department[]>([])
 
@@ -40,22 +40,22 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
 
   useEffect(() => {
     // Determine duration based on current index
-    // SMP NOTICE BOARD (-2) stays for 8 seconds, others stay for 4 seconds
+    // SMP CONNECT (-2) stays for 8 seconds, others stay for 4 seconds
     const duration = currentIndex === -2 ? 8000 : 4000
 
     const timeout = setTimeout(() => {
       setIsTransitioning(true)
       setTimeout(() => {
         setCurrentIndex((prev) => {
-          if (prev === -2) return 0 // After SMP NOTICE BOARD, show "Available Circulars"
+          if (prev === -2) return 0 // After SMP CONNECT, show "Available Circulars"
           // After "Available Circulars", loop through departments
           const deptCount = availableDepartments.length
-          if (deptCount === 0) return -2 // No departments, loop back to SMP NOTICE BOARD
+          if (deptCount === 0) return -2 // No departments, loop back to SMP CONNECT
           // Department indices start from 1
           if (prev >= 0 && prev < deptCount) return prev + 1
           // After last department, show filter message
           if (prev === deptCount) return deptCount + 1
-          // After filter message, loop back to SMP NOTICE BOARD
+          // After filter message, loop back to SMP CONNECT
           return -2
         })
         setIsTransitioning(false)
@@ -263,7 +263,7 @@ const RotatingInfoCard = ({ onDepartmentChange }: RotatingInfoCardProps) => {
           >
             {currentIndex === -2 ? (
               <div className={`${deptInfo.textClass} smp-board-title`}>
-                SMP NOTICE BOARD
+                SMP CONNECT
               </div>
             ) : currentIndex === 0 ? (
               <div className={`${deptInfo.textClass} available-circulars-text`}>

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-SMP Notice Board is a full-stack notice board application for Sanjay Memorial Polytechnic, Sagar. It's a Vite + React + TypeScript frontend with an Express + TypeScript backend, using Nile Database (PostgreSQL) for data persistence.
+SMP CONNECT is a full-stack notice board application for Sanjay Memorial Polytechnic, Sagar. It's a Vite + React + TypeScript frontend with an Express + TypeScript backend, using Nile Database (PostgreSQL) for data persistence.
 
 ## Development Commands
 

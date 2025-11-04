@@ -180,7 +180,7 @@ const Dashboard = () => {
         {/* Header */}
         <div className="mb-4 animate-popup" style={{ animationDelay: '0s' }}>
           <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Dashboard</h1>
-          <p className="text-gray-600">Welcome to SMP Notice Board</p>
+          <p className="text-gray-600">Welcome to SMP CONNECT</p>
         </div>
 
         <style>{`
