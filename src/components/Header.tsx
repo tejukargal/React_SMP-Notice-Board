@@ -31,15 +31,16 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Show CONNECT for 10s first, then cycle through: College Name -> Welcome Message -> Date -> Time
+  // Cycle through: CONNECT (10s) -> College Name -> Welcome Message -> Date -> Time -> repeat
   useEffect(() => {
-    // CONNECT (index -1) stays for 10 seconds, then start rotating other items
+    // CONNECT (index -1) stays for 10 seconds, other items stay for 5 seconds
     const duration = currentTextIndex === -1 ? 10000 : 5000
 
     const timeout = setTimeout(() => {
       setCurrentTextIndex((prev) => {
-        if (prev === -1) return 0 // After CONNECT, start with College Name
-        return (prev + 1) % 4 // Cycle through 4 items (0-3)
+        if (prev === -1) return 0 // After CONNECT, show College Name
+        if (prev === 3) return -1 // After Time (index 3), go back to CONNECT
+        return prev + 1 // Move to next item (0->1->2->3)
       })
     }, duration)
 
