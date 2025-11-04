@@ -182,7 +182,7 @@ const Header = () => {
             </div>
             <div className="hidden sm:block">
               <h1
-                className={`text-3xl font-extrabold ${deptInfo.textClass} transition-all duration-700 ${currentTextIndex !== -1 ? 'header-text-animate' : ''}`}
+                className={`text-3xl font-extrabold ${deptInfo.textClass} transition-all duration-700 header-text-animate`}
                 key={currentTextIndex}
               >
                 {getHeaderText()}
@@ -190,7 +190,7 @@ const Header = () => {
             </div>
             <div className="sm:hidden">
               <h1
-                className={`text-xl font-extrabold ${deptInfo.textClass} leading-tight transition-all duration-700 ${currentTextIndex !== -1 ? 'header-text-animate' : ''}`}
+                className={`text-xl font-extrabold ${deptInfo.textClass} leading-tight transition-all duration-700 header-text-animate`}
                 key={currentTextIndex}
               >
                 {getHeaderText()}
