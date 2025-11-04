@@ -31,7 +31,7 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Cycle through text items: CONNECT -> College Name -> Welcome Message -> Date -> Time
+  // Cycle through text items: CONNECT (10s) -> College Name -> Welcome Message -> Date -> Time
   useEffect(() => {
     // CONNECT (index 0) stays for 10 seconds, others stay for 5 seconds
     const duration = currentTextIndex === 0 ? 10000 : 5000
