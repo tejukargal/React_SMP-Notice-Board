@@ -7,7 +7,7 @@ import { departmentInfo, departments } from '../utils/departments'
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentDeptIndex, setCurrentDeptIndex] = useState(0)
-  const [currentTextIndex, setCurrentTextIndex] = useState(-1) // Start with -1 to show CONNECT for 10s first
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
   const [currentTime, setCurrentTime] = useState(new Date())
   const location = useLocation()
   const navigate = useNavigate()
@@ -31,21 +31,14 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Cycle through: CONNECT (10s) -> College Name -> Welcome Message -> Date -> Time -> repeat
+  // Cycle through text items: CONNECT -> College Name -> Welcome Message -> Date -> Time
   useEffect(() => {
-    // CONNECT (index -1) stays for 10 seconds, other items stay for 5 seconds
-    const duration = currentTextIndex === -1 ? 10000 : 5000
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prev) => (prev + 1) % 5)
+    }, 5000) // Change every 5 seconds
 
-    const timeout = setTimeout(() => {
-      setCurrentTextIndex((prev) => {
-        if (prev === -1) return 0 // After CONNECT, show College Name
-        if (prev === 3) return -1 // After Time (index 3), go back to CONNECT
-        return prev + 1 // Move to next item (0->1->2->3)
-      })
-    }, duration)
-
-    return () => clearTimeout(timeout)
-  }, [currentTextIndex])
+    return () => clearInterval(interval)
+  }, [])
 
   const currentDept = departments[currentDeptIndex]
   const deptInfo = departmentInfo[currentDept]
@@ -69,15 +62,15 @@ const Header = () => {
 
   const getHeaderText = () => {
     switch (currentTextIndex) {
-      case -1:
-        return 'CONNECT'
       case 0:
-        return 'Sanjay Memorial Polytechnic, Sagar'
+        return 'CONNECT'
       case 1:
-        return 'Welcome To SMP'
+        return 'Sanjay Memorial Polytechnic, Sagar'
       case 2:
-        return formatDate()
+        return 'Welcome To SMP'
       case 3:
+        return formatDate()
+      case 4:
         return formatTime()
       default:
         return 'CONNECT'
