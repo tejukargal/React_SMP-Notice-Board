@@ -7,7 +7,7 @@ import { departmentInfo, departments } from '../utils/departments'
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentDeptIndex, setCurrentDeptIndex] = useState(0)
-  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [currentTextIndex, setCurrentTextIndex] = useState(-1) // Start with -1 to show CONNECT for 10s first
   const [currentTime, setCurrentTime] = useState(new Date())
   const location = useLocation()
   const navigate = useNavigate()
@@ -31,13 +31,16 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Cycle through text items: CONNECT (10s) -> College Name -> Welcome Message -> Date -> Time
+  // Show CONNECT for 10s first, then cycle through: College Name -> Welcome Message -> Date -> Time
   useEffect(() => {
-    // CONNECT (index 0) stays for 10 seconds, others stay for 5 seconds
-    const duration = currentTextIndex === 0 ? 10000 : 5000
+    // CONNECT (index -1) stays for 10 seconds, then start rotating other items
+    const duration = currentTextIndex === -1 ? 10000 : 5000
 
     const timeout = setTimeout(() => {
-      setCurrentTextIndex((prev) => (prev + 1) % 5)
+      setCurrentTextIndex((prev) => {
+        if (prev === -1) return 0 // After CONNECT, start with College Name
+        return (prev + 1) % 4 // Cycle through 4 items (0-3)
+      })
     }, duration)
 
     return () => clearTimeout(timeout)
@@ -65,15 +68,15 @@ const Header = () => {
 
   const getHeaderText = () => {
     switch (currentTextIndex) {
-      case 0:
+      case -1:
         return 'CONNECT'
-      case 1:
+      case 0:
         return 'Sanjay Memorial Polytechnic, Sagar'
-      case 2:
+      case 1:
         return 'Welcome To SMP'
-      case 3:
+      case 2:
         return formatDate()
-      case 4:
+      case 3:
         return formatTime()
       default:
         return 'CONNECT'
