@@ -165,8 +165,8 @@ const Header = () => {
           {/* Logo and Title */}
           <a href="/" onClick={handleDashboardClick} className="flex items-center space-x-2 sm:space-x-3 cursor-pointer">
             <div className="flex-shrink-0">
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 ${deptInfo.bgClass} rounded-lg flex items-center justify-center transition-colors duration-700`}>
-                <span className={`${deptInfo.textClass} font-extrabold text-sm sm:text-base transition-colors duration-700 flex`} key={currentDeptIndex}>
+              <div className={`w-12 h-12 sm:w-14 sm:h-14 ${deptInfo.bgClass} rounded-lg flex items-center justify-center transition-colors duration-700`}>
+                <span className={`${deptInfo.textClass} font-extrabold text-lg sm:text-xl transition-colors duration-700 flex`} key={currentDeptIndex}>
                   <span className="logo-letter flip-letter-1">S</span>
                   <span className="logo-letter flip-letter-2">M</span>
                   <span className="logo-letter flip-letter-3">P</span>
