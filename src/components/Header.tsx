@@ -31,14 +31,17 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Cycle through text items: College Name -> Welcome Message -> Date -> Time -> CONNECT
+  // Cycle through text items: CONNECT (10s) -> College Name -> Welcome Message -> Date -> Time
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTextIndex((prev) => (prev + 1) % 5)
-    }, 5000) // Change every 5 seconds
+    // CONNECT (index 0) displays for 10 seconds, others for 5 seconds
+    const duration = currentTextIndex === 0 ? 10000 : 5000
 
-    return () => clearInterval(interval)
-  }, [])
+    const timeout = setTimeout(() => {
+      setCurrentTextIndex((prev) => (prev + 1) % 5)
+    }, duration)
+
+    return () => clearTimeout(timeout)
+  }, [currentTextIndex])
 
   const currentDept = departments[currentDeptIndex]
   const deptInfo = departmentInfo[currentDept]
@@ -63,17 +66,17 @@ const Header = () => {
   const getHeaderText = () => {
     switch (currentTextIndex) {
       case 0:
-        return 'Sanjay Memorial Polytechnic, Sagar'
-      case 1:
-        return 'Welcome To SMP'
-      case 2:
-        return formatDate()
-      case 3:
-        return formatTime()
-      case 4:
         return 'CONNECT'
-      default:
+      case 1:
         return 'Sanjay Memorial Polytechnic, Sagar'
+      case 2:
+        return 'Welcome To SMP'
+      case 3:
+        return formatDate()
+      case 4:
+        return formatTime()
+      default:
+        return 'CONNECT'
     }
   }
 
