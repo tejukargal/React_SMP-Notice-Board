@@ -20,8 +20,32 @@ const Dashboard = () => {
   const activeTabRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
 
+  // Rotating taglines with matching colors
+  const taglines = [
+    { text: 'With SMP Circulars', color: '#3B82F6' }, // CE Blue
+    { text: 'With SMP Updates', color: '#10B981' }, // ME Green
+    { text: 'With SMP Announcements', color: '#8B5CF6' }, // CS Purple
+    { text: 'With SMP Exams', color: '#F97316' }, // EC Orange
+    { text: 'With SMP Results', color: '#84CC16' }, // Results Lime
+    { text: 'With SMP Admissions', color: '#0EA5E9' }, // Admissions Sky
+    { text: 'With SMP Dues', color: '#F59E0B' }, // Fee Dues Amber
+    { text: 'With SMP Staff', color: '#06B6D4' }, // Office Cyan
+    { text: 'With SMP', color: '#EC4899' }, // Annual Day Pink
+  ]
+
+  const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0)
+
   useEffect(() => {
     fetchCirculars()
+  }, [])
+
+  // Rotate tagline every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTaglineIndex((prev) => (prev + 1) % taglines.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [])
 
   // Handle back button for modal only
@@ -139,7 +163,7 @@ const Dashboard = () => {
       <div className="fixed inset-0 bg-gray-50 z-50 flex items-center justify-center transition-opacity duration-300">
         <div className="text-center">
           <div className="loader mb-4 mx-auto"></div>
-          <p className="text-gray-600 text-lg font-medium">Loading...</p>
+          <p className="text-gray-600 text-lg font-medium">Connecting...</p>
           <style>{`
             .loader {
               width: 50px;
@@ -179,8 +203,22 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
         <div className="mb-4 animate-popup" style={{ animationDelay: '0s' }}>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Dashboard</h1>
-          <p className="text-gray-600">Welcome to SMP CONNECT</p>
+          <h1
+            className="text-3xl font-bold text-gray-900 mb-2 min-h-[2.5rem] flex items-center"
+            style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
+          >
+            Dashboard
+          </h1>
+          <p className="text-gray-600 flex items-center gap-2 min-h-[1.75rem]">
+            <span className="font-semibold">CONNECT</span>
+            <span
+              className="tagline-animate font-medium"
+              key={currentTaglineIndex}
+              style={{ color: taglines[currentTaglineIndex].color }}
+            >
+              {taglines[currentTaglineIndex].text}
+            </span>
+          </p>
         </div>
 
         <style>{`
@@ -195,6 +233,29 @@ const Dashboard = () => {
 
           .animate-fadeIn {
             animation: fadeIn 0.3s ease-in forwards;
+          }
+
+          @keyframes fadeInOut {
+            0% {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            10% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            90% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            100% {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+          }
+
+          .tagline-animate {
+            animation: fadeInOut 5s ease-in-out;
           }
 
           @keyframes popup {
