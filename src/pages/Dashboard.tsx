@@ -1,11 +1,10 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { Circular, Department } from '../types'
 import { departmentInfo } from '../utils/departments'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CircularPreviewStack from '../components/CircularPreviewStack'
-import RotatingInfoCard from '../components/RotatingInfoCard'
 import CircularModal from '../components/CircularModal'
 import { useCirculars } from '../context/CircularsContext'
 
@@ -14,10 +13,8 @@ const Dashboard = () => {
   const [featuredCircular, setFeaturedCircular] = useState<Circular | null>(null)
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
-  const [activeDepartment, setActiveDepartment] = useState<Department | null>(null)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
-  const tabsContainerRef = useRef<HTMLDivElement>(null)
-  const activeTabRef = useRef<HTMLButtonElement>(null)
+  const [currentDeptIndex, setCurrentDeptIndex] = useState(0)
   const navigate = useNavigate()
 
   // Rotating taglines with matching colors
@@ -125,30 +122,16 @@ const Dashboard = () => {
     return () => clearInterval(interval)
   }, [featuredCircular])
 
-  // Auto-scroll active tab into view
+  // Rotate through departments every 3 seconds
   useEffect(() => {
-    if (activeDepartment && activeTabRef.current && tabsContainerRef.current) {
-      // Small delay to ensure DOM has updated
-      setTimeout(() => {
-        const tabElement = activeTabRef.current
-        const containerElement = tabsContainerRef.current
+    if (availableCategories.length === 0) return
 
-        if (tabElement && containerElement) {
-          // Calculate scroll position to center the active tab
-          const tabLeft = tabElement.offsetLeft
-          const tabWidth = tabElement.offsetWidth
-          const containerWidth = containerElement.offsetWidth
-          const scrollPosition = tabLeft - (containerWidth / 2) + (tabWidth / 2)
+    const interval = setInterval(() => {
+      setCurrentDeptIndex((prev) => (prev + 1) % availableCategories.length)
+    }, 3000)
 
-          // Smooth scroll to the active tab
-          containerElement.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-          })
-        }
-      }, 100)
-    }
-  }, [activeDepartment])
+    return () => clearInterval(interval)
+  }, [availableCategories])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -351,30 +334,72 @@ const Dashboard = () => {
           }
         `}</style>
 
-        {/* Rotating Info Card with Navigation Tabs */}
+        {/* Horizontal Rotating Department Labels with Parallax */}
         {availableCategories.length > 0 && (
-          <div className="mb-4 shadow-md rounded-xl overflow-hidden">
-            <RotatingInfoCard onDepartmentChange={setActiveDepartment} />
-            <div className="border-t border-gray-200"></div>
-            <div className="bg-white" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
-              <div ref={tabsContainerRef} className="flex items-center overflow-x-auto scrollbar-hide">
-                {availableCategories.map((dept) => {
+          <div className="mb-6 animate-popup" style={{ animationDelay: '0.05s' }}>
+            <div
+              className="relative overflow-hidden mx-auto"
+              style={{
+                height: '70px',
+                width: '100%',
+                maxWidth: '800px'
+              }}
+            >
+              {/* Gradient overlays for fade effect */}
+              <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
+              <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
+
+              {/* Horizontal carousel container */}
+              <div className="relative h-full flex items-center">
+                {availableCategories.map((dept, index) => {
                   const deptInfo = departmentInfo[dept]
                   const count = circulars.filter(c => c.department === dept || c.department === 'All').length
-                  const isActive = activeDepartment === dept
+
+                  // Calculate position relative to current index
+                  const totalDepts = availableCategories.length
+                  let position = index - currentDeptIndex
+
+                  // Handle wrap-around for circular rotation
+                  if (position > totalDepts / 2) position -= totalDepts
+                  if (position < -totalDepts / 2) position += totalDepts
+
+                  // Center item is at position 0
+                  const isCenter = position === 0
+                  const distanceFromCenter = Math.abs(position)
+
+                  // Calculate visual properties based on distance from center
+                  const translateX = position * 180 // 180px spacing between items - horizontal
+                  const scale = isCenter ? 1.2 : Math.max(0.7, 1 - distanceFromCenter * 0.2)
+                  const opacity = isCenter ? 1 : Math.max(0.35, 1 - distanceFromCenter * 0.3)
+                  const blur = isCenter ? 0 : Math.min(3, distanceFromCenter * 1.5)
+
+                  // Only show items within range
+                  if (distanceFromCenter > 2) return null
+
                   return (
                     <button
                       key={dept}
-                      ref={isActive ? activeTabRef : null}
                       onClick={() => navigate(`/circulars?department=${dept}`)}
-                      className={`flex-shrink-0 px-6 py-3.5 font-semibold transition-all border-b-3 flex items-center gap-2 ${
-                        isActive
-                          ? `${deptInfo.borderClass} ${deptInfo.textClass} ${deptInfo.bgClass} border-current animate-popup`
-                          : `border-transparent text-gray-600 hover:${deptInfo.bgClass} hover:${deptInfo.textClass} hover:border-current`
+                      className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ease-out flex items-center gap-2 ${
+                        isCenter
+                          ? ''
+                          : ''
                       }`}
+                      style={{
+                        fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
+                        transform: `translate(calc(-50% + ${translateX}px), -50%) scale(${scale})`,
+                        opacity: opacity,
+                        filter: `blur(${blur}px)`,
+                        zIndex: isCenter ? 20 : 10 - distanceFromCenter,
+                        pointerEvents: isCenter ? 'auto' : 'none'
+                      }}
                     >
-                      {dept}
-                      <span className={`min-w-[24px] h-[24px] flex items-center justify-center px-2 text-xs font-bold text-gray-800 ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-')} rounded-full`}>
+                      <span
+                        className={`px-3 py-1.5 ${deptInfo.textClass} rounded-full ${isCenter ? 'text-sm' : 'text-xs'} font-bold border-2 ${deptInfo.borderClass}`}
+                      >
+                        {dept}
+                      </span>
+                      <span className={`min-w-[24px] h-[24px] flex items-center justify-center px-2 ${isCenter ? 'text-sm' : 'text-xs'} font-bold text-gray-800 ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-')} rounded-full`}>
                         {count}
                       </span>
                     </button>
