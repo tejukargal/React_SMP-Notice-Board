@@ -353,7 +353,6 @@ const Dashboard = () => {
               <div className="relative h-full flex items-center">
                 {availableCategories.map((dept, index) => {
                   const deptInfo = departmentInfo[dept]
-                  const count = circulars.filter(c => c.department === dept || c.department === 'All').length
 
                   // Calculate position relative to current index
                   const totalDepts = availableCategories.length
@@ -371,7 +370,7 @@ const Dashboard = () => {
                   const translateX = position * 180 // 180px spacing between items - horizontal
                   const scale = isCenter ? 1.2 : Math.max(0.7, 1 - distanceFromCenter * 0.2)
                   const opacity = isCenter ? 1 : Math.max(0.35, 1 - distanceFromCenter * 0.3)
-                  const blur = isCenter ? 0 : Math.min(3, distanceFromCenter * 1.5)
+                  const blur = isCenter ? 0 : Math.min(1.5, distanceFromCenter * 0.8)
 
                   // Only show items within range
                   if (distanceFromCenter > 2) return null
@@ -380,11 +379,7 @@ const Dashboard = () => {
                     <button
                       key={dept}
                       onClick={() => navigate(`/circulars?department=${dept}`)}
-                      className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ease-out flex items-center gap-2 ${
-                        isCenter
-                          ? ''
-                          : ''
-                      }`}
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ease-out"
                       style={{
                         fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
                         transform: `translate(calc(-50% + ${translateX}px), -50%) scale(${scale})`,
@@ -398,9 +393,6 @@ const Dashboard = () => {
                         className={`px-3 py-1.5 ${deptInfo.textClass} rounded-full ${isCenter ? 'text-sm' : 'text-xs'} font-bold border-2 ${deptInfo.borderClass}`}
                       >
                         {dept}
-                      </span>
-                      <span className={`min-w-[24px] h-[24px] flex items-center justify-center px-2 ${isCenter ? 'text-sm' : 'text-xs'} font-bold text-gray-800 ${deptInfo.bgClass.replace('bg-', 'bg-opacity-100 bg-')} rounded-full`}>
-                        {count}
                       </span>
                     </button>
                   )
