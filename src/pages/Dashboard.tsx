@@ -338,17 +338,17 @@ const Dashboard = () => {
         {/* Horizontal Rotating Department Labels with Parallax */}
         {availableCategories.length > 0 && (
           <div className="mb-3 mt-2 animate-popup" style={{ animationDelay: '0.05s' }}>
-            <div
-              className="relative overflow-hidden mx-auto"
-              style={{
-                height: '55px',
-                width: '100%',
-                maxWidth: '800px'
-              }}
-            >
-              {/* Gradient overlays for fade effect */}
-              <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
-              <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
+            <div className="bg-white border-l-4 border-blue-500 rounded-xl shadow-md hover:shadow-lg transition-all mx-auto" style={{ maxWidth: '800px' }}>
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  height: '55px',
+                  width: '100%'
+                }}
+              >
+                {/* Gradient overlays for fade effect */}
+                <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
               {/* Horizontal carousel container */}
               <div className="relative h-full flex items-center">
@@ -402,6 +402,7 @@ const Dashboard = () => {
                 })}
               </div>
             </div>
+          </div>
           </div>
         )}
 
