@@ -104,9 +104,11 @@ const Dashboard = () => {
 
       // Get unique categories that have circulars
       const uniqueCategories = Array.from(new Set(circulars.map(c => c.department)))
-      // Filter out 'All' and sort to put it first if it exists
+      // Filter out 'All' from the list
       const categoriesWithoutAll = uniqueCategories.filter(cat => cat !== 'All')
-      setAvailableCategories(categoriesWithoutAll as Department[])
+      // Add 'All' at the beginning
+      const allCategories = ['All' as Department, ...categoriesWithoutAll as Department[]]
+      setAvailableCategories(allCategories)
     }
   }, [circulars])
 
@@ -377,7 +379,7 @@ const Dashboard = () => {
                   return (
                     <button
                       key={dept}
-                      onClick={() => navigate(`/circulars?department=${dept}`)}
+                      onClick={() => navigate(dept === 'All' ? '/circulars' : `/circulars?department=${dept}`)}
                       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                       style={{
                         fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",

@@ -31,10 +31,10 @@ const Header = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Cycle through text items: College Name -> Welcome Message -> Date -> Time -> CONNECT
+  // Cycle through text items: College Name -> Welcome Message -> Day -> Date -> Time -> CONNECT
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTextIndex((prev) => (prev + 1) % 5)
+      setCurrentTextIndex((prev) => (prev + 1) % 6)
     }, 5000) // Change every 5 seconds
 
     return () => clearInterval(interval)
@@ -43,9 +43,14 @@ const Header = () => {
   const currentDept = departments[currentDeptIndex]
   const deptInfo = departmentInfo[currentDept]
 
-  const formatDate = () => {
+  const formatDay = () => {
     return currentTime.toLocaleDateString('en-IN', {
       weekday: 'long',
+    })
+  }
+
+  const formatDate = () => {
+    return currentTime.toLocaleDateString('en-IN', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -65,12 +70,14 @@ const Header = () => {
       case 0:
         return 'Sanjay Memorial Polytechnic, Sagar'
       case 1:
-        return 'Welcome To SMP'
+        return 'Welcome to CONNECT'
       case 2:
-        return formatDate()
+        return formatDay()
       case 3:
-        return formatTime()
+        return formatDate()
       case 4:
+        return formatTime()
+      case 5:
         return 'CONNECT'
       default:
         return 'Sanjay Memorial Polytechnic, Sagar'
