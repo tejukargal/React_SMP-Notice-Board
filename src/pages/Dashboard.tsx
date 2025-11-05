@@ -19,15 +19,14 @@ const Dashboard = () => {
 
   // Rotating taglines with matching colors
   const taglines = [
-    { text: 'With SMP Circulars', color: '#3B82F6' }, // CE Blue
-    { text: 'With SMP Updates', color: '#10B981' }, // ME Green
-    { text: 'With SMP Announcements', color: '#8B5CF6' }, // CS Purple
-    { text: 'With SMP Exams', color: '#F97316' }, // EC Orange
-    { text: 'With SMP Results', color: '#84CC16' }, // Results Lime
-    { text: 'With SMP Admissions', color: '#0EA5E9' }, // Admissions Sky
-    { text: 'With SMP Dues', color: '#F59E0B' }, // Fee Dues Amber
-    { text: 'With SMP Staff', color: '#06B6D4' }, // Office Cyan
-    { text: 'With SMP', color: '#EC4899' }, // Annual Day Pink
+    { text: 'With SMP', color: '#EC4899' }, // Pink
+    { text: 'With Circulars', color: '#3B82F6' }, // Blue
+    { text: 'With Exam Schedules', color: '#F97316' }, // Orange
+    { text: 'With Result Schedules', color: '#84CC16' }, // Lime
+    { text: 'With Fee Updates', color: '#F59E0B' }, // Amber
+    { text: 'With Admissions', color: '#0EA5E9' }, // Sky
+    { text: 'With Course Updates', color: '#8B5CF6' }, // Purple
+    { text: 'With Office', color: '#06B6D4' }, // Cyan
   ]
 
   const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0)
