@@ -367,7 +367,7 @@ const Dashboard = () => {
                   const distanceFromCenter = Math.abs(position)
 
                   // Calculate visual properties based on distance from center
-                  const translateX = position * 180 // 180px spacing between items - horizontal
+                  const translateX = position * 140 // 140px spacing between items - more compact for mobile visibility
                   const scale = isCenter ? 1.2 : Math.max(0.7, 1 - distanceFromCenter * 0.2)
                   const opacity = isCenter ? 1 : Math.max(0.35, 1 - distanceFromCenter * 0.3)
                   const blur = isCenter ? 0 : Math.min(1.5, distanceFromCenter * 0.8)
