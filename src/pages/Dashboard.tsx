@@ -363,12 +363,13 @@ const Dashboard = () => {
                           navigate(`/circulars?department=${currentLabel}`)
                         }
                       }}
-                      className="relative group cursor-pointer"
-                      style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
+                      className="relative group cursor-pointer flex items-center gap-2"
+                      style={{
+                        fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
+                        minWidth: '180px'
+                      }}
                     >
-                      <div className="text-center mb-1">
-                        <span className="text-xs">👇</span>
-                      </div>
+                      <span className="text-lg">👉</span>
                       <h2
                         className={`text-2xl font-bold underline decoration-2 underline-offset-4 animate-popup ${
                           isFeatured ? 'text-gray-900' : currentDeptInfo?.textClass
