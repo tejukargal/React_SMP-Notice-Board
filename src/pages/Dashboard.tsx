@@ -342,23 +342,47 @@ const Dashboard = () => {
         {featuredCircular && (
           <div className="mb-6 animate-popup" style={{ animationDelay: '0.05s' }}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+              <div className="flex items-center gap-2">
                 {availableCategories.length > 0 && (() => {
                   // Create labels array with "Featured" first, then all categories
                   const rotatingLabels = ['Featured', ...availableCategories]
                   const currentLabel = rotatingLabels[currentDeptIndex % rotatingLabels.length]
+                  const isFeatured = currentLabel === 'Featured'
+                  const currentDeptInfo = isFeatured ? null : departmentInfo[currentLabel as Department]
 
                   return (
-                    <span
+                    <button
                       key={currentDeptIndex}
-                      className="inline-block animate-popup"
+                      onClick={() => {
+                        if (currentLabel === 'Featured') {
+                          // Stay on dashboard
+                          return
+                        } else if (currentLabel === 'All') {
+                          navigate('/circulars')
+                        } else {
+                          navigate(`/circulars?department=${currentLabel}`)
+                        }
+                      }}
+                      className="relative group cursor-pointer"
+                      style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
                     >
-                      {currentLabel}
-                    </span>
+                      <div className="text-center mb-1">
+                        <span className="text-xs">👇</span>
+                      </div>
+                      <h2
+                        className={`text-2xl font-bold underline decoration-2 underline-offset-4 animate-popup ${
+                          isFeatured ? 'text-gray-900' : currentDeptInfo?.textClass
+                        }`}
+                      >
+                        {currentLabel}
+                      </h2>
+                    </button>
                   )
                 })()}
-                <span>Circular</span>
-              </h2>
+                <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+                  Circular
+                </h2>
+              </div>
               <Link
                 to='/circulars'
                 className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
