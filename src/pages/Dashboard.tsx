@@ -199,9 +199,8 @@ const Dashboard = () => {
           <p className="text-gray-600 flex items-center gap-2 min-h-[1.75rem]">
             <span className="font-semibold">CONNECT</span>
             <span
-              className="tagline-animate font-medium"
+              className="tagline-animate font-medium text-gray-600"
               key={currentTaglineIndex}
-              style={{ color: taglines[currentTaglineIndex].color }}
             >
               {taglines[currentTaglineIndex].text}
             </span>
@@ -369,7 +368,7 @@ const Dashboard = () => {
                         minWidth: '180px'
                       }}
                     >
-                      <span className="text-lg">👉</span>
+                      <span className="text-lg">{isFeatured ? '👇' : '👉'}</span>
                       <h2
                         className={`text-2xl font-bold underline decoration-2 underline-offset-4 animate-popup ${
                           isFeatured ? 'text-gray-900' : currentDeptInfo?.textClass
@@ -377,12 +376,14 @@ const Dashboard = () => {
                       >
                         {currentLabel}
                       </h2>
+                      {isFeatured && (
+                        <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+                          Circular
+                        </h2>
+                      )}
                     </button>
                   )
                 })()}
-                <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
-                  Circular
-                </h2>
               </div>
               <Link
                 to='/circulars'
