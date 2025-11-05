@@ -123,12 +123,15 @@ const Dashboard = () => {
     return () => clearInterval(interval)
   }, [featuredCircular])
 
-  // Rotate through departments every 3 seconds
+  // Rotate through departments every 3 seconds (including "Featured")
   useEffect(() => {
     if (availableCategories.length === 0) return
 
+    // Total labels: "Featured" + all availableCategories
+    const totalLabels = availableCategories.length + 1
+
     const interval = setInterval(() => {
-      setCurrentDeptIndex((prev) => (prev + 1) % availableCategories.length)
+      setCurrentDeptIndex((prev) => (prev + 1) % totalLabels)
     }, 3000)
 
     return () => clearInterval(interval)
@@ -335,88 +338,27 @@ const Dashboard = () => {
           }
         `}</style>
 
-        {/* Horizontal Rotating Department Labels with Parallax */}
-        {availableCategories.length > 0 && (
-          <div className="mb-3 mt-2 animate-popup" style={{ animationDelay: '0.05s' }}>
-            {(() => {
-              const currentDept = availableCategories[currentDeptIndex]
-              const currentDeptInfo = departmentInfo[currentDept]
-              return (
-                <div className={`${currentDeptInfo.bgClass} border-l-4 ${currentDeptInfo.borderClass} rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden`}>
-                  <div
-                    className="relative"
-                    style={{
-                      height: '70px',
-                      width: '100%'
-                    }}
-                  >
-                    {/* Gradient overlays for fade effect */}
-                    <div className="absolute top-0 bottom-0 left-0 w-20 z-10 pointer-events-none" style={{ background: `linear-gradient(to right, ${currentDeptInfo.lightColor}, transparent)` }} />
-                    <div className="absolute top-0 bottom-0 right-0 w-20 z-10 pointer-events-none" style={{ background: `linear-gradient(to left, ${currentDeptInfo.lightColor}, transparent)` }} />
-
-                    {/* Horizontal carousel container */}
-                    <div className="relative h-full flex items-center">
-                      {availableCategories.map((dept, index) => {
-                        const deptInfo = departmentInfo[dept]
-
-                        // Calculate position relative to current index
-                        const totalDepts = availableCategories.length
-                        let position = index - currentDeptIndex
-
-                        // Handle wrap-around for circular rotation
-                        if (position > totalDepts / 2) position -= totalDepts
-                        if (position < -totalDepts / 2) position += totalDepts
-
-                        // Center item is at position 0
-                        const isCenter = position === 0
-                        const distanceFromCenter = Math.abs(position)
-
-                        // Calculate visual properties based on distance from center
-                        const translateX = position * 140 // 140px spacing between items - more compact for mobile visibility
-                        const scale = isCenter ? 1.2 : Math.max(0.7, 1 - distanceFromCenter * 0.2)
-                        const opacity = isCenter ? 1 : Math.max(0.35, 1 - distanceFromCenter * 0.3)
-                        const blur = isCenter ? 0 : Math.min(1.5, distanceFromCenter * 0.8)
-
-                        // Only show items within range
-                        if (distanceFromCenter > 2) return null
-
-                        return (
-                          <button
-                            key={dept}
-                            onClick={() => navigate(dept === 'All' ? '/circulars' : `/circulars?department=${dept}`)}
-                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                            style={{
-                              fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
-                              transform: `translate(calc(-50% + ${translateX}px), -50%) scale(${scale})`,
-                              opacity: opacity,
-                              filter: `blur(${blur}px)`,
-                              zIndex: isCenter ? 20 : 10 - distanceFromCenter,
-                              pointerEvents: isCenter ? 'auto' : 'none',
-                              transition: 'transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.9s ease-out, filter 0.9s ease-out',
-                              willChange: 'transform, opacity, filter'
-                            }}
-                          >
-                            <span
-                              className={`px-3 py-1.5 ${deptInfo.textClass} rounded-full ${isCenter ? 'text-sm' : 'text-xs'} font-bold border-2 ${deptInfo.borderClass}`}
-                            >
-                              {dept}
-                            </span>
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-              )
-            })()}
-          </div>
-        )}
-
         {/* Featured Circular */}
         {featuredCircular && (
-          <div className="mb-6 animate-popup" style={{ animationDelay: '0.08s' }}>
+          <div className="mb-6 animate-popup" style={{ animationDelay: '0.05s' }}>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Featured Circular</h2>
+              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+                {availableCategories.length > 0 && (() => {
+                  // Create labels array with "Featured" first, then all categories
+                  const rotatingLabels = ['Featured', ...availableCategories]
+                  const currentLabel = rotatingLabels[currentDeptIndex % rotatingLabels.length]
+
+                  return (
+                    <span
+                      key={currentDeptIndex}
+                      className="inline-block animate-popup"
+                    >
+                      {currentLabel}
+                    </span>
+                  )
+                })()}
+                <span>Circular</span>
+              </h2>
               <Link
                 to='/circulars'
                 className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
@@ -500,7 +442,7 @@ const Dashboard = () => {
 
         {/* Compact Preview Stack */}
         {circulars.length > 1 && (
-          <div className="mb-5 animate-popup" style={{ animationDelay: '0.15s' }}>
+          <div className="mb-5 animate-popup" style={{ animationDelay: '0.1s' }}>
             <h2 className="text-xl font-bold text-gray-900 mb-3" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Quick Preview</h2>
             <CircularPreviewStack circulars={circulars} />
           </div>
