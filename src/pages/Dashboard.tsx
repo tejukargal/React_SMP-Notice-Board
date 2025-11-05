@@ -346,7 +346,7 @@ const Dashboard = () => {
                   <div
                     className="relative"
                     style={{
-                      height: '55px',
+                      height: '70px',
                       width: '100%'
                     }}
                   >
