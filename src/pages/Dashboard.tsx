@@ -368,16 +368,15 @@ const Dashboard = () => {
                         minWidth: '180px'
                       }}
                     >
-                      <span className="text-lg">{isFeatured ? '👇' : '👉'}</span>
                       <h2
-                        className={`text-2xl font-bold underline decoration-2 underline-offset-4 animate-popup ${
+                        className={`text-2xl font-bold animate-popup underline decoration-1 underline-offset-4 ${
                           isFeatured ? 'text-gray-900' : currentDeptInfo?.textClass
                         }`}
                       >
                         {currentLabel}
                       </h2>
                       {isFeatured && (
-                        <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+                        <h2 className="text-2xl font-bold text-gray-900 animate-popup underline decoration-1 underline-offset-4" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
                           Circular
                         </h2>
                       )}
