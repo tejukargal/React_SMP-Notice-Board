@@ -338,71 +338,77 @@ const Dashboard = () => {
         {/* Horizontal Rotating Department Labels with Parallax */}
         {availableCategories.length > 0 && (
           <div className="mb-3 mt-2 animate-popup" style={{ animationDelay: '0.05s' }}>
-            <div className="bg-white border-l-4 border-blue-500 rounded-xl shadow-md hover:shadow-lg transition-all mx-auto" style={{ maxWidth: '800px' }}>
-              <div
-                className="relative overflow-hidden"
-                style={{
-                  height: '55px',
-                  width: '100%'
-                }}
-              >
-                {/* Gradient overlays for fade effect */}
-                <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-                <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+            {(() => {
+              const currentDept = availableCategories[currentDeptIndex]
+              const currentDeptInfo = departmentInfo[currentDept]
+              return (
+                <div className={`${currentDeptInfo.bgClass} border-l-4 ${currentDeptInfo.borderClass} rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden`}>
+                  <div
+                    className="relative"
+                    style={{
+                      height: '55px',
+                      width: '100%'
+                    }}
+                  >
+                    {/* Gradient overlays for fade effect */}
+                    <div className="absolute top-0 bottom-0 left-0 w-20 z-10 pointer-events-none" style={{ background: `linear-gradient(to right, ${currentDeptInfo.lightColor}, transparent)` }} />
+                    <div className="absolute top-0 bottom-0 right-0 w-20 z-10 pointer-events-none" style={{ background: `linear-gradient(to left, ${currentDeptInfo.lightColor}, transparent)` }} />
 
-              {/* Horizontal carousel container */}
-              <div className="relative h-full flex items-center">
-                {availableCategories.map((dept, index) => {
-                  const deptInfo = departmentInfo[dept]
+                    {/* Horizontal carousel container */}
+                    <div className="relative h-full flex items-center">
+                      {availableCategories.map((dept, index) => {
+                        const deptInfo = departmentInfo[dept]
 
-                  // Calculate position relative to current index
-                  const totalDepts = availableCategories.length
-                  let position = index - currentDeptIndex
+                        // Calculate position relative to current index
+                        const totalDepts = availableCategories.length
+                        let position = index - currentDeptIndex
 
-                  // Handle wrap-around for circular rotation
-                  if (position > totalDepts / 2) position -= totalDepts
-                  if (position < -totalDepts / 2) position += totalDepts
+                        // Handle wrap-around for circular rotation
+                        if (position > totalDepts / 2) position -= totalDepts
+                        if (position < -totalDepts / 2) position += totalDepts
 
-                  // Center item is at position 0
-                  const isCenter = position === 0
-                  const distanceFromCenter = Math.abs(position)
+                        // Center item is at position 0
+                        const isCenter = position === 0
+                        const distanceFromCenter = Math.abs(position)
 
-                  // Calculate visual properties based on distance from center
-                  const translateX = position * 140 // 140px spacing between items - more compact for mobile visibility
-                  const scale = isCenter ? 1.2 : Math.max(0.7, 1 - distanceFromCenter * 0.2)
-                  const opacity = isCenter ? 1 : Math.max(0.35, 1 - distanceFromCenter * 0.3)
-                  const blur = isCenter ? 0 : Math.min(1.5, distanceFromCenter * 0.8)
+                        // Calculate visual properties based on distance from center
+                        const translateX = position * 140 // 140px spacing between items - more compact for mobile visibility
+                        const scale = isCenter ? 1.2 : Math.max(0.7, 1 - distanceFromCenter * 0.2)
+                        const opacity = isCenter ? 1 : Math.max(0.35, 1 - distanceFromCenter * 0.3)
+                        const blur = isCenter ? 0 : Math.min(1.5, distanceFromCenter * 0.8)
 
-                  // Only show items within range
-                  if (distanceFromCenter > 2) return null
+                        // Only show items within range
+                        if (distanceFromCenter > 2) return null
 
-                  return (
-                    <button
-                      key={dept}
-                      onClick={() => navigate(dept === 'All' ? '/circulars' : `/circulars?department=${dept}`)}
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                      style={{
-                        fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
-                        transform: `translate(calc(-50% + ${translateX}px), -50%) scale(${scale})`,
-                        opacity: opacity,
-                        filter: `blur(${blur}px)`,
-                        zIndex: isCenter ? 20 : 10 - distanceFromCenter,
-                        pointerEvents: isCenter ? 'auto' : 'none',
-                        transition: 'transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.9s ease-out, filter 0.9s ease-out',
-                        willChange: 'transform, opacity, filter'
-                      }}
-                    >
-                      <span
-                        className={`px-3 py-1.5 ${deptInfo.textClass} rounded-full ${isCenter ? 'text-sm' : 'text-xs'} font-bold border-2 ${deptInfo.borderClass}`}
-                      >
-                        {dept}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
+                        return (
+                          <button
+                            key={dept}
+                            onClick={() => navigate(dept === 'All' ? '/circulars' : `/circulars?department=${dept}`)}
+                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                            style={{
+                              fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
+                              transform: `translate(calc(-50% + ${translateX}px), -50%) scale(${scale})`,
+                              opacity: opacity,
+                              filter: `blur(${blur}px)`,
+                              zIndex: isCenter ? 20 : 10 - distanceFromCenter,
+                              pointerEvents: isCenter ? 'auto' : 'none',
+                              transition: 'transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.9s ease-out, filter 0.9s ease-out',
+                              willChange: 'transform, opacity, filter'
+                            }}
+                          >
+                            <span
+                              className={`px-3 py-1.5 ${deptInfo.textClass} rounded-full ${isCenter ? 'text-sm' : 'text-xs'} font-bold border-2 ${deptInfo.borderClass}`}
+                            >
+                              {dept}
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
           </div>
         )}
 
