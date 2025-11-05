@@ -336,11 +336,11 @@ const Dashboard = () => {
 
         {/* Horizontal Rotating Department Labels with Parallax */}
         {availableCategories.length > 0 && (
-          <div className="mb-6 animate-popup" style={{ animationDelay: '0.05s' }}>
+          <div className="mb-3 mt-2 animate-popup" style={{ animationDelay: '0.05s' }}>
             <div
               className="relative overflow-hidden mx-auto"
               style={{
-                height: '70px',
+                height: '55px',
                 width: '100%',
                 maxWidth: '800px'
               }}
@@ -379,14 +379,16 @@ const Dashboard = () => {
                     <button
                       key={dept}
                       onClick={() => navigate(`/circulars?department=${dept}`)}
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ease-out"
+                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                       style={{
                         fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
                         transform: `translate(calc(-50% + ${translateX}px), -50%) scale(${scale})`,
                         opacity: opacity,
                         filter: `blur(${blur}px)`,
                         zIndex: isCenter ? 20 : 10 - distanceFromCenter,
-                        pointerEvents: isCenter ? 'auto' : 'none'
+                        pointerEvents: isCenter ? 'auto' : 'none',
+                        transition: 'transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.9s ease-out, filter 0.9s ease-out',
+                        willChange: 'transform, opacity, filter'
                       }}
                     >
                       <span
@@ -404,7 +406,7 @@ const Dashboard = () => {
 
         {/* Featured Circular */}
         {featuredCircular && (
-          <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
+          <div className="mb-6 animate-popup" style={{ animationDelay: '0.08s' }}>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Featured Circular</h2>
               <Link
@@ -490,7 +492,7 @@ const Dashboard = () => {
 
         {/* Compact Preview Stack */}
         {circulars.length > 1 && (
-          <div className="mb-5 animate-popup" style={{ animationDelay: '0.2s' }}>
+          <div className="mb-5 animate-popup" style={{ animationDelay: '0.15s' }}>
             <h2 className="text-xl font-bold text-gray-900 mb-3" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Quick Preview</h2>
             <CircularPreviewStack circulars={circulars} />
           </div>
