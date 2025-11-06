@@ -23,8 +23,8 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % previewCirculars.length)
         setIsTransitioning(false)
-      }, 600)
-    }, 4500)
+      }, 400)
+    }, 3000)
 
     return () => clearInterval(interval)
   }, [previewCirculars.length])
@@ -53,15 +53,22 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
             opacity: 1;
           }
           100% {
-            transform: translateX(-30px);
+            transform: translateX(-50px);
             opacity: 0;
           }
         }
 
-        @keyframes textSlideIn {
+        @keyframes textSlideInBounce {
           0% {
-            transform: translateX(30px);
+            transform: translateX(100px);
             opacity: 0;
+          }
+          60% {
+            transform: translateX(-5px);
+            opacity: 1;
+          }
+          80% {
+            transform: translateX(2px);
           }
           100% {
             transform: translateX(0);
@@ -75,36 +82,44 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
             opacity: 0.5;
           }
           100% {
-            transform: translateX(-8px);
+            transform: translateX(-12px);
             opacity: 0.3;
           }
         }
 
-        @keyframes stackSlideIn {
+        @keyframes stackSlideInBounce {
           0% {
-            transform: translateX(8px);
-            opacity: 0.3;
+            transform: translateX(100px);
+            opacity: 0.2;
+          }
+          60% {
+            transform: translateX(5px);
+            opacity: 0.4;
+          }
+          80% {
+            transform: translateX(10px);
+            opacity: 0.45;
           }
           100% {
-            transform: translateX(0);
+            transform: translateX(8px);
             opacity: 0.5;
           }
         }
 
         .text-exit {
-          animation: textSlideOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: textSlideOut 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
         }
 
         .text-enter {
-          animation: textSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: textSlideInBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
         .stack-text-exit {
-          animation: stackSlideLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: stackSlideLeft 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
         }
 
         .stack-text-enter {
-          animation: stackSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: stackSlideInBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
       `}</style>
 
@@ -196,7 +211,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
                 setTimeout(() => {
                   setCurrentIndex(index)
                   setIsTransitioning(false)
-                }, 600)
+                }, 400)
               }}
               className={`h-1.5 rounded-full transition-all ${
                 index === currentIndex

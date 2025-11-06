@@ -1,4 +1,4 @@
-export type Department = 'CE' | 'ME' | 'CS' | 'EC' | 'EE' | 'All' | 'Office' | 'Results' | 'Fee Dues' | 'Exams' | 'Scholarships' | 'Internship' | 'Annual Day' | 'Functions' | 'Admission Ticket' | 'Admissions'
+export type Department = 'CE' | 'ME' | 'CS' | 'EC' | 'EE' | 'All' | 'Office' | 'Results' | 'Fee Dues' | 'Exams' | 'Scholarships' | 'Internship' | 'Annual Day' | 'Functions' | 'Admission Ticket' | 'Admissions' | 'Red Cross' | 'NSS'
 
 export interface FileAttachment {
   name: string

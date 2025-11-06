@@ -145,6 +145,24 @@ export const departmentInfo: Record<Department, DepartmentInfo> = {
     textClass: 'text-sky-600',
     borderClass: 'border-sky-600',
   },
+  'Red Cross': {
+    code: 'Red Cross',
+    name: 'Red Cross',
+    color: '#DC2626',
+    lightColor: '#FEE2E2',
+    bgClass: 'bg-red-50',
+    textClass: 'text-red-700',
+    borderClass: 'border-red-700',
+  },
+  NSS: {
+    code: 'NSS',
+    name: 'NSS',
+    color: '#2563EB',
+    lightColor: '#DBEAFE',
+    bgClass: 'bg-blue-50',
+    textClass: 'text-blue-700',
+    borderClass: 'border-blue-700',
+  },
 }
 
-export const departments: Department[] = ['CE', 'ME', 'CS', 'EC', 'EE', 'All', 'Office', 'Results', 'Fee Dues', 'Exams', 'Scholarships', 'Internship', 'Annual Day', 'Functions', 'Admission Ticket', 'Admissions']
+export const departments: Department[] = ['Admission Ticket', 'Admissions', 'All', 'Annual Day', 'CE', 'CS', 'EC', 'EE', 'Exams', 'Fee Dues', 'Functions', 'Internship', 'ME', 'NSS', 'Office', 'Red Cross', 'Results', 'Scholarships']
