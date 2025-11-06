@@ -58,17 +58,18 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
           }
         }
 
-        @keyframes textSlideInBounce {
+        @keyframes textSlideInElastic {
           0% {
-            transform: translateX(100px);
+            transform: translateX(80px);
             opacity: 0;
           }
-          60% {
-            transform: translateX(-5px);
-            opacity: 1;
+          50% {
+            transform: translateX(-2px);
+            opacity: 0.8;
           }
-          80% {
-            transform: translateX(2px);
+          75% {
+            transform: translateX(1px);
+            opacity: 0.95;
           }
           100% {
             transform: translateX(0);
@@ -87,18 +88,18 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
           }
         }
 
-        @keyframes stackSlideInBounce {
+        @keyframes stackSlideInElastic {
           0% {
-            transform: translateX(100px);
+            transform: translateX(80px);
             opacity: 0.2;
           }
-          60% {
-            transform: translateX(5px);
-            opacity: 0.4;
+          50% {
+            transform: translateX(6px);
+            opacity: 0.35;
           }
-          80% {
-            transform: translateX(10px);
-            opacity: 0.45;
+          75% {
+            transform: translateX(9px);
+            opacity: 0.42;
           }
           100% {
             transform: translateX(8px);
@@ -111,7 +112,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         }
 
         .text-enter {
-          animation: textSlideInBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation: textSlideInElastic 0.5s cubic-bezier(0.68, -0.25, 0.27, 1.25) forwards;
         }
 
         .stack-text-exit {
@@ -119,7 +120,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         }
 
         .stack-text-enter {
-          animation: stackSlideInBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation: stackSlideInElastic 0.5s cubic-bezier(0.68, -0.25, 0.27, 1.25) forwards;
         }
       `}</style>
 

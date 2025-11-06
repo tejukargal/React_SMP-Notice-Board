@@ -482,11 +482,36 @@ const Dashboard = () => {
           .preview-fade-enter {
             opacity: 1;
             transition: opacity 0.6s ease-in-out;
+            animation: subtleWave 0.8s ease-in-out;
           }
 
           .preview-fade-exit {
             opacity: 0;
             transition: opacity 0.6s ease-in-out;
+          }
+
+          /* Subtle wavy animation for featured circular */
+          @keyframes subtleWave {
+            0% {
+              transform: translateY(0) scale(1);
+              opacity: 0;
+            }
+            25% {
+              transform: translateY(-3px) scale(1.005);
+              opacity: 0.5;
+            }
+            50% {
+              transform: translateY(0) scale(1);
+              opacity: 0.8;
+            }
+            75% {
+              transform: translateY(2px) scale(0.998);
+              opacity: 0.95;
+            }
+            100% {
+              transform: translateY(0) scale(1);
+              opacity: 1;
+            }
           }
         `}</style>
 
