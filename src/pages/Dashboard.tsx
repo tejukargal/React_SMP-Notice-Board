@@ -531,7 +531,7 @@ const Dashboard = () => {
                 onClick={() => setSelectedCircular(currentCircular)}
                 className={`featured-circular-modern ${departmentInfo[currentCircular.department].bgClass} border-l-4 ${departmentInfo[currentCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group ${isTransitioning ? 'preview-fade-exit' : 'preview-fade-enter'}`}
               >
-                <div className="p-5">
+                <div className="p-5 min-h-[420px] sm:min-h-[380px]">
                   {/* Header with Date */}
                   <div className="flex items-center justify-between mb-3">
                     <span
@@ -547,26 +547,21 @@ const Dashboard = () => {
 
                   {/* Title */}
                   <h3
-                    className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 animate-popup pb-3 border-b border-gray-300"
-                    key={`title-${previewIndex}`}
+                    className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300"
                   >
                     {currentCircular.title}
                   </h3>
 
                   {/* Subject */}
                   <p
-                    className={`text-[20px] ${departmentInfo[currentCircular.department].textClass} font-semibold mb-3 line-clamp-2 animate-popup`}
-                    key={`subject-${previewIndex}`}
-                    style={{ animationDelay: '0.1s' }}
+                    className={`text-[20px] ${departmentInfo[currentCircular.department].textClass} font-semibold mb-3 line-clamp-2`}
                   >
                     {currentCircular.subject}
                   </p>
 
                   {/* Body Preview */}
                   <div
-                    className="text-[18px] text-gray-600 line-clamp-3 mb-4 animate-popup"
-                    key={`body-${previewIndex}`}
-                    style={{ animationDelay: '0.2s' }}
+                    className="text-[18px] text-gray-600 line-clamp-3 mb-4"
                     dangerouslySetInnerHTML={renderHtmlContent(currentCircular.body, departmentInfo[currentCircular.department].color)}
                   />
 
