@@ -6,6 +6,7 @@ import { departmentInfo } from '../utils/departments'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CircularPreviewStack from '../components/CircularPreviewStack'
 import CircularModal from '../components/CircularModal'
+import GreetingScreen from '../components/GreetingScreen'
 import { useCirculars } from '../context/CircularsContext'
 
 const Dashboard = () => {
@@ -15,6 +16,7 @@ const Dashboard = () => {
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
   const [navDeptIndex, setNavDeptIndex] = useState(0)
+  const [showGreeting, setShowGreeting] = useState(true)
   const navigate = useNavigate()
 
   // Rotating taglines with matching colors
@@ -33,6 +35,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchCirculars()
+  }, [])
+
+  // Load Impact font for all devices
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.href = 'https://fonts.cdnfonts.com/css/impact'
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
+
+    return () => {
+      if (document.head.contains(link)) {
+        document.head.removeChild(link)
+      }
+    }
   }, [])
 
   // Rotate tagline every 5 seconds
@@ -217,18 +233,22 @@ const Dashboard = () => {
             <div
               className={`mb-4 shadow-md rounded-xl overflow-hidden transition-all duration-1000 ease-in-out ${bgClass} border-l-4 ${borderClass}`}
             >
-              {/* SMP CONNECT Banner */}
-              <div className="relative h-[50px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
-                <div
-                  className="smp-board-title banner-slide-in transition-colors duration-1000 ease-in-out"
-                  style={{
-                    fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif",
-                    color: isFeatured ? '#1f2937' : currentDeptInfo?.color
-                  }}
-                >
-                  SMP CONNECT
+              {/* Greeting or SMP CONNECT Banner */}
+              {showGreeting ? (
+                <GreetingScreen onComplete={() => setShowGreeting(false)} />
+              ) : (
+                <div className="relative h-[45px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
+                  <div
+                    className="smp-board-title banner-slide-in transition-colors duration-1000 ease-in-out"
+                    style={{
+                      fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif",
+                      color: isFeatured ? '#1f2937' : currentDeptInfo?.color
+                    }}
+                  >
+                    SMP CONNECT
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Separator */}
               <div className="border-t border-gray-200"></div>
@@ -247,7 +267,7 @@ const Dashboard = () => {
                   fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif"
                 }}
               >
-                <div className="py-4 px-6 overflow-hidden">
+                <div className="py-3 px-6 overflow-hidden">
                   <h2
                     key={navDeptIndex}
                     className={`text-3xl sm:text-4xl font-bold filter-label-slide underline decoration-1 underline-offset-4 text-center ${textClass}`}
@@ -286,7 +306,7 @@ const Dashboard = () => {
           }
 
           .banner-slide-in {
-            animation: slideFromRight 0.8s ease-out forwards;
+            animation: slideFromRight 0.5s ease-out forwards;
           }
 
           .smp-board-title {
