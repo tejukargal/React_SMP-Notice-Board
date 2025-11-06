@@ -13,11 +13,10 @@ const Dashboard = () => {
   const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [featuredCircular, setFeaturedCircular] = useState<Circular | null>(null)
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
+  const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
   const [navDeptIndex, setNavDeptIndex] = useState(0)
   const [showGreeting, setShowGreeting] = useState(true)
-  const [previewIndex, setPreviewIndex] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
   const navigate = useNavigate()
 
   // Rotating taglines with matching colors
@@ -129,6 +128,17 @@ const Dashboard = () => {
     }
   }, [circulars])
 
+  // Re-trigger featured circular animations every 10 seconds
+  useEffect(() => {
+    if (!featuredCircular) return
+
+    const interval = setInterval(() => {
+      setFeaturedAnimationKey(prev => prev + 1)
+    }, 10000)
+
+    return () => clearInterval(interval)
+  }, [featuredCircular])
+
   // Rotate through departments for navigation tabs every 3 seconds
   useEffect(() => {
     if (availableCategories.length === 0) return
@@ -139,33 +149,6 @@ const Dashboard = () => {
 
     return () => clearInterval(interval)
   }, [availableCategories])
-
-  // Get preview circulars array (featured + 2 recent)
-  const getPreviewCirculars = (): Circular[] => {
-    if (circulars.length === 0) return []
-
-    const featured = circulars.find(c => c.is_featured) || circulars[0]
-    const recentCirculars = circulars.filter(c => c.id !== featured.id).slice(0, 2)
-
-    return [featured, ...recentCirculars]
-  }
-
-  // Rotate through preview circulars every 10 seconds
-  useEffect(() => {
-    const previewCirculars = getPreviewCirculars()
-    if (previewCirculars.length <= 1) return
-
-    const interval = setInterval(() => {
-      setIsTransitioning(true)
-
-      setTimeout(() => {
-        setPreviewIndex((prev) => (prev + 1) % previewCirculars.length)
-        setIsTransitioning(false)
-      }, 400) // Half of the transition duration for crossfade effect
-    }, 10000)
-
-    return () => clearInterval(interval)
-  }, [circulars])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -477,116 +460,98 @@ const Dashboard = () => {
             animation: flipChar 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
             animation-delay: 0.8s;
           }
-
-          /* Soft fade transition for preview rotation */
-          .preview-fade-enter {
-            opacity: 1;
-            transform: scale(1);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-          }
-
-          .preview-fade-exit {
-            opacity: 0;
-            transform: scale(0.98);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-          }
         `}</style>
 
-        {/* Featured Circular with Rotating Preview */}
-        {featuredCircular && (() => {
-          const previewCirculars = getPreviewCirculars()
-          const currentCircular = previewCirculars[previewIndex] || featuredCircular
-
-          return (
-            <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
-              <div className="flex items-center justify-between mb-3">
-                <h2
-                  className="text-xl font-bold text-gray-900"
-                  style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
-                >
-                  Featured Circular
-                </h2>
-                <Link
-                  to='/circulars'
-                  className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
-                  style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
-                >
-                  <span className="flex">
-                    <span className="flip-char flip-char-1">V</span>
-                    <span className="flip-char flip-char-2">i</span>
-                    <span className="flip-char flip-char-3">e</span>
-                    <span className="flip-char flip-char-4">w</span>
-                    <span className="flip-char flip-char-5">&nbsp;</span>
-                    <span className="flip-char flip-char-6">A</span>
-                    <span className="flip-char flip-char-7">l</span>
-                    <span className="flip-char flip-char-8">l</span>
-                  </span>
-                  <ArrowRight className="w-4 h-4 arrow-icon" />
-                </Link>
-              </div>
-
-              <div
-                onClick={() => setSelectedCircular(currentCircular)}
-                className={`featured-circular-modern ${departmentInfo[currentCircular.department].bgClass} border-l-4 ${departmentInfo[currentCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group ${isTransitioning ? 'preview-fade-exit' : 'preview-fade-enter'}`}
+        {/* Featured Circular */}
+        {featuredCircular && (
+          <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
+            <div className="flex items-center justify-between mb-3">
+              <h2
+                className="text-xl font-bold text-gray-900"
+                style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
               >
-                <div className="p-5 flex flex-col" style={{ minHeight: '380px' }}>
-                  {/* Header with Date - Fixed height */}
-                  <div className="flex items-center justify-between mb-3 h-[28px]">
-                    <span
-                      className={`px-3 py-1.5 ${departmentInfo[currentCircular.department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[currentCircular.department].borderClass}`}
-                    >
-                      {currentCircular.department}
-                    </span>
+                Featured Circular
+              </h2>
+              <Link
+                to='/circulars'
+                className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
+                style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
+              >
+                <span className="flex">
+                  <span className="flip-char flip-char-1">V</span>
+                  <span className="flip-char flip-char-2">i</span>
+                  <span className="flip-char flip-char-3">e</span>
+                  <span className="flip-char flip-char-4">w</span>
+                  <span className="flip-char flip-char-5">&nbsp;</span>
+                  <span className="flip-char flip-char-6">A</span>
+                  <span className="flip-char flip-char-7">l</span>
+                  <span className="flip-char flip-char-8">l</span>
+                </span>
+                <ArrowRight className="w-4 h-4 arrow-icon" />
+              </Link>
+            </div>
+
+            <div
+              onClick={() => setSelectedCircular(featuredCircular)}
+              className={`featured-circular-modern ${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
+            >
+              <div className="p-5">
+                {/* Header with Date */}
+                <div className="flex items-center justify-between mb-3">
+                  <span
+                    className={`px-3 py-1.5 ${departmentInfo[featuredCircular.department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[featuredCircular.department].borderClass}`}
+                  >
+                    {featuredCircular.department}
+                  </span>
+                  <div className="flex items-center gap-1.5 text-gray-600 text-xs">
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>{formatDate(featuredCircular.date)}</span>
+                  </div>
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 animate-popup pb-3 border-b border-gray-300"
+                  key={`title-${featuredAnimationKey}`}
+                >
+                  {featuredCircular.title}
+                </h3>
+
+                {/* Subject */}
+                <p
+                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-semibold mb-3 line-clamp-2 animate-popup`}
+                  key={`subject-${featuredAnimationKey}`}
+                  style={{ animationDelay: '0.1s' }}
+                >
+                  {featuredCircular.subject}
+                </p>
+
+                {/* Body Preview */}
+                <div
+                  className="text-[18px] text-gray-600 line-clamp-3 mb-4 animate-popup"
+                  key={`body-${featuredAnimationKey}`}
+                  style={{ animationDelay: '0.2s' }}
+                  dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body, departmentInfo[featuredCircular.department].color)}
+                />
+
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                  {featuredCircular.attachments && featuredCircular.attachments.length > 0 ? (
                     <div className="flex items-center gap-1.5 text-gray-600 text-xs">
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>{formatDate(currentCircular.date)}</span>
+                      <FileText className="w-4 h-4" />
+                      <span>{featuredCircular.attachments.length} attachment(s)</span>
                     </div>
-                  </div>
-
-                  {/* Title - Fixed height for 2 lines */}
-                  <h3
-                    className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300"
-                    style={{ minHeight: '80px' }}
-                  >
-                    {currentCircular.title}
-                  </h3>
-
-                  {/* Subject - Fixed height for 2 lines */}
-                  <p
-                    className={`text-[20px] ${departmentInfo[currentCircular.department].textClass} font-semibold mb-3 line-clamp-2`}
-                    style={{ minHeight: '56px' }}
-                  >
-                    {currentCircular.subject}
-                  </p>
-
-                  {/* Body Preview - Fixed height for 3 lines */}
-                  <div
-                    className="text-[18px] text-gray-600 line-clamp-3 mb-4"
-                    style={{ minHeight: '81px' }}
-                    dangerouslySetInnerHTML={renderHtmlContent(currentCircular.body, departmentInfo[currentCircular.department].color)}
-                  />
-
-                  {/* Footer - Fixed height, pushed to bottom */}
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-200 mt-auto h-[40px]">
-                    {currentCircular.attachments && currentCircular.attachments.length > 0 ? (
-                      <div className="flex items-center gap-1.5 text-gray-600 text-xs">
-                        <FileText className="w-4 h-4" />
-                        <span>{currentCircular.attachments.length} attachment(s)</span>
-                      </div>
-                    ) : (
-                      <div className="text-xs text-gray-500">No attachments</div>
-                    )}
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
-                      View Details →
-                    </button>
-                  </div>
+                  ) : (
+                    <div className="text-xs text-gray-500">No attachments</div>
+                  )}
+                  <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
+                    View Details →
+                  </button>
                 </div>
               </div>
             </div>
-          )
-        })()}
+          </div>
+        )}
 
         {/* Compact Preview Stack */}
         {circulars.length > 1 && (
