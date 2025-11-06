@@ -529,7 +529,7 @@ const Dashboard = () => {
 
               <div
                 onClick={() => setSelectedCircular(currentCircular)}
-                className={`featured-circular-modern ${departmentInfo[currentCircular.department].bgClass} border-l-4 ${departmentInfo[currentCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group ${isTransitioning ? 'preview-fade-exit' : 'preview-fade-enter'}`}
+                className={`featured-circular-modern ${departmentInfo[currentCircular.department].bgClass} border-l-4 ${departmentInfo[currentCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group min-h-[380px] sm:min-h-[350px] ${isTransitioning ? 'preview-fade-exit' : 'preview-fade-enter'}`}
               >
                 <div className="p-5">
                   {/* Header with Date */}
