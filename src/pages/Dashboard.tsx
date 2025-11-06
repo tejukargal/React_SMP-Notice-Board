@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { Circular, Department } from '../types'
-import { departmentInfo } from '../utils/departments'
+import { departmentInfo, departments } from '../utils/departments'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CircularPreviewStack from '../components/CircularPreviewStack'
 import CircularModal from '../components/CircularModal'
+import RotatingInfoCard from '../components/RotatingInfoCard'
 import { useCirculars } from '../context/CircularsContext'
 
 const Dashboard = () => {
@@ -14,7 +15,8 @@ const Dashboard = () => {
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
-  const [currentDeptIndex, setCurrentDeptIndex] = useState(0)
+  const [selectedDepartment, setSelectedDepartment] = useState<Department | 'All'>('All')
+  const [navDeptIndex, setNavDeptIndex] = useState(0)
   const navigate = useNavigate()
 
   // Rotating taglines with matching colors
@@ -123,15 +125,12 @@ const Dashboard = () => {
     return () => clearInterval(interval)
   }, [featuredCircular])
 
-  // Rotate through departments every 3 seconds (including "Featured")
+  // Rotate through departments for navigation tabs every 3 seconds
   useEffect(() => {
     if (availableCategories.length === 0) return
 
-    // Total labels: "Featured" + all availableCategories
-    const totalLabels = availableCategories.length + 1
-
     const interval = setInterval(() => {
-      setCurrentDeptIndex((prev) => (prev + 1) % totalLabels)
+      setNavDeptIndex((prev) => (prev + 1) % availableCategories.length)
     }, 3000)
 
     return () => clearInterval(interval)
@@ -143,6 +142,15 @@ const Dashboard = () => {
       month: 'short',
       year: 'numeric',
     })
+  }
+
+  const handleDepartmentChange = (dept: Department | 'All') => {
+    setSelectedDepartment(dept)
+    if (dept !== 'All') {
+      navigate(`/circulars?department=${dept}`)
+    } else {
+      navigate('/circulars')
+    }
   }
 
   if (loading) {
@@ -207,6 +215,62 @@ const Dashboard = () => {
           </p>
         </div>
 
+        {/* Rotating Info Card with Navigation Filter */}
+        {availableCategories.length > 0 && (() => {
+          const currentLabel = availableCategories[navDeptIndex % availableCategories.length]
+          const isFeatured = currentLabel === 'All'
+          const currentDeptInfo = isFeatured ? null : departmentInfo[currentLabel as Department]
+          const bgClass = isFeatured ? 'bg-gray-50' : currentDeptInfo?.bgClass
+          const textClass = isFeatured ? 'text-gray-900' : currentDeptInfo?.textClass
+          const borderClass = isFeatured ? 'border-gray-900' : currentDeptInfo?.borderClass
+
+          return (
+            <div
+              className={`mb-4 shadow-md rounded-xl overflow-hidden transition-all duration-1000 ease-in-out ${bgClass} border-l-4 ${borderClass}`}
+            >
+              {/* SMP CONNECT Banner */}
+              <div className="relative h-[55px] sm:h-[60px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
+                <div
+                  className="smp-board-title transition-colors duration-1000 ease-in-out"
+                  style={{
+                    fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif",
+                    color: isFeatured ? '#1f2937' : currentDeptInfo?.color
+                  }}
+                >
+                  SMP CONNECT
+                </div>
+              </div>
+
+              {/* Separator */}
+              <div className="border-t border-gray-200"></div>
+
+              {/* Navigation Filter Label */}
+              <button
+                onClick={() => {
+                  if (currentLabel === 'All') {
+                    navigate('/circulars')
+                  } else {
+                    navigate(`/circulars?department=${currentLabel}`)
+                  }
+                }}
+                className="w-full relative group cursor-pointer hover:opacity-90 transition-opacity duration-300"
+                style={{
+                  fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif"
+                }}
+              >
+                <div className="py-5 px-6 overflow-hidden">
+                  <h2
+                    key={navDeptIndex}
+                    className={`text-3xl sm:text-4xl font-bold filter-label-slide underline decoration-1 underline-offset-4 text-center ${textClass}`}
+                  >
+                    {currentLabel}
+                  </h2>
+                </div>
+              </button>
+            </div>
+          )
+        })()}
+
         <style>{`
           @keyframes fadeIn {
             from {
@@ -219,6 +283,35 @@ const Dashboard = () => {
 
           .animate-fadeIn {
             animation: fadeIn 0.3s ease-in forwards;
+          }
+
+          .smp-board-title {
+            font-family: 'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
+            font-size: 1.875rem !important; /* 30px - Mobile */
+            font-weight: 900 !important;
+            letter-spacing: 0.025em;
+            line-height: 1.2;
+            text-transform: uppercase;
+            white-space: nowrap !important;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+
+          /* Tablet */
+          @media (min-width: 768px) {
+            .smp-board-title {
+              font-size: 2.25rem !important; /* 36px */
+            }
+          }
+
+          /* Desktop */
+          @media (min-width: 1024px) {
+            .smp-board-title {
+              font-size: 3rem !important; /* 48px */
+            }
           }
 
           @keyframes fadeInOut {
@@ -258,6 +351,21 @@ const Dashboard = () => {
           .animate-popup {
             animation: popup 0.6s ease-out forwards;
             opacity: 0;
+          }
+
+          @keyframes filterLabelSlide {
+            0% {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .filter-label-slide {
+            animation: filterLabelSlide 0.8s ease-out forwards;
           }
 
           @keyframes slideIn {
@@ -339,51 +447,14 @@ const Dashboard = () => {
 
         {/* Featured Circular */}
         {featuredCircular && (
-          <div className="mb-6 animate-popup" style={{ animationDelay: '0.05s' }}>
+          <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                {availableCategories.length > 0 && (() => {
-                  // Create labels array with "Featured" first, then all categories
-                  const rotatingLabels = ['Featured', ...availableCategories]
-                  const currentLabel = rotatingLabels[currentDeptIndex % rotatingLabels.length]
-                  const isFeatured = currentLabel === 'Featured'
-                  const currentDeptInfo = isFeatured ? null : departmentInfo[currentLabel as Department]
-
-                  return (
-                    <button
-                      key={currentDeptIndex}
-                      onClick={() => {
-                        if (currentLabel === 'Featured') {
-                          // Stay on dashboard
-                          return
-                        } else if (currentLabel === 'All') {
-                          navigate('/circulars')
-                        } else {
-                          navigate(`/circulars?department=${currentLabel}`)
-                        }
-                      }}
-                      className="relative group cursor-pointer flex items-center gap-2"
-                      style={{
-                        fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif",
-                        minWidth: '180px'
-                      }}
-                    >
-                      <h2
-                        className={`text-2xl font-bold animate-popup underline decoration-1 underline-offset-4 ${
-                          isFeatured ? 'text-gray-900' : currentDeptInfo?.textClass
-                        }`}
-                      >
-                        {currentLabel}
-                      </h2>
-                      {isFeatured && (
-                        <h2 className="text-2xl font-bold text-gray-900 animate-popup underline decoration-1 underline-offset-4" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
-                          Circular
-                        </h2>
-                      )}
-                    </button>
-                  )
-                })()}
-              </div>
+              <h2
+                className="text-2xl font-bold text-gray-900"
+                style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
+              >
+                Featured Circular
+              </h2>
               <Link
                 to='/circulars'
                 className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
@@ -467,7 +538,7 @@ const Dashboard = () => {
 
         {/* Compact Preview Stack */}
         {circulars.length > 1 && (
-          <div className="mb-5 animate-popup" style={{ animationDelay: '0.1s' }}>
+          <div className="mb-5 animate-popup" style={{ animationDelay: '0.15s' }}>
             <h2 className="text-xl font-bold text-gray-900 mb-3" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>Quick Preview</h2>
             <CircularPreviewStack circulars={circulars} />
           </div>
@@ -483,7 +554,7 @@ const Dashboard = () => {
                   key={circular.id}
                   to={`/circulars?department=${circular.department}`}
                   className={`${departmentInfo[circular.department].bgClass} border-l-4 ${departmentInfo[circular.department].borderClass} rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow animate-popup`}
-                  style={{ animationDelay: `${0.2 + index * 0.1}s`, fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
+                  style={{ animationDelay: `${0.25 + index * 0.1}s`, fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span
