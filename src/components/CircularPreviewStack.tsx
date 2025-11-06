@@ -23,7 +23,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % previewCirculars.length)
         setIsTransitioning(false)
-      }, 400)
+      }, 450)
     }, 3000)
 
     return () => clearInterval(interval)
@@ -63,13 +63,9 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
             transform: translateX(80px);
             opacity: 0;
           }
-          50% {
+          70% {
             transform: translateX(-2px);
-            opacity: 0.8;
-          }
-          75% {
-            transform: translateX(1px);
-            opacity: 0.95;
+            opacity: 1;
           }
           100% {
             transform: translateX(0);
@@ -93,13 +89,9 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
             transform: translateX(80px);
             opacity: 0.2;
           }
-          50% {
+          70% {
             transform: translateX(6px);
-            opacity: 0.35;
-          }
-          75% {
-            transform: translateX(9px);
-            opacity: 0.42;
+            opacity: 0.4;
           }
           100% {
             transform: translateX(8px);
@@ -108,19 +100,19 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         }
 
         .text-exit {
-          animation: textSlideOut 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+          animation: textSlideOut 0.4s cubic-bezier(0.4, 0, 0.6, 1) forwards;
         }
 
         .text-enter {
-          animation: textSlideInElastic 0.5s cubic-bezier(0.68, -0.25, 0.27, 1.25) forwards;
+          animation: textSlideInElastic 0.5s cubic-bezier(0.68, -0.15, 0.265, 1.15) forwards;
         }
 
         .stack-text-exit {
-          animation: stackSlideLeft 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+          animation: stackSlideLeft 0.4s cubic-bezier(0.4, 0, 0.6, 1) forwards;
         }
 
         .stack-text-enter {
-          animation: stackSlideInElastic 0.5s cubic-bezier(0.68, -0.25, 0.27, 1.25) forwards;
+          animation: stackSlideInElastic 0.5s cubic-bezier(0.68, -0.15, 0.265, 1.15) forwards;
         }
       `}</style>
 
@@ -212,7 +204,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
                 setTimeout(() => {
                   setCurrentIndex(index)
                   setIsTransitioning(false)
-                }, 400)
+                }, 450)
               }}
               className={`h-1.5 rounded-full transition-all ${
                 index === currentIndex

@@ -161,7 +161,7 @@ const Dashboard = () => {
       setTimeout(() => {
         setPreviewIndex((prev) => (prev + 1) % previewCirculars.length)
         setIsTransitioning(false)
-      }, 300) // Half of the transition duration for crossfade effect
+      }, 400) // Half of the transition duration for crossfade effect
     }, 10000)
 
     return () => clearInterval(interval)
@@ -478,40 +478,19 @@ const Dashboard = () => {
             animation-delay: 0.8s;
           }
 
-          /* Fade transition for preview rotation */
+          /* Soft fade transition for preview rotation */
           .preview-fade-enter {
             opacity: 1;
-            transition: opacity 0.6s ease-in-out;
-            animation: subtleWave 0.8s ease-in-out;
+            transform: scale(1);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
           }
 
           .preview-fade-exit {
             opacity: 0;
-            transition: opacity 0.6s ease-in-out;
-          }
-
-          /* Subtle wavy animation for featured circular */
-          @keyframes subtleWave {
-            0% {
-              transform: translateY(0) scale(1);
-              opacity: 0;
-            }
-            25% {
-              transform: translateY(-3px) scale(1.005);
-              opacity: 0.5;
-            }
-            50% {
-              transform: translateY(0) scale(1);
-              opacity: 0.8;
-            }
-            75% {
-              transform: translateY(2px) scale(0.998);
-              opacity: 0.95;
-            }
-            100% {
-              transform: translateY(0) scale(1);
-              opacity: 1;
-            }
+            transform: scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
           }
         `}</style>
 
