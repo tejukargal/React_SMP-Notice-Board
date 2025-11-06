@@ -237,7 +237,7 @@ const Dashboard = () => {
               {showGreeting ? (
                 <GreetingScreen onComplete={() => setShowGreeting(false)} />
               ) : (
-                <div className="relative h-[45px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
+                <div className="relative h-[52px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
                   <div
                     className="smp-board-title banner-slide-in transition-colors duration-1000 ease-in-out"
                     style={{
@@ -267,7 +267,7 @@ const Dashboard = () => {
                   fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif"
                 }}
               >
-                <div className="py-3 px-6 overflow-hidden">
+                <div className="h-[52px] flex items-center justify-center px-6 overflow-hidden">
                   <h2
                     key={navDeptIndex}
                     className={`text-3xl sm:text-4xl font-bold filter-label-slide underline decoration-1 underline-offset-4 text-center ${textClass}`}

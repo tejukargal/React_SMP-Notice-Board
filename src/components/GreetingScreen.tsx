@@ -30,7 +30,7 @@ const GreetingScreen = ({ onComplete }: GreetingScreenProps) => {
     const timer = setTimeout(() => {
       setShow(false)
       onComplete()
-    }, 2000)
+    }, 3000)
 
     return () => {
       clearTimeout(timer)
@@ -43,18 +43,18 @@ const GreetingScreen = ({ onComplete }: GreetingScreenProps) => {
   if (!show) return null
 
   return (
-    <div className="h-[45px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden">
+    <div className="h-[52px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden">
       <style>{`
         @keyframes zoomIn3D {
           0% {
             transform: scale(0) translateZ(-500px);
             opacity: 0;
           }
-          40% {
+          17% {
             opacity: 1;
             transform: scale(1) translateZ(0);
           }
-          60% {
+          83% {
             opacity: 1;
             transform: scale(1) translateZ(0);
           }
@@ -65,7 +65,7 @@ const GreetingScreen = ({ onComplete }: GreetingScreenProps) => {
         }
 
         .greeting-text {
-          animation: zoomIn3D 2s ease-in-out forwards;
+          animation: zoomIn3D 3s ease-in-out forwards;
           font-family: 'Great Vibes', cursive;
           font-size: 2.5rem;
           font-weight: 400;
