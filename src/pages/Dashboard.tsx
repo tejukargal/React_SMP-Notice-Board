@@ -212,7 +212,7 @@ const Dashboard = () => {
           <p className="text-gray-600 flex items-center gap-2 min-h-[1.75rem]">
             <span className="font-semibold">CONNECT</span>
             <span
-              className="tagline-animate font-medium text-gray-600"
+              className="tagline-animate font-semibold gradient-text"
               key={currentTaglineIndex}
             >
               {taglines[currentTaglineIndex].text}
@@ -345,6 +345,13 @@ const Dashboard = () => {
 
           .tagline-animate {
             animation: fadeInOut 5s ease-in-out;
+          }
+
+          .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
           }
 
           @keyframes popup {

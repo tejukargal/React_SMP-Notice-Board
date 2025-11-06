@@ -50,22 +50,22 @@ const GreetingScreen = ({ onComplete }: GreetingScreenProps) => {
             transform: scale(0) translateZ(-500px);
             opacity: 0;
           }
-          50% {
+          40% {
             opacity: 1;
-            transform: scale(1.1) translateZ(0);
+            transform: scale(1) translateZ(0);
           }
-          70% {
+          60% {
             opacity: 1;
             transform: scale(1) translateZ(0);
           }
           100% {
-            transform: scale(1) translateZ(0);
+            transform: scale(0) translateZ(-500px);
             opacity: 0;
           }
         }
 
         .greeting-text {
-          animation: zoomIn3D 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation: zoomIn3D 2s ease-in-out forwards;
           font-family: 'Great Vibes', cursive;
           font-size: 2.5rem;
           font-weight: 400;
