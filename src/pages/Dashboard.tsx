@@ -218,7 +218,7 @@ const Dashboard = () => {
               className={`mb-4 shadow-md rounded-xl overflow-hidden transition-all duration-1000 ease-in-out ${bgClass} border-l-4 ${borderClass}`}
             >
               {/* SMP CONNECT Banner */}
-              <div className="relative h-[55px] sm:h-[60px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
+              <div className="relative h-[50px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
                 <div
                   className="smp-board-title transition-colors duration-1000 ease-in-out"
                   style={{
@@ -247,7 +247,7 @@ const Dashboard = () => {
                   fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif"
                 }}
               >
-                <div className="py-5 px-6 overflow-hidden">
+                <div className="py-4 px-6 overflow-hidden">
                   <h2
                     key={navDeptIndex}
                     className={`text-3xl sm:text-4xl font-bold filter-label-slide underline decoration-1 underline-offset-4 text-center ${textClass}`}
@@ -276,7 +276,7 @@ const Dashboard = () => {
 
           .smp-board-title {
             font-family: 'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif !important;
-            font-size: 1.875rem !important; /* 30px - Mobile */
+            font-size: 2.125rem !important; /* 34px - All devices */
             font-weight: 900 !important;
             letter-spacing: 0.025em;
             line-height: 1.2;
@@ -287,20 +287,6 @@ const Dashboard = () => {
             text-overflow: ellipsis;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-          }
-
-          /* Tablet */
-          @media (min-width: 768px) {
-            .smp-board-title {
-              font-size: 2.25rem !important; /* 36px */
-            }
-          }
-
-          /* Desktop */
-          @media (min-width: 1024px) {
-            .smp-board-title {
-              font-size: 3rem !important; /* 48px */
-            }
           }
 
           @keyframes fadeInOut {
