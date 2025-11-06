@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Calendar, FileText, ArrowRight } from 'lucide-react'
 import { Circular, Department } from '../types'
-import { departmentInfo, departments } from '../utils/departments'
+import { departmentInfo } from '../utils/departments'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CircularPreviewStack from '../components/CircularPreviewStack'
 import CircularModal from '../components/CircularModal'
-import RotatingInfoCard from '../components/RotatingInfoCard'
 import { useCirculars } from '../context/CircularsContext'
 
 const Dashboard = () => {
@@ -15,7 +14,6 @@ const Dashboard = () => {
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
-  const [selectedDepartment, setSelectedDepartment] = useState<Department | 'All'>('All')
   const [navDeptIndex, setNavDeptIndex] = useState(0)
   const navigate = useNavigate()
 
@@ -142,15 +140,6 @@ const Dashboard = () => {
       month: 'short',
       year: 'numeric',
     })
-  }
-
-  const handleDepartmentChange = (dept: Department | 'All') => {
-    setSelectedDepartment(dept)
-    if (dept !== 'All') {
-      navigate(`/circulars?department=${dept}`)
-    } else {
-      navigate('/circulars')
-    }
   }
 
   if (loading) {
