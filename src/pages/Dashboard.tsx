@@ -531,7 +531,7 @@ const Dashboard = () => {
                 onClick={() => setSelectedCircular(currentCircular)}
                 className={`featured-circular-modern ${departmentInfo[currentCircular.department].bgClass} border-l-4 ${departmentInfo[currentCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group ${isTransitioning ? 'preview-fade-exit' : 'preview-fade-enter'}`}
               >
-                <div className="p-5 min-h-[420px] sm:min-h-[380px]">
+                <div className="p-5">
                   {/* Header with Date */}
                   <div className="flex items-center justify-between mb-3">
                     <span
