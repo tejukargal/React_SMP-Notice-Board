@@ -529,11 +529,11 @@ const Dashboard = () => {
 
               <div
                 onClick={() => setSelectedCircular(currentCircular)}
-                className={`featured-circular-modern ${departmentInfo[currentCircular.department].bgClass} border-l-4 ${departmentInfo[currentCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group min-h-[380px] sm:min-h-[350px] ${isTransitioning ? 'preview-fade-exit' : 'preview-fade-enter'}`}
+                className={`featured-circular-modern ${departmentInfo[currentCircular.department].bgClass} border-l-4 ${departmentInfo[currentCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group ${isTransitioning ? 'preview-fade-exit' : 'preview-fade-enter'}`}
               >
-                <div className="p-5">
-                  {/* Header with Date */}
-                  <div className="flex items-center justify-between mb-3">
+                <div className="p-5 flex flex-col" style={{ minHeight: '380px' }}>
+                  {/* Header with Date - Fixed height */}
+                  <div className="flex items-center justify-between mb-3 h-[28px]">
                     <span
                       className={`px-3 py-1.5 ${departmentInfo[currentCircular.department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[currentCircular.department].borderClass}`}
                     >
@@ -545,28 +545,31 @@ const Dashboard = () => {
                     </div>
                   </div>
 
-                  {/* Title */}
+                  {/* Title - Fixed height for 2 lines */}
                   <h3
                     className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300"
+                    style={{ minHeight: '80px' }}
                   >
                     {currentCircular.title}
                   </h3>
 
-                  {/* Subject */}
+                  {/* Subject - Fixed height for 2 lines */}
                   <p
                     className={`text-[20px] ${departmentInfo[currentCircular.department].textClass} font-semibold mb-3 line-clamp-2`}
+                    style={{ minHeight: '56px' }}
                   >
                     {currentCircular.subject}
                   </p>
 
-                  {/* Body Preview */}
+                  {/* Body Preview - Fixed height for 3 lines */}
                   <div
                     className="text-[18px] text-gray-600 line-clamp-3 mb-4"
+                    style={{ minHeight: '81px' }}
                     dangerouslySetInnerHTML={renderHtmlContent(currentCircular.body, departmentInfo[currentCircular.department].color)}
                   />
 
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                  {/* Footer - Fixed height, pushed to bottom */}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-200 mt-auto h-[40px]">
                     {currentCircular.attachments && currentCircular.attachments.length > 0 ? (
                       <div className="flex items-center gap-1.5 text-gray-600 text-xs">
                         <FileText className="w-4 h-4" />
