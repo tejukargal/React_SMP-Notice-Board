@@ -220,7 +220,7 @@ const Dashboard = () => {
               {/* SMP CONNECT Banner */}
               <div className="relative h-[50px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
                 <div
-                  className="smp-board-title transition-colors duration-1000 ease-in-out"
+                  className="smp-board-title banner-slide-in transition-colors duration-1000 ease-in-out"
                   style={{
                     fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif",
                     color: isFeatured ? '#1f2937' : currentDeptInfo?.color
@@ -272,6 +272,21 @@ const Dashboard = () => {
 
           .animate-fadeIn {
             animation: fadeIn 0.3s ease-in forwards;
+          }
+
+          @keyframes slideFromRight {
+            0% {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            100% {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+
+          .banner-slide-in {
+            animation: slideFromRight 0.8s ease-out forwards;
           }
 
           .smp-board-title {
