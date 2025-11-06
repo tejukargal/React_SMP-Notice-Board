@@ -13,7 +13,6 @@ const Dashboard = () => {
   const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [featuredCircular, setFeaturedCircular] = useState<Circular | null>(null)
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
-  const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
   const [navDeptIndex, setNavDeptIndex] = useState(0)
   const [showGreeting, setShowGreeting] = useState(true)
@@ -129,17 +128,6 @@ const Dashboard = () => {
       setAvailableCategories(allCategories)
     }
   }, [circulars])
-
-  // Re-trigger featured circular animations every 10 seconds
-  useEffect(() => {
-    if (!featuredCircular) return
-
-    const interval = setInterval(() => {
-      setFeaturedAnimationKey(prev => prev + 1)
-    }, 10000)
-
-    return () => clearInterval(interval)
-  }, [featuredCircular])
 
   // Rotate through departments for navigation tabs every 3 seconds
   useEffect(() => {
