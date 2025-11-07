@@ -475,119 +475,236 @@ const Dashboard = () => {
           }
         `}</style>
 
-        {/* Featured Circular - Rotating */}
-        {rotatingCirculars.length > 0 && (
-          <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center justify-between mb-3">
-              <h2
-                className="text-xl font-bold text-gray-900"
-                style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
-              >
-                Featured Circular
-              </h2>
-              <Link
-                to='/circulars'
-                className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
-                style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
-              >
-                <span className="flex">
-                  <span className="flip-char flip-char-1">V</span>
-                  <span className="flip-char flip-char-2">i</span>
-                  <span className="flip-char flip-char-3">e</span>
-                  <span className="flip-char flip-char-4">w</span>
-                  <span className="flip-char flip-char-5">&nbsp;</span>
-                  <span className="flip-char flip-char-6">A</span>
-                  <span className="flip-char flip-char-7">l</span>
-                  <span className="flip-char flip-char-8">l</span>
-                </span>
-                <ArrowRight className="w-4 h-4 arrow-icon" />
-              </Link>
-            </div>
+        {/* Featured Circular - Rotating with Quick Preview Style */}
+        {rotatingCirculars.length > 0 && (() => {
+          const currentCircular = rotatingCirculars[currentRotatingIndex]
+          const nextCircular = rotatingCirculars[(currentRotatingIndex + 1) % rotatingCirculars.length]
+          const currentDeptInfo = departmentInfo[currentCircular.department]
+          const nextDeptInfo = departmentInfo[nextCircular.department]
 
-            <div className="relative">
-              {/* Rotating circular card with fixed height */}
-              <div
-                onClick={() => setSelectedCircular(rotatingCirculars[currentRotatingIndex])}
-                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
-              >
-                {/* Fixed height container */}
-                <div className="relative min-h-[395px] sm:min-h-[375px]">
-                  <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-                    {/* Header with Date */}
-                    <div className="flex items-center justify-between mb-3">
+          // Strip HTML tags from body for plain text preview
+          const stripHtml = (html: string) => {
+            const tmp = document.createElement('div')
+            tmp.innerHTML = html
+            return tmp.textContent || tmp.innerText || ''
+          }
+
+          return (
+            <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
+              <style>{`
+                @keyframes featuredTextSlideOut {
+                  0% {
+                    transform: translateX(0);
+                    opacity: 1;
+                  }
+                  100% {
+                    transform: translateX(-30px);
+                    opacity: 0;
+                  }
+                }
+
+                @keyframes featuredTextSlideIn {
+                  0% {
+                    transform: translateX(30px);
+                    opacity: 0;
+                  }
+                  100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                  }
+                }
+
+                @keyframes featuredStackSlideLeft {
+                  0% {
+                    transform: translateX(0);
+                    opacity: 0.5;
+                  }
+                  100% {
+                    transform: translateX(-8px);
+                    opacity: 0.3;
+                  }
+                }
+
+                @keyframes featuredStackSlideIn {
+                  0% {
+                    transform: translateX(8px);
+                    opacity: 0.3;
+                  }
+                  100% {
+                    transform: translateX(0);
+                    opacity: 0.5;
+                  }
+                }
+
+                .featured-text-exit {
+                  animation: featuredTextSlideOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                }
+
+                .featured-text-enter {
+                  animation: featuredTextSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                }
+
+                .featured-stack-text-exit {
+                  animation: featuredStackSlideLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                }
+
+                .featured-stack-text-enter {
+                  animation: featuredStackSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                }
+              `}</style>
+
+              <div className="flex items-center justify-between mb-3">
+                <h2
+                  className="text-xl font-bold text-gray-900"
+                  style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
+                >
+                  Featured Circular
+                </h2>
+                <Link
+                  to='/circulars'
+                  className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 text-sm view-all-link"
+                  style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}
+                >
+                  <span className="flex">
+                    <span className="flip-char flip-char-1">V</span>
+                    <span className="flip-char flip-char-2">i</span>
+                    <span className="flip-char flip-char-3">e</span>
+                    <span className="flip-char flip-char-4">w</span>
+                    <span className="flip-char flip-char-5">&nbsp;</span>
+                    <span className="flip-char flip-char-6">A</span>
+                    <span className="flip-char flip-char-7">l</span>
+                    <span className="flip-char flip-char-8">l</span>
+                  </span>
+                  <ArrowRight className="w-4 h-4 arrow-icon" />
+                </Link>
+              </div>
+
+              <div className="relative featured-circular-modern" style={{ fontFamily: "'Josefin Sans', 'Noto Sans Kannada', sans-serif" }}>
+                <div
+                  onClick={() => setSelectedCircular(currentCircular)}
+                  className={`relative ${currentDeptInfo.bgClass} border-l-4 ${currentDeptInfo.borderClass} rounded-xl shadow-lg overflow-hidden transition-all duration-700 cursor-pointer hover:shadow-xl`}
+                >
+                  {/* Header - Title, Date, Department */}
+                  <div className="px-5 pt-5 pb-3 border-b border-gray-200">
+                    <div className="flex items-center justify-between mb-2">
                       <span
-                        className={`px-3 py-1.5 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass}`}
+                        className={`px-3 py-1.5 ${currentDeptInfo.textClass} rounded-full text-xs font-bold border-2 ${currentDeptInfo.borderClass}`}
                       >
-                        {rotatingCirculars[currentRotatingIndex].department}
+                        {currentCircular.department}
                       </span>
                       <div className="flex items-center gap-1.5 text-gray-600 text-xs">
                         <Calendar className="w-3.5 h-3.5" />
-                        <span>{formatDate(rotatingCirculars[currentRotatingIndex].date)}</span>
+                        <span>{formatDate(currentCircular.date)}</span>
                       </div>
                     </div>
-
-                    {/* Title */}
-                    <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300">
-                      {rotatingCirculars[currentRotatingIndex].title}
+                    <h3 className="text-[22px] sm:text-[28px] font-bold text-gray-900 line-clamp-2">
+                      {currentCircular.title}
                     </h3>
+                  </div>
 
-                    {/* Subject */}
-                    <p className={`text-[20px] ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} font-semibold mb-3 line-clamp-2`}>
-                      {rotatingCirculars[currentRotatingIndex].subject}
-                    </p>
+                  {/* Body - Subject and Content with layered effect */}
+                  <div className="relative h-[200px] sm:h-[180px]">
+                    {/* Background/Stacked layer - Next circular preview */}
+                    {rotatingCirculars.length > 1 && (
+                      <div className="absolute inset-0 p-5">
+                        {/* Next Subject */}
+                        <div
+                          className={`text-base font-bold mb-2 ${nextDeptInfo.textClass} opacity-40 ${
+                            isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
+                          }`}
+                          style={{
+                            transform: 'translateX(8px)',
+                            filter: 'blur(0.5px)',
+                          }}
+                          key={`stack-subject-${nextCircular.id}`}
+                        >
+                          {nextCircular.subject}
+                        </div>
+                        {/* Next Body */}
+                        <div
+                          className={`text-sm text-justify leading-relaxed line-clamp-5 sm:line-clamp-4 ${nextDeptInfo.textClass} opacity-40 ${
+                            isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
+                          }`}
+                          style={{
+                            transform: 'translateX(8px)',
+                            filter: 'blur(0.5px)',
+                          }}
+                          key={`stack-body-${nextCircular.id}`}
+                        >
+                          {stripHtml(nextCircular.body)}
+                        </div>
+                      </div>
+                    )}
 
-                    {/* Body Preview - fixed height section */}
-                    <div className="h-[105px] overflow-hidden mb-4">
+                    {/* Main layer - Current circular */}
+                    <div className="absolute inset-0 p-5 bg-gradient-to-br from-white/95 to-white/90">
+                      {/* Current Subject */}
                       <div
-                        className="text-[18px] text-gray-600 line-clamp-3"
-                        dangerouslySetInnerHTML={renderHtmlContent(rotatingCirculars[currentRotatingIndex].body, departmentInfo[rotatingCirculars[currentRotatingIndex].department].color)}
-                      />
+                        className={`text-base font-bold mb-2 ${currentDeptInfo.textClass} ${
+                          isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
+                        }`}
+                        key={`main-subject-${currentCircular.id}`}
+                      >
+                        {currentCircular.subject}
+                      </div>
+                      {/* Current Body */}
+                      <div
+                        className={`text-sm text-justify ${currentDeptInfo.textClass} leading-relaxed line-clamp-5 sm:line-clamp-4 ${
+                          isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
+                        }`}
+                        key={`main-body-${currentCircular.id}`}
+                      >
+                        {stripHtml(currentCircular.body)}
+                      </div>
                     </div>
+                  </div>
 
-                    {/* Footer */}
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-200">
-                      {rotatingCirculars[currentRotatingIndex].attachments && rotatingCirculars[currentRotatingIndex].attachments.length > 0 ? (
+                  {/* Footer - Attachments and View Details */}
+                  <div className={`px-5 pb-3 pt-3 ${currentDeptInfo.bgClass} border-t ${currentDeptInfo.borderClass} transition-all duration-700`}>
+                    <div className="flex items-center justify-between">
+                      {currentCircular.attachments && currentCircular.attachments.length > 0 ? (
                         <div className="flex items-center gap-1.5 text-gray-600 text-xs">
                           <FileText className="w-4 h-4" />
-                          <span>{rotatingCirculars[currentRotatingIndex].attachments.length} attachment(s)</span>
+                          <span>{currentCircular.attachments.length} attachment(s)</span>
                         </div>
                       ) : (
                         <div className="text-xs text-gray-500">No attachments</div>
                       )}
-                      <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
+                      <button className="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline">
                         View Details →
                       </button>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pagination dots */}
-              {rotatingCirculars.length > 1 && (
-                <div className="flex justify-center gap-2 mt-3">
-                  {rotatingCirculars.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        setIsTransitioning(true)
-                        setTimeout(() => {
-                          setCurrentRotatingIndex(index)
-                          setIsTransitioning(false)
-                        }, 400)
-                      }}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        index === currentRotatingIndex
-                          ? 'w-8 bg-blue-600'
-                          : 'w-2 bg-gray-300 hover:bg-gray-400'
-                      }`}
-                      aria-label={`Go to circular ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
+                {/* Pagination dots */}
+                {rotatingCirculars.length > 1 && (
+                  <div className="flex justify-center gap-2 mt-3">
+                    {rotatingCirculars.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setIsTransitioning(true)
+                          setTimeout(() => {
+                            setCurrentRotatingIndex(index)
+                            setIsTransitioning(false)
+                          }, 600)
+                        }}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          index === currentRotatingIndex
+                            ? `w-8 ${currentDeptInfo.textClass} bg-current`
+                            : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                        aria-label={`Go to circular ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )
+        })()}
 
         {/* Compact Preview Stack */}
         {circulars.length > 1 && (
