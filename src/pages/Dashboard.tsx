@@ -602,7 +602,7 @@ const Dashboard = () => {
                       <div className="absolute inset-0 p-5">
                         {/* Next Subject */}
                         <div
-                          className={`text-base font-bold mb-2 ${nextDeptInfo.textClass} opacity-40 ${
+                          className={`text-lg font-bold mb-2 ${nextDeptInfo.textClass} opacity-40 ${
                             isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
                           }`}
                           style={{
@@ -614,7 +614,7 @@ const Dashboard = () => {
                         </div>
                         {/* Next Body */}
                         <div
-                          className={`text-sm text-justify leading-relaxed line-clamp-5 sm:line-clamp-4 opacity-40 ${
+                          className={`text-base text-justify leading-relaxed line-clamp-5 sm:line-clamp-4 opacity-40 ${
                             isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
                           }`}
                           style={{
@@ -630,7 +630,7 @@ const Dashboard = () => {
                     <div className="absolute inset-0 p-5 bg-gradient-to-br from-white/95 to-white/90">
                       {/* Current Subject */}
                       <div
-                        className={`text-base font-bold mb-2 ${currentDeptInfo.textClass} ${
+                        className={`text-lg font-bold mb-2 ${currentDeptInfo.textClass} ${
                           isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
                         }`}
                         key={`main-subject-${currentCircular.id}`}
@@ -639,7 +639,7 @@ const Dashboard = () => {
                       </div>
                       {/* Current Body */}
                       <div
-                        className={`text-sm text-justify text-gray-600 leading-relaxed line-clamp-5 sm:line-clamp-4 ${
+                        className={`text-base text-justify text-gray-600 leading-relaxed line-clamp-5 sm:line-clamp-4 ${
                           isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
                         }`}
                         key={`main-body-${currentCircular.id}`}
