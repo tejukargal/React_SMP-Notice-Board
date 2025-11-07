@@ -482,13 +482,6 @@ const Dashboard = () => {
           const currentDeptInfo = departmentInfo[currentCircular.department]
           const nextDeptInfo = departmentInfo[nextCircular.department]
 
-          // Strip HTML tags from body for plain text preview
-          const stripHtml = (html: string) => {
-            const tmp = document.createElement('div')
-            tmp.innerHTML = html
-            return tmp.textContent || tmp.innerText || ''
-          }
-
           return (
             <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
               <style>{`
@@ -622,7 +615,7 @@ const Dashboard = () => {
                         </div>
                         {/* Next Body */}
                         <div
-                          className={`text-sm text-justify leading-relaxed line-clamp-5 sm:line-clamp-4 ${nextDeptInfo.textClass} opacity-40 ${
+                          className={`text-sm text-justify leading-relaxed line-clamp-5 sm:line-clamp-4 opacity-40 ${
                             isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
                           }`}
                           style={{
@@ -630,9 +623,8 @@ const Dashboard = () => {
                             filter: 'blur(0.5px)',
                           }}
                           key={`stack-body-${nextCircular.id}`}
-                        >
-                          {stripHtml(nextCircular.body)}
-                        </div>
+                          dangerouslySetInnerHTML={renderHtmlContent(nextCircular.body, nextDeptInfo.color)}
+                        />
                       </div>
                     )}
 
@@ -649,13 +641,12 @@ const Dashboard = () => {
                       </div>
                       {/* Current Body */}
                       <div
-                        className={`text-sm text-justify ${currentDeptInfo.textClass} leading-relaxed line-clamp-5 sm:line-clamp-4 ${
+                        className={`text-sm text-justify text-gray-600 leading-relaxed line-clamp-5 sm:line-clamp-4 ${
                           isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
                         }`}
                         key={`main-body-${currentCircular.id}`}
-                      >
-                        {stripHtml(currentCircular.body)}
-                      </div>
+                        dangerouslySetInnerHTML={renderHtmlContent(currentCircular.body, currentDeptInfo.color)}
+                      />
                     </div>
                   </div>
 
