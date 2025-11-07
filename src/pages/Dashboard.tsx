@@ -575,7 +575,9 @@ const Dashboard = () => {
                 >
                   {/* Header - Title, Date, Department */}
                   <div className="px-5 pt-5 pb-3 border-b border-gray-200">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className={`flex items-center justify-between mb-2 ${
+                      isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
+                    }`} key={`header-meta-${currentCircular.id}`}>
                       <span
                         className={`px-3 py-1.5 ${currentDeptInfo.textClass} rounded-full text-xs font-bold border-2 ${currentDeptInfo.borderClass}`}
                       >
@@ -586,7 +588,9 @@ const Dashboard = () => {
                         <span>{formatDate(currentCircular.date)}</span>
                       </div>
                     </div>
-                    <h3 className="text-[22px] sm:text-[28px] font-bold text-gray-900 line-clamp-2">
+                    <h3 className={`text-[22px] sm:text-[28px] font-bold text-gray-900 line-clamp-2 ${
+                      isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
+                    }`} key={`header-title-${currentCircular.id}`}>
                       {currentCircular.title}
                     </h3>
                   </div>
@@ -646,7 +650,9 @@ const Dashboard = () => {
 
                   {/* Footer - Attachments and View Details */}
                   <div className={`px-5 pb-3 pt-3 ${currentDeptInfo.bgClass} border-t ${currentDeptInfo.borderClass} transition-all duration-700`}>
-                    <div className="flex items-center justify-between">
+                    <div className={`flex items-center justify-between ${
+                      isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
+                    }`} key={`footer-${currentCircular.id}`}>
                       {currentCircular.attachments && currentCircular.attachments.length > 0 ? (
                         <div className="flex items-center gap-1.5 text-gray-600 text-xs">
                           <FileText className="w-4 h-4" />
