@@ -661,7 +661,8 @@ const Dashboard = () => {
                       ) : (
                         <div className="text-xs text-gray-500">No attachments</div>
                       )}
-                      <button className="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline">
+                      <button className="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline flex items-center gap-1.5">
+                        <span className="text-base">👉</span>
                         View Details →
                       </button>
                     </div>

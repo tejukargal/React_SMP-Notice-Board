@@ -23,8 +23,8 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % previewCirculars.length)
         setIsTransitioning(false)
-      }, 600)
-    }, 4500)
+      }, 400)
+    }, 3000)
 
     return () => clearInterval(interval)
   }, [previewCirculars.length])
@@ -92,19 +92,19 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         }
 
         .text-exit {
-          animation: textSlideOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: textSlideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         .text-enter {
-          animation: textSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: textSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         .stack-text-exit {
-          animation: stackSlideLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: stackSlideLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         .stack-text-enter {
-          animation: stackSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+          animation: stackSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
       `}</style>
 
@@ -196,9 +196,9 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
                 setTimeout(() => {
                   setCurrentIndex(index)
                   setIsTransitioning(false)
-                }, 600)
+                }, 400)
               }}
-              className={`h-1.5 rounded-full transition-all ${
+              className={`h-1.5 rounded-full transition-all duration-300 ${
                 index === currentIndex
                   ? `w-6 ${currentDeptInfo.textClass} bg-current`
                   : 'w-1.5 bg-gray-300 hover:bg-gray-400'
