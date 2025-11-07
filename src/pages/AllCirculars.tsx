@@ -22,6 +22,13 @@ const AllCirculars = () => {
       setSelectedDepartment(dept)
     }
     fetchCirculars()
+
+    // Auto-refresh every 5 minutes in background
+    const refreshInterval = setInterval(() => {
+      fetchCirculars(true)
+    }, 5 * 60 * 1000) // 5 minutes
+
+    return () => clearInterval(refreshInterval)
   }, [])
 
   // Handle back button when on All Circulars page (no modal open) - go to Dashboard

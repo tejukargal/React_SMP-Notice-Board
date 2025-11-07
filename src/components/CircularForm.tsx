@@ -11,9 +11,18 @@ interface CircularFormProps {
 }
 
 const CircularForm = ({ circular, onClose }: CircularFormProps) => {
+  // Helper function to format date properly
+  const formatDateForInput = (dateString?: string) => {
+    if (!dateString) return new Date().toISOString().split('T')[0]
+    // If it's already in YYYY-MM-DD format, return as is
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return dateString
+    // Otherwise, parse and format
+    return new Date(dateString).toISOString().split('T')[0]
+  }
+
   const [formData, setFormData] = useState({
     title: circular?.title || '',
-    date: circular?.date || new Date().toISOString().split('T')[0],
+    date: formatDateForInput(circular?.date),
     subject: circular?.subject || '',
     department: circular?.department || ('CE' as Department),
     body: circular?.body || '',
@@ -37,6 +46,7 @@ const CircularForm = ({ circular, onClose }: CircularFormProps) => {
       return
     }
 
+    // Disable button immediately for better UX
     setLoading(true)
 
     try {
@@ -51,10 +61,10 @@ const CircularForm = ({ circular, onClose }: CircularFormProps) => {
         await circularsAPI.create(circularData)
       }
 
+      // Close immediately after successful save for faster perceived performance
       onClose()
     } catch (err: any) {
       setError(err.message || 'Failed to save circular')
-    } finally {
       setLoading(false)
     }
   }

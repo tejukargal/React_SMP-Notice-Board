@@ -12,7 +12,6 @@ const Dashboard = () => {
   const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [featuredCircular, setFeaturedCircular] = useState<Circular | null>(null)
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
-  const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
   const [navDeptIndex, setNavDeptIndex] = useState(0)
   const navigate = useNavigate()
@@ -33,6 +32,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchCirculars()
+
+    // Auto-refresh every 5 minutes in background
+    const refreshInterval = setInterval(() => {
+      fetchCirculars(true)
+    }, 5 * 60 * 1000) // 5 minutes
+
+    return () => clearInterval(refreshInterval)
   }, [])
 
   // Load Impact font for all devices
@@ -125,17 +131,6 @@ const Dashboard = () => {
       setAvailableCategories(allCategories)
     }
   }, [circulars])
-
-  // Re-trigger featured circular animations every 10 seconds
-  useEffect(() => {
-    if (!featuredCircular) return
-
-    const interval = setInterval(() => {
-      setFeaturedAnimationKey(prev => prev + 1)
-    }, 10000)
-
-    return () => clearInterval(interval)
-  }, [featuredCircular])
 
   // Rotate through departments for navigation tabs every 3 seconds
   useEffect(() => {

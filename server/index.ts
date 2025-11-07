@@ -130,14 +130,15 @@ app.post('/api/circulars', authenticateToken, async (req: Request, res: Response
 
   try {
     const result = await pool.query(
-      'INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      'INSERT INTO circulars (title, date, subject, department, body, attachments) VALUES ($1, $2, $3, $4, $5, $6::jsonb) RETURNING *',
       [title, date, subject, department, body, JSON.stringify(attachments || [])]
     )
 
     res.status(201).json(result.rows[0])
   } catch (error) {
     console.error('Create circular error:', error)
-    res.status(500).json({ error: 'Server error' })
+    console.error('Error details:', (error as Error).message)
+    res.status(500).json({ error: 'Server error', details: (error as Error).message })
   }
 })
 
@@ -146,9 +147,12 @@ app.put('/api/circulars/:id', authenticateToken, async (req: Request, res: Respo
   const { id } = req.params
   const { title, date, subject, department, body, attachments } = req.body
 
+  console.log('Update request received for ID:', id)
+  console.log('Update data:', { title, date, subject, department, bodyLength: body?.length, attachmentsCount: attachments?.length })
+
   try {
     const result = await pool.query(
-      'UPDATE circulars SET title = $1, date = $2, subject = $3, department = $4, body = $5, attachments = $6 WHERE id = $7 RETURNING *',
+      'UPDATE circulars SET title = $1, date = $2, subject = $3, department = $4, body = $5, attachments = $6::jsonb WHERE id = $7 RETURNING *',
       [title, date, subject, department, body, JSON.stringify(attachments || []), id]
     )
 
@@ -156,10 +160,15 @@ app.put('/api/circulars/:id', authenticateToken, async (req: Request, res: Respo
       return res.status(404).json({ error: 'Circular not found' })
     }
 
+    console.log('Update successful for ID:', id)
     res.json(result.rows[0])
   } catch (error) {
     console.error('Update circular error:', error)
-    res.status(500).json({ error: 'Server error' })
+    console.error('Error details:', {
+      message: (error as Error).message,
+      stack: (error as Error).stack
+    })
+    res.status(500).json({ error: 'Server error', details: (error as Error).message })
   }
 })
 
