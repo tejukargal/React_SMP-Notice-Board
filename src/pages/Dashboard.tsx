@@ -505,12 +505,12 @@ const Dashboard = () => {
             </div>
 
             <div className="relative">
-              {/* Rotating circular card with original styling */}
+              {/* Rotating circular card with original styling and fixed height */}
               <div
                 onClick={() => setSelectedCircular(rotatingCirculars[currentRotatingIndex])}
-                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
+                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group min-h-[380px]`}
               >
-                <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'} flex flex-col h-full`}>
                   {/* Header with Date */}
                   <div className="flex items-center justify-between mb-3">
                     <span
@@ -536,12 +536,12 @@ const Dashboard = () => {
 
                   {/* Body Preview */}
                   <div
-                    className="text-[18px] text-gray-600 line-clamp-3 mb-4"
+                    className="text-[18px] text-gray-600 line-clamp-3 mb-4 flex-grow"
                     dangerouslySetInnerHTML={renderHtmlContent(rotatingCirculars[currentRotatingIndex].body, departmentInfo[rotatingCirculars[currentRotatingIndex].department].color)}
                   />
 
                   {/* Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-200 mt-auto">
                     {rotatingCirculars[currentRotatingIndex].attachments && rotatingCirculars[currentRotatingIndex].attachments.length > 0 ? (
                       <div className="flex items-center gap-1.5 text-gray-600 text-xs">
                         <FileText className="w-4 h-4" />
