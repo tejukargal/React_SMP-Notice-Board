@@ -505,10 +505,10 @@ const Dashboard = () => {
             </div>
 
             <div className="relative">
-              {/* Fixed height container for consistent dimensions */}
+              {/* Rotating circular card with original styling */}
               <div
                 onClick={() => setSelectedCircular(rotatingCirculars[currentRotatingIndex])}
-                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group h-[420px] sm:h-[450px]`}
+                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
               >
                 <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                   {/* Header with Date */}
@@ -534,9 +534,9 @@ const Dashboard = () => {
                     {rotatingCirculars[currentRotatingIndex].subject}
                   </p>
 
-                  {/* Body Preview - optimized for fixed height */}
+                  {/* Body Preview */}
                   <div
-                    className="text-[18px] text-gray-600 line-clamp-4 mb-4 max-h-[120px] overflow-hidden"
+                    className="text-[18px] text-gray-600 line-clamp-3 mb-4"
                     dangerouslySetInnerHTML={renderHtmlContent(rotatingCirculars[currentRotatingIndex].body, departmentInfo[rotatingCirculars[currentRotatingIndex].department].color)}
                   />
 
