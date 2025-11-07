@@ -11,6 +11,9 @@ import { useCirculars } from '../context/CircularsContext'
 const Dashboard = () => {
   const { circulars, loading, error, fetchCirculars } = useCirculars()
   const [featuredCircular, setFeaturedCircular] = useState<Circular | null>(null)
+  const [rotatingCirculars, setRotatingCirculars] = useState<Circular[]>([])
+  const [currentRotatingIndex, setCurrentRotatingIndex] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const [availableCategories, setAvailableCategories] = useState<Department[]>([])
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
   const [navDeptIndex, setNavDeptIndex] = useState(0)
@@ -122,6 +125,12 @@ const Dashboard = () => {
       const featured = circulars.find(c => c.is_featured) || circulars[0]
       setFeaturedCircular(featured)
 
+      // Prepare 3 circulars for rotation: featured + 2 recent (excluding featured)
+      const recentCirculars = circulars.filter(c => c.id !== featured.id).slice(0, 2)
+      const circularsToRotate = [featured, ...recentCirculars]
+      setRotatingCirculars(circularsToRotate)
+      setCurrentRotatingIndex(0)
+
       // Get unique categories that have circulars
       const uniqueCategories = Array.from(new Set(circulars.map(c => c.department)))
       // Filter out 'All' from the list
@@ -142,6 +151,21 @@ const Dashboard = () => {
 
     return () => clearInterval(interval)
   }, [availableCategories])
+
+  // Rotate through featured circulars every 5 seconds with smooth transition
+  useEffect(() => {
+    if (rotatingCirculars.length <= 1) return
+
+    const interval = setInterval(() => {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setCurrentRotatingIndex((prev) => (prev + 1) % rotatingCirculars.length)
+        setIsTransitioning(false)
+      }, 400) // Half of transition duration
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [rotatingCirculars])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -451,8 +475,8 @@ const Dashboard = () => {
           }
         `}</style>
 
-        {/* Featured Circular */}
-        {featuredCircular && (
+        {/* Featured Circular - Rotating */}
+        {rotatingCirculars.length > 0 && (
           <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
             <div className="flex items-center justify-between mb-3">
               <h2
@@ -480,55 +504,82 @@ const Dashboard = () => {
               </Link>
             </div>
 
-            <div
-              onClick={() => setSelectedCircular(featuredCircular)}
-              className={`featured-circular-modern ${departmentInfo[featuredCircular.department].bgClass} border-l-4 ${departmentInfo[featuredCircular.department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
-            >
-              <div className="p-5">
-                {/* Header with Date */}
-                <div className="flex items-center justify-between mb-3">
-                  <span
-                    className={`px-3 py-1.5 ${departmentInfo[featuredCircular.department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[featuredCircular.department].borderClass}`}
-                  >
-                    {featuredCircular.department}
-                  </span>
-                  <div className="flex items-center gap-1.5 text-gray-600 text-xs">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>{formatDate(featuredCircular.date)}</span>
+            <div className="relative">
+              {/* Fixed height container for consistent dimensions */}
+              <div
+                onClick={() => setSelectedCircular(rotatingCirculars[currentRotatingIndex])}
+                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group h-[420px] sm:h-[450px]`}
+              >
+                <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                  {/* Header with Date */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span
+                      className={`px-3 py-1.5 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass}`}
+                    >
+                      {rotatingCirculars[currentRotatingIndex].department}
+                    </span>
+                    <div className="flex items-center gap-1.5 text-gray-600 text-xs">
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>{formatDate(rotatingCirculars[currentRotatingIndex].date)}</span>
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300">
+                    {rotatingCirculars[currentRotatingIndex].title}
+                  </h3>
+
+                  {/* Subject */}
+                  <p className={`text-[20px] ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} font-semibold mb-3 line-clamp-2`}>
+                    {rotatingCirculars[currentRotatingIndex].subject}
+                  </p>
+
+                  {/* Body Preview - optimized for fixed height */}
+                  <div
+                    className="text-[18px] text-gray-600 line-clamp-4 mb-4 max-h-[120px] overflow-hidden"
+                    dangerouslySetInnerHTML={renderHtmlContent(rotatingCirculars[currentRotatingIndex].body, departmentInfo[rotatingCirculars[currentRotatingIndex].department].color)}
+                  />
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                    {rotatingCirculars[currentRotatingIndex].attachments && rotatingCirculars[currentRotatingIndex].attachments.length > 0 ? (
+                      <div className="flex items-center gap-1.5 text-gray-600 text-xs">
+                        <FileText className="w-4 h-4" />
+                        <span>{rotatingCirculars[currentRotatingIndex].attachments.length} attachment(s)</span>
+                      </div>
+                    ) : (
+                      <div className="text-xs text-gray-500">No attachments</div>
+                    )}
+                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
+                      View Details →
+                    </button>
                   </div>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300">
-                  {featuredCircular.title}
-                </h3>
-
-                {/* Subject */}
-                <p className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-semibold mb-3 line-clamp-2`}>
-                  {featuredCircular.subject}
-                </p>
-
-                {/* Body Preview */}
-                <div
-                  className="text-[18px] text-gray-600 line-clamp-3 mb-4"
-                  dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body, departmentInfo[featuredCircular.department].color)}
-                />
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-3 border-t border-gray-200">
-                  {featuredCircular.attachments && featuredCircular.attachments.length > 0 ? (
-                    <div className="flex items-center gap-1.5 text-gray-600 text-xs">
-                      <FileText className="w-4 h-4" />
-                      <span>{featuredCircular.attachments.length} attachment(s)</span>
-                    </div>
-                  ) : (
-                    <div className="text-xs text-gray-500">No attachments</div>
-                  )}
-                  <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
-                    View Details →
-                  </button>
-                </div>
               </div>
+
+              {/* Pagination dots */}
+              {rotatingCirculars.length > 1 && (
+                <div className="flex justify-center gap-2 mt-3">
+                  {rotatingCirculars.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setIsTransitioning(true)
+                        setTimeout(() => {
+                          setCurrentRotatingIndex(index)
+                          setIsTransitioning(false)
+                        }, 400)
+                      }}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === currentRotatingIndex
+                          ? 'w-8 bg-blue-600'
+                          : 'w-2 bg-gray-300 hover:bg-gray-400'
+                      }`}
+                      aria-label={`Go to circular ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
