@@ -161,7 +161,7 @@ const Dashboard = () => {
       setTimeout(() => {
         setCurrentRotatingIndex((prev) => (prev + 1) % rotatingCirculars.length)
         setIsTransitioning(false)
-      }, 400) // Half of transition duration
+      }, 350) // Half of transition duration (500ms/2 = 250ms, but 350ms for smoother crossfade)
     }, 5000)
 
     return () => clearInterval(interval)
@@ -485,64 +485,60 @@ const Dashboard = () => {
           return (
             <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
               <style>{`
-                @keyframes featuredTextSlideOut {
+                @keyframes featuredZoomOut {
                   0% {
-                    transform: translateX(0);
+                    transform: scale(1);
                     opacity: 1;
                   }
                   100% {
-                    transform: translateX(-30px);
+                    transform: scale(1.05);
                     opacity: 0;
                   }
                 }
 
-                @keyframes featuredTextSlideIn {
+                @keyframes featuredZoomIn {
                   0% {
-                    transform: translateX(30px);
+                    transform: scale(0.95);
                     opacity: 0;
                   }
                   100% {
-                    transform: translateX(0);
+                    transform: scale(1);
                     opacity: 1;
                   }
                 }
 
-                @keyframes featuredStackSlideLeft {
+                @keyframes featuredStackFadeOut {
                   0% {
-                    transform: translateX(0);
-                    opacity: 0.5;
+                    opacity: 0.4;
                   }
                   100% {
-                    transform: translateX(-8px);
-                    opacity: 0.3;
+                    opacity: 0.2;
                   }
                 }
 
-                @keyframes featuredStackSlideIn {
+                @keyframes featuredStackFadeIn {
                   0% {
-                    transform: translateX(8px);
-                    opacity: 0.3;
+                    opacity: 0.2;
                   }
                   100% {
-                    transform: translateX(0);
-                    opacity: 0.5;
+                    opacity: 0.4;
                   }
                 }
 
                 .featured-text-exit {
-                  animation: featuredTextSlideOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                  animation: featuredZoomOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
                 }
 
                 .featured-text-enter {
-                  animation: featuredTextSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                  animation: featuredZoomIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
                 }
 
                 .featured-stack-text-exit {
-                  animation: featuredStackSlideLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                  animation: featuredStackFadeOut 0.5s ease-out forwards;
                 }
 
                 .featured-stack-text-enter {
-                  animation: featuredStackSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                  animation: featuredStackFadeIn 0.5s ease-in forwards;
                 }
               `}</style>
 
@@ -606,7 +602,6 @@ const Dashboard = () => {
                             isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
                           }`}
                           style={{
-                            transform: 'translateX(8px)',
                             filter: 'blur(0.5px)',
                           }}
                           key={`stack-subject-${nextCircular.id}`}
@@ -619,7 +614,6 @@ const Dashboard = () => {
                             isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
                           }`}
                           style={{
-                            transform: 'translateX(8px)',
                             filter: 'blur(0.5px)',
                           }}
                           key={`stack-body-${nextCircular.id}`}
@@ -680,7 +674,7 @@ const Dashboard = () => {
                           setTimeout(() => {
                             setCurrentRotatingIndex(index)
                             setIsTransitioning(false)
-                          }, 600)
+                          }, 350)
                         }}
                         className={`h-2 rounded-full transition-all duration-300 ${
                           index === currentRotatingIndex
