@@ -6,7 +6,6 @@ import { departmentInfo } from '../utils/departments'
 import { renderHtmlContent } from '../utils/htmlContent'
 import CircularPreviewStack from '../components/CircularPreviewStack'
 import CircularModal from '../components/CircularModal'
-import GreetingScreen from '../components/GreetingScreen'
 import { useCirculars } from '../context/CircularsContext'
 
 const Dashboard = () => {
@@ -16,7 +15,6 @@ const Dashboard = () => {
   const [featuredAnimationKey, setFeaturedAnimationKey] = useState(0)
   const [selectedCircular, setSelectedCircular] = useState<Circular | null>(null)
   const [navDeptIndex, setNavDeptIndex] = useState(0)
-  const [showGreeting, setShowGreeting] = useState(true)
   const navigate = useNavigate()
 
   // Rotating taglines with matching colors
@@ -233,22 +231,18 @@ const Dashboard = () => {
             <div
               className={`mb-4 shadow-md rounded-xl overflow-hidden transition-all duration-1000 ease-in-out ${bgClass} border-l-4 ${borderClass}`}
             >
-              {/* Greeting or SMP CONNECT Banner */}
-              {showGreeting ? (
-                <GreetingScreen onComplete={() => setShowGreeting(false)} />
-              ) : (
-                <div className="relative h-[52px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
-                  <div
-                    className="smp-board-title banner-slide-in transition-colors duration-1000 ease-in-out"
-                    style={{
-                      fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif",
-                      color: isFeatured ? '#1f2937' : currentDeptInfo?.color
-                    }}
-                  >
-                    SMP CONNECT
-                  </div>
+              {/* SMP CONNECT Banner */}
+              <div className="relative h-[52px] flex items-center justify-center px-3 sm:px-4 lg:px-6 overflow-hidden transition-colors duration-1000 ease-in-out">
+                <div
+                  className="smp-board-title banner-slide-in transition-colors duration-1000 ease-in-out"
+                  style={{
+                    fontFamily: "'Impact', 'Arial Black', 'Helvetica Neue', Arial, sans-serif",
+                    color: isFeatured ? '#1f2937' : currentDeptInfo?.color
+                  }}
+                >
+                  SMP CONNECT
                 </div>
-              )}
+              </div>
 
               {/* Separator */}
               <div className="border-t border-gray-200"></div>
@@ -510,27 +504,18 @@ const Dashboard = () => {
                 </div>
 
                 {/* Title */}
-                <h3
-                  className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 animate-popup pb-3 border-b border-gray-300"
-                  key={`title-${featuredAnimationKey}`}
-                >
+                <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300">
                   {featuredCircular.title}
                 </h3>
 
                 {/* Subject */}
-                <p
-                  className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-semibold mb-3 line-clamp-2 animate-popup`}
-                  key={`subject-${featuredAnimationKey}`}
-                  style={{ animationDelay: '0.1s' }}
-                >
+                <p className={`text-[20px] ${departmentInfo[featuredCircular.department].textClass} font-semibold mb-3 line-clamp-2`}>
                   {featuredCircular.subject}
                 </p>
 
                 {/* Body Preview */}
                 <div
-                  className="text-[18px] text-gray-600 line-clamp-3 mb-4 animate-popup"
-                  key={`body-${featuredAnimationKey}`}
-                  style={{ animationDelay: '0.2s' }}
+                  className="text-[18px] text-gray-600 line-clamp-3 mb-4"
                   dangerouslySetInnerHTML={renderHtmlContent(featuredCircular.body, departmentInfo[featuredCircular.department].color)}
                 />
 
