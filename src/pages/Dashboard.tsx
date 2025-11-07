@@ -511,7 +511,7 @@ const Dashboard = () => {
                 className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
               >
                 {/* Fixed height container */}
-                <div className="relative min-h-[380px] sm:min-h-[360px]">
+                <div className="relative min-h-[395px] sm:min-h-[375px]">
                   <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                     {/* Header with Date */}
                     <div className="flex items-center justify-between mb-3">
@@ -537,7 +537,7 @@ const Dashboard = () => {
                     </p>
 
                     {/* Body Preview - fixed height section */}
-                    <div className="h-[90px] overflow-hidden mb-4">
+                    <div className="h-[105px] overflow-hidden mb-4">
                       <div
                         className="text-[18px] text-gray-600 line-clamp-3"
                         dangerouslySetInnerHTML={renderHtmlContent(rotatingCirculars[currentRotatingIndex].body, departmentInfo[rotatingCirculars[currentRotatingIndex].department].color)}
