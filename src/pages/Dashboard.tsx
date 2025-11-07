@@ -505,54 +505,59 @@ const Dashboard = () => {
             </div>
 
             <div className="relative">
-              {/* Rotating circular card with original styling and fixed height */}
+              {/* Rotating circular card with fixed height */}
               <div
                 onClick={() => setSelectedCircular(rotatingCirculars[currentRotatingIndex])}
-                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group min-h-[380px]`}
+                className={`featured-circular-modern ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].bgClass} border-l-4 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass} rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer overflow-hidden group`}
               >
-                <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'} flex flex-col h-full`}>
-                  {/* Header with Date */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span
-                      className={`px-3 py-1.5 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass}`}
-                    >
-                      {rotatingCirculars[currentRotatingIndex].department}
-                    </span>
-                    <div className="flex items-center gap-1.5 text-gray-600 text-xs">
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>{formatDate(rotatingCirculars[currentRotatingIndex].date)}</span>
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300">
-                    {rotatingCirculars[currentRotatingIndex].title}
-                  </h3>
-
-                  {/* Subject */}
-                  <p className={`text-[20px] ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} font-semibold mb-3 line-clamp-2`}>
-                    {rotatingCirculars[currentRotatingIndex].subject}
-                  </p>
-
-                  {/* Body Preview */}
-                  <div
-                    className="text-[18px] text-gray-600 line-clamp-3 mb-4 flex-grow"
-                    dangerouslySetInnerHTML={renderHtmlContent(rotatingCirculars[currentRotatingIndex].body, departmentInfo[rotatingCirculars[currentRotatingIndex].department].color)}
-                  />
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-200 mt-auto">
-                    {rotatingCirculars[currentRotatingIndex].attachments && rotatingCirculars[currentRotatingIndex].attachments.length > 0 ? (
+                {/* Fixed height container */}
+                <div className="relative min-h-[380px] sm:min-h-[360px]">
+                  <div className={`p-5 transition-opacity duration-800 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                    {/* Header with Date */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span
+                        className={`px-3 py-1.5 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} rounded-full text-xs font-bold border-2 ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].borderClass}`}
+                      >
+                        {rotatingCirculars[currentRotatingIndex].department}
+                      </span>
                       <div className="flex items-center gap-1.5 text-gray-600 text-xs">
-                        <FileText className="w-4 h-4" />
-                        <span>{rotatingCirculars[currentRotatingIndex].attachments.length} attachment(s)</span>
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{formatDate(rotatingCirculars[currentRotatingIndex].date)}</span>
                       </div>
-                    ) : (
-                      <div className="text-xs text-gray-500">No attachments</div>
-                    )}
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
-                      View Details →
-                    </button>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-[26px] sm:text-[34px] font-bold text-gray-900 mb-3 line-clamp-2 pb-3 border-b border-gray-300">
+                      {rotatingCirculars[currentRotatingIndex].title}
+                    </h3>
+
+                    {/* Subject */}
+                    <p className={`text-[20px] ${departmentInfo[rotatingCirculars[currentRotatingIndex].department].textClass} font-semibold mb-3 line-clamp-2`}>
+                      {rotatingCirculars[currentRotatingIndex].subject}
+                    </p>
+
+                    {/* Body Preview - fixed height section */}
+                    <div className="h-[90px] overflow-hidden mb-4">
+                      <div
+                        className="text-[18px] text-gray-600 line-clamp-3"
+                        dangerouslySetInnerHTML={renderHtmlContent(rotatingCirculars[currentRotatingIndex].body, departmentInfo[rotatingCirculars[currentRotatingIndex].department].color)}
+                      />
+                    </div>
+
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                      {rotatingCirculars[currentRotatingIndex].attachments && rotatingCirculars[currentRotatingIndex].attachments.length > 0 ? (
+                        <div className="flex items-center gap-1.5 text-gray-600 text-xs">
+                          <FileText className="w-4 h-4" />
+                          <span>{rotatingCirculars[currentRotatingIndex].attachments.length} attachment(s)</span>
+                        </div>
+                      ) : (
+                        <div className="text-xs text-gray-500">No attachments</div>
+                      )}
+                      <button className="text-blue-600 hover:text-blue-700 text-sm font-medium group-hover:underline">
+                        View Details →
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
