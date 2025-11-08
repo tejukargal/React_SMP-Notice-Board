@@ -141,13 +141,13 @@ const Dashboard = () => {
     }
   }, [circulars])
 
-  // Rotate through departments for navigation tabs every 3 seconds
+  // Rotate through departments for navigation tabs every 5 seconds (synced with featured circular)
   useEffect(() => {
     if (availableCategories.length === 0) return
 
     const interval = setInterval(() => {
       setNavDeptIndex((prev) => (prev + 1) % availableCategories.length)
-    }, 3000)
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [availableCategories])
@@ -395,7 +395,7 @@ const Dashboard = () => {
           }
 
           .filter-label-slide {
-            animation: filterLabelSlide 0.8s ease-out forwards;
+            animation: filterLabelSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
           }
 
           @keyframes slideIn {

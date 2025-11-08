@@ -22,11 +22,11 @@ const Header = () => {
     return () => clearInterval(timer)
   }, [])
 
-  // Cycle through departments every 8 seconds
+  // Cycle through departments every 5 seconds (synced with text and featured circulars)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentDeptIndex((prev) => (prev + 1) % departments.length)
-    }, 8000)
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [])
