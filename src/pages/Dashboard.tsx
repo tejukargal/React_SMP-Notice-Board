@@ -596,7 +596,7 @@ const Dashboard = () => {
                   </div>
 
                   {/* Body - Subject and Content with layered effect */}
-                  <div className="relative h-[180px] sm:h-[160px] overflow-hidden">
+                  <div className="relative h-[260px] sm:h-[230px] overflow-hidden bg-white">
                     {/* Background/Stacked layer - Next circular preview */}
                     {rotatingCirculars.length > 1 && (
                       <div className="absolute inset-0 p-5">
@@ -649,7 +649,7 @@ const Dashboard = () => {
                   </div>
 
                   {/* Footer - Attachments and View Details */}
-                  <div className={`px-5 pb-3 pt-3 ${currentDeptInfo.bgClass} border-t ${currentDeptInfo.borderClass} transition-all duration-700`}>
+                  <div className={`px-5 pb-3 pt-4 mt-4 ${currentDeptInfo.bgClass} border-t ${currentDeptInfo.borderClass} transition-all duration-700`}>
                     <div className={`flex items-center justify-between ${
                       isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
                     }`} key={`footer-${currentCircular.id}`}>
