@@ -478,9 +478,7 @@ const Dashboard = () => {
         {/* Featured Circular - Rotating with Quick Preview Style */}
         {rotatingCirculars.length > 0 && (() => {
           const currentCircular = rotatingCirculars[currentRotatingIndex]
-          const nextCircular = rotatingCirculars[(currentRotatingIndex + 1) % rotatingCirculars.length]
           const currentDeptInfo = departmentInfo[currentCircular.department]
-          const nextDeptInfo = departmentInfo[nextCircular.department]
 
           return (
             <div className="mb-6 animate-popup" style={{ animationDelay: '0.1s' }}>
