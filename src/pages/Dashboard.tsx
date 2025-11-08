@@ -596,7 +596,7 @@ const Dashboard = () => {
                   </div>
 
                   {/* Body - Subject and Content with layered effect */}
-                  <div className="relative h-[200px] sm:h-[180px] overflow-hidden">
+                  <div className="relative h-[180px] sm:h-[160px] overflow-hidden">
                     {/* Background/Stacked layer - Next circular preview */}
                     {rotatingCirculars.length > 1 && (
                       <div className="absolute inset-0 p-5">
