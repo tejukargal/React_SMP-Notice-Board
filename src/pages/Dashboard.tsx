@@ -595,57 +595,25 @@ const Dashboard = () => {
                     </h3>
                   </div>
 
-                  {/* Body - Subject and Content with layered effect */}
-                  <div className="relative h-[260px] sm:h-[230px] overflow-hidden bg-white">
-                    {/* Background/Stacked layer - Next circular preview */}
-                    {rotatingCirculars.length > 1 && (
-                      <div className="absolute inset-0 p-5">
-                        {/* Next Subject */}
-                        <div
-                          className={`text-lg font-bold mb-2 ${nextDeptInfo.textClass} opacity-40 ${
-                            isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
-                          }`}
-                          style={{
-                            filter: 'blur(0.5px)',
-                          }}
-                          key={`stack-subject-${nextCircular.id}`}
-                        >
-                          {nextCircular.subject}
-                        </div>
-                        {/* Next Body */}
-                        <div
-                          className={`text-base text-justify leading-relaxed line-clamp-5 sm:line-clamp-4 opacity-40 ${
-                            isTransitioning ? 'featured-stack-text-exit' : 'featured-stack-text-enter'
-                          }`}
-                          style={{
-                            filter: 'blur(0.5px)',
-                          }}
-                          key={`stack-body-${nextCircular.id}`}
-                          dangerouslySetInnerHTML={renderHtmlContent(nextCircular.body, nextDeptInfo.color)}
-                        />
-                      </div>
-                    )}
-
-                    {/* Main layer - Current circular */}
-                    <div className="absolute inset-0 p-5 bg-gradient-to-br from-white/95 to-white/90">
-                      {/* Current Subject */}
-                      <div
-                        className={`text-lg font-bold mb-2 ${currentDeptInfo.textClass} ${
-                          isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
-                        }`}
-                        key={`main-subject-${currentCircular.id}`}
-                      >
-                        {currentCircular.subject}
-                      </div>
-                      {/* Current Body */}
-                      <div
-                        className={`text-base text-justify text-gray-600 leading-relaxed line-clamp-5 sm:line-clamp-4 ${
-                          isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
-                        }`}
-                        key={`main-body-${currentCircular.id}`}
-                        dangerouslySetInnerHTML={renderHtmlContent(currentCircular.body, currentDeptInfo.color)}
-                      />
+                  {/* Body - Subject and Content */}
+                  <div className={`relative h-[260px] sm:h-[230px] overflow-hidden ${currentDeptInfo.bgClass} p-5`}>
+                    {/* Current Subject */}
+                    <div
+                      className={`text-xl font-bold mb-2 ${currentDeptInfo.textClass} ${
+                        isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
+                      }`}
+                      key={`main-subject-${currentCircular.id}`}
+                    >
+                      {currentCircular.subject}
                     </div>
+                    {/* Current Body */}
+                    <div
+                      className={`text-lg text-justify leading-relaxed line-clamp-6 sm:line-clamp-5 ${currentDeptInfo.textClass} ${
+                        isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
+                      }`}
+                      key={`main-body-${currentCircular.id}`}
+                      dangerouslySetInnerHTML={renderHtmlContent(currentCircular.body, currentDeptInfo.color)}
+                    />
                   </div>
 
                   {/* Footer - Attachments and View Details */}
