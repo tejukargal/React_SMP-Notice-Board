@@ -24,7 +24,7 @@ const CircularPreviewStack = ({ circulars }: CircularPreviewStackProps) => {
         setCurrentIndex((prev) => (prev + 1) % previewCirculars.length)
         setIsTransitioning(false)
       }, 400)
-    }, 3000)
+    }, 1000)
 
     return () => clearInterval(interval)
   }, [previewCirculars.length])
