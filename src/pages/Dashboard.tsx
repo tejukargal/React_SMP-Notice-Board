@@ -586,7 +586,7 @@ const Dashboard = () => {
                         <span>{formatDate(currentCircular.date)}</span>
                       </div>
                     </div>
-                    <h3 className={`text-[22px] sm:text-[28px] font-bold text-gray-900 line-clamp-2 ${
+                    <h3 className={`text-[22px] sm:text-[28px] font-bold ${currentDeptInfo.textClass} line-clamp-2 ${
                       isTransitioning ? 'featured-text-exit' : 'featured-text-enter'
                     }`} key={`header-title-${currentCircular.id}`}>
                       {currentCircular.title}
