@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Pause, Play } from 'lucide-react'
 import { Department } from '../types'
 import { departmentInfo } from '../utils/departments'
@@ -13,8 +13,37 @@ const CSVTicker = ({ csvBase64, fileName: _fileName, department = 'All' }: CSVTi
   const [csvData, setCsvData] = useState<string[][]>([])
   const [error, setError] = useState<string>('')
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isManualScrolling, setIsManualScrolling] = useState(false)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollTimeoutRef = useRef<number | null>(null)
 
   const deptInfo = departmentInfo[department]
+
+  // Handle manual scroll - pause auto-scroll temporarily
+  const handleScroll = () => {
+    if (isPlaying) {
+      setIsManualScrolling(true)
+
+      // Clear existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+
+      // Resume auto-scroll after 3 seconds of no manual scrolling
+      scrollTimeoutRef.current = window.setTimeout(() => {
+        setIsManualScrolling(false)
+      }, 3000)
+    }
+  }
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     parseCSV()
@@ -69,11 +98,14 @@ const CSVTicker = ({ csvBase64, fileName: _fileName, department = 'All' }: CSVTi
 
   return (
     <div className="w-full">
-      {/* Scrolling CSV Content - Click to Play/Pause */}
+      {/* Scrolling CSV Content - Click to Play/Pause, scroll manually */}
       <div
-        className="relative overflow-hidden h-64 cursor-pointer select-none"
+        ref={scrollContainerRef}
+        className="relative overflow-y-auto h-64 cursor-pointer select-none"
         onClick={() => setIsPlaying(!isPlaying)}
-        title={isPlaying ? 'Click to pause' : 'Click to play'}
+        onScroll={handleScroll}
+        onWheel={handleScroll}
+        title={isPlaying ? 'Click to pause (scroll to override)' : 'Click to play or scroll manually'}
       >
         {/* Top fade gradient */}
         <div className={`absolute left-0 right-0 top-0 h-16 bg-gradient-to-b ${deptInfo.bgClass.replace('bg-', 'from-')} to-transparent z-10 pointer-events-none`}></div>
@@ -96,7 +128,7 @@ const CSVTicker = ({ csvBase64, fileName: _fileName, department = 'All' }: CSVTi
             className="flex flex-col animate-csv-scroll-vertical"
             style={{
               animation: `csv-scroll-vertical ${scrollSpeed}s linear infinite`,
-              animationPlayState: isPlaying ? 'running' : 'paused'
+              animationPlayState: (isPlaying && !isManualScrolling) ? 'running' : 'paused'
             }}
           >
             {/* Duplicate content for seamless infinite loop */}
